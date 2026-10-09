@@ -1,0 +1,65 @@
+:root { font-family: 'DM Sans', system-ui, sans-serif; color: #073840; background: #efeee7; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1560px; padding: 48px 36px 28px; margin: auto; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 30px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .22em; color: #667e78; margin: 0 0 10px; }
+h1 { font-family: Georgia, serif; font-size: clamp(30px, 4vw, 48px); margin: 0; letter-spacing: -.04em; }
+.subtitle { color: #667e78; margin: 10px 0 0; }
+.download { color: #073840; text-decoration: none; background: #fbf8ed; border: 1px solid #cbd6ca; padding: 12px 18px; border-radius: 9px; font-size: 14px; white-space: nowrap; }
+.download:hover { background: #e3eadc; }
+.download:focus-visible { outline: 3px solid #cc480e; outline-offset: 4px; }
+.download span { margin-left: 12px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.songs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.songs button { font: inherit; font-size: 14px; color: #073840; background: transparent; border: 1px solid #cbd6ca; border-radius: 8px; padding: 10px 16px; cursor: pointer; }
+.songs button[aria-pressed="true"] { background: #073840; color: #fbf8ed; border-color: #073840; }
+.songs button:focus-visible { outline: 3px solid #cc480e; outline-offset: 3px; }
+.chart { background: #fbf8ed; border: 1px solid #d3d8ca; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 35px #07384008; }
+.chart svg { width: 100%; height: auto; display: block; }
+aside { background: #fbf8ed; border: 1px solid #d3d8ca; border-radius: 16px; padding: 26px; }
+h2 { font-family: Georgia, serif; font-size: 25px; margin: 0 0 24px; }
+.route + .route { border-top: 1px solid #dde0d3; margin-top: 22px; padding-top: 22px; }
+h3 { display: flex; align-items: center; gap: 10px; font-size: 13px; margin: 0 0 14px; }
+.line { width: 25px; border-top: 3px solid #cc480e; }
+.line.dotted { border-top-style: dotted; }
+.chords { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 23px; font-family: Georgia, serif; font-weight: 700; }
+.arrow { color: #cc480e; font-size: 18px; }
+.note, .tip { color: #62736d; font-size: 13px; line-height: 1.6; }
+.note { margin: 12px 0 0; }
+.tip { background: #eaf0e3; padding: 15px; border-radius: 9px; margin: 26px 0 0; }
+.tip strong { color: #073840; display: block; margin-bottom: 4px; }
+footer { font-size: 12px; color: #6b7c74; margin-top: 20px; }
+@media (max-width: 1050px) { .layout { grid-template-columns: 1fr; } aside { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; } h2, .tip { grid-column: 1 / -1; margin: 0; } .route + .route { margin: 0; padding: 0; border: 0; } }
+@media (max-width: 600px) { main { padding: 26px 14px; } header { align-items: start; flex-direction: column; gap: 16px; } aside { display: block; padding: 22px; } h2 { margin-bottom: 24px; } .route + .route { border-top: 1px solid #dde0d3; margin-top: 22px; padding-top: 22px; } .tip { margin-top: 24px; } }
+.player { border: 1px solid #d3d8ca; border-radius: 14px; background: #fbf8ed; padding: 18px 22px; margin-bottom: 24px; }
+.transport { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.transport button { padding: 10px 16px; border: 1px solid #cbd6ca; background: transparent; color: #073840; border-radius: 8px; font: inherit; cursor: pointer; }
+.transport button.play { background: #073840; color: #fbf8ed; border-color: #073840; }
+.transport button:disabled { opacity: .45; cursor: default; }
+.transport label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #62736d; }
+.transport input[type=number] { width: 65px; padding: 7px; border-radius: 6px; border: 1px solid #cbd6ca; color: #073840; background: #fffdf6; font: inherit; }
+.transport input[type=range] { width: 110px; accent-color: #073840; }
+.transport :focus-visible { outline: 3px solid #cc480e; outline-offset: 3px; }
+.player-status { display: flex; align-items: baseline; flex-wrap: wrap; gap: 16px; margin-top: 18px; font-size: 13px; color: #62736d; }
+.current-chord { font: 700 25px Georgia, serif; color: #073840; }
+.player progress { display: block; width: 100%; height: 6px; margin-top: 12px; accent-color: #cc480e; }
+.audio-error { color: #9e3026; }
+@media (prefers-reduced-motion: reduce) { .chart svg rect { transition: none !important; } }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #fbf8ed55; border-top-color: #fbf8ed; border-radius: 50%; animation: spin .75s linear infinite; margin-right: 8px; vertical-align: -2px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.player .seek { display: block; appearance: none; -webkit-appearance: none; width: 100%; height: 20px; margin: 8px 0 0; cursor: pointer; background: transparent; }
+.seek::-webkit-slider-runnable-track { height: 6px; border-radius: 5px; background: linear-gradient(to right, #cc480e var(--played), #d8dfd1 var(--played)); }
+.seek::-moz-range-track { height: 6px; border-radius: 5px; background: #d8dfd1; }
+.seek::-moz-range-progress { height: 6px; background: #cc480e; border-radius: 5px; }
+.seek::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #cc480e; margin-top: -3px; }
+.seek::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: #cc480e; }
+.seek:focus-visible { outline: 2px solid #cc480e; outline-offset: 4px; }
+.chord-timeline { position: relative; margin: -2px 6px 8px; }
+.chord-tick { position: absolute; top: 0; width: 1px; background: #bac9bb; pointer-events: none; }
+.chord-tick.active { background: #cc480e; }
+.timeline-chord { position: absolute; border: 0; border-radius: 5px; padding: 3px 6px; background: #fbf8ed; color: #62736d; font: 600 12px system-ui, sans-serif; line-height: 18px; text-align: left; white-space: nowrap; cursor: pointer; }
+.timeline-chord:hover { background: #eaf0e3; color: #073840; }
+.timeline-chord.active { background: #f8e4d5; color: #cc480e; }
+.timeline-chord:focus-visible { outline: 2px solid #cc480e; outline-offset: 2px; }
+.timeline-chord:disabled { cursor: wait; }

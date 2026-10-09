@@ -1,0 +1,4 @@
+node_modules/
+dist/
+charts/
+__pycache__/
