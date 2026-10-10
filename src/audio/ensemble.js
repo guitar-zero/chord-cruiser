@@ -1,4 +1,5 @@
-import { chordNotes, bassNote } from './songs.js';
+import { bassNote } from './songs.js';
+import { pianoHits } from './pianoVoicings.js';
 import { makeBrushBuffers, scheduleBrushes } from './brushes.js';
 
 const soundCache = new Map();
@@ -58,9 +59,9 @@ export class JazzPlayer {
     await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
     if (this.stopped) return;
     this.timeline = timeline;
-    for (const event of timeline.events) {
-      if (event.chord === 'NC') continue;
-      for (const note of chordNotes(event.chord)) {
+    this.pianoHits = pianoHits(timeline);
+    for (const event of this.pianoHits) {
+      for (const note of event.notes) {
         if (this.stopped || this.context.state === 'closed') return;
         if (!this.buffers.has(note)) { this.buffer(note); await yieldToUI(); }
       }
@@ -87,14 +88,10 @@ export class JazzPlayer {
     this.startedAt = this.context.currentTime + .03 - this.offset;
     const timeline = this.timeline;
     if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, this.startedAt, this.offset, source => this.track(source));
-    const beatSeconds = timeline.duration / timeline.beats;
-    for (const event of timeline.events) {
-      if (event.chord === 'NC') continue;
-      const notes = chordNotes(event.chord);
-      // A quiet piano chord each bar maintains audibility through ×2/×4 holds.
-      for (let beat = 0; beat < event.beats; beat += (timeline.beatsPerBar || 4)) {
-        const originalStart = event.start + beat * beatSeconds;
-        const originalLength = Math.min(timeline.beatsPerBar || 4, event.beats - beat) * beatSeconds;
+    for (const event of this.pianoHits) {
+        const notes = event.notes;
+        const originalStart = event.start;
+        const originalLength = event.duration;
         if (originalStart + originalLength <= this.offset) continue;
         const start = Math.max(originalStart, this.offset);
         const length = originalStart + originalLength - start;
@@ -122,7 +119,6 @@ export class JazzPlayer {
           source.onended = () => { source.disconnect(); gain.disconnect(); };
           this.track(source); source.start(at); source.stop(end + .01);
         });
-      }
     }
   }
   bassBuffer(midi) {

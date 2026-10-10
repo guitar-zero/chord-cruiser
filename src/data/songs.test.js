@@ -2,7 +2,66 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { songs, songsById } from './songs.js';
 import { chartTarget } from '../audio/chartTarget.js';
+import { nodeVisitColors, upcomingMovement, rapidPassage, rapidPassageMovements, quickChangeRanges, nearbyPlaybackNodes } from './graphPresentation.js';
+import { sectionScrollDelta } from './sectionScroll.js';
 import catalogue from '../../scripts/data/catalogue-index.json' with { type: 'json' };
+
+test('Section scrolling shows both charts when possible and aligns upward destinations at the top', () => {
+  assert.equal(sectionScrollDelta({ top: 20, bottom: 300 }, { top: 320, bottom: 600 }, 800), 0);
+  assert.equal(sectionScrollDelta({ top: 300, bottom: 600 }, { top: 620, bottom: 920 }, 800), 300);
+  assert.equal(sectionScrollDelta({ top: 500, bottom: 900 }, { top: 20, bottom: 480 }, 800), 20);
+  assert.equal(sectionScrollDelta({ top: -100, bottom: 300 }, { top: -600, bottom: -120 }, 800), -600);
+  assert.equal(sectionScrollDelta({ top: 100, bottom: 700 }, { top: 720, bottom: 1320 }, 800), 520);
+  assert.equal(sectionScrollDelta({ top: 100, bottom: 700 }, { top: 720, bottom: 1720 }, 800), 720);
+});
+
+test('Upcoming movement chooses the playback branch without inventing end loops or skipping omitted chords', () => {
+  const song = { playback: [{ nodeId: 'a' }, { nodeId: 'c' }, { nodeId: null }, { nodeId: 'b' }], edges: [{ id: 'ab', source: 'a', target: 'b' }, { id: 'ac', source: 'a', target: 'c' }] };
+  assert.deepEqual(upcomingMovement(song, 0), { nodeId: 'c', edgeId: 'ac', visitIndex: 1 });
+  assert.equal(upcomingMovement(song, 1), null);
+  assert.equal(upcomingMovement(song, 3), null);
+  assert.equal(upcomingMovement(song, undefined), null);
+});
+
+test('Rapid turnaround highlights every route throughout its split-bar passage and clears afterward', () => {
+  const song = songsById['all-of-me'];
+  const first = song.playback.length - 4;
+  for (let index = first; index < song.playback.length; index++) {
+    assert.deepEqual(rapidPassage(song, index), { start: first, end: song.playback.length - 1 });
+    const movements = rapidPassageMovements(song, index);
+    assert.equal(movements.length, 3);
+    assert.deepEqual(movements.map(move => move.sourceVisitIndex), [first, first + 1, first + 2]);
+    assert.ok(movements.every(move => song.edges.some(edge => edge.id === move.edgeId)));
+  }
+  assert.deepEqual(rapidPassage(song, first - 1), { start: first, end: song.playback.length - 1 });
+  assert.equal(rapidPassage(song, first - 2), null);
+  assert.deepEqual(rapidPassageMovements(song, 0), []);
+  assert.equal(rapidPassage({ playback: [{ bars: .5 }, { bars: 1 }] }, 0), null);
+  assert.equal(rapidPassage(song, undefined), null);
+  const middle = { playback: [{ nodeId: 'a', bars: 1 }, { nodeId: 'b', bars: .5 }, { nodeId: 'c', bars: .25 }, { nodeId: 'd', bars: 1 }], edges: [{ id: 'bc', source: 'b', target: 'c' }, { id: 'cd', source: 'c', target: 'd' }] };
+  assert.deepEqual(rapidPassage(middle, 0), { start: 1, end: 2 });
+  assert.deepEqual(rapidPassageMovements(middle, 0).map(move => move.edgeId), ['bc', 'cd']);
+  assert.equal(rapidPassage(middle, 3), null);
+  assert.deepEqual(quickChangeRanges(middle.playback), [{ start: 1, end: 2 }]);
+  assert.deepEqual(quickChangeRanges([{ bars: .5 }, { bars: 1 }, { bars: .5 }, { bars: .5 }]), [{ start: 2, end: 3 }]);
+});
+
+test('Node colors match first timeline appearances and update on revisits and seeks', () => {
+  const song = { playback: [{ nodeId: 'a' }, { nodeId: null }, { nodeId: 'b' }, { nodeId: 'a' }] };
+  const colors = ['red', 'orange', 'green', 'blue'];
+  assert.deepEqual(nodeVisitColors(song, colors), { a: 'red', b: 'green' });
+  assert.deepEqual(nodeVisitColors(song, colors, 2), { a: 'red', b: 'green' });
+  assert.deepEqual(nodeVisitColors(song, colors, 3), { a: 'blue', b: 'green' });
+  assert.deepEqual(nodeVisitColors(song, colors, 0), { a: 'red', b: 'green' });
+});
+
+test('Focused nodes follow current/next/then and retain complete active quick-change chains', () => {
+  const song = { playback: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map((nodeId, index) => ({ nodeId, bars: index >= 2 && index <= 5 ? .5 : 1 })) };
+  assert.deepEqual([...nearbyPlaybackNodes(song, 1)].sort(), ['b', 'c', 'd']);
+  assert.deepEqual([...nearbyPlaybackNodes(song, 4)].sort(), ['c', 'd', 'e', 'f', 'g']);
+  assert.deepEqual([...nearbyPlaybackNodes(song, 7)].sort(), ['a', 'b', 'h']);
+  assert.deepEqual([...nearbyPlaybackNodes(song)].sort(), ['a', 'b', 'c']);
+});
 
 test('Section rendering crops both legacy side-by-side and stacked layouts without clipping roots or route bends', async () => {
   const { sectionViewport } = await import('./sectionViewport.js');

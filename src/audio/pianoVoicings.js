@@ -1,0 +1,33 @@
+import { chordNotes } from './songs.js';
+
+export function pianoVoicing(chord, repeat = 0) {
+  const notes = chordNotes(chord);
+  // Keep an explicitly requested slash bass in place.
+  const bass = chord.includes('/') ? notes.shift() : null;
+  const turns = notes.length ? repeat % notes.length : 0;
+  for (let turn = 0; turn < turns; turn++) {
+    notes.sort((a, b) => a - b);
+    notes[0] += 12;
+  }
+  notes.sort((a, b) => a - b);
+  return bass === null ? notes : [bass, ...notes];
+}
+
+export function pianoHits(timeline) {
+  const hits = [];
+  const beatSeconds = timeline.duration / timeline.beats;
+  const beatsPerBar = timeline.beatsPerBar || 4;
+  let previousChord;
+  let repeat = 0;
+  for (const event of timeline.events) {
+    if (event.chord === 'NC') { previousChord = undefined; continue; }
+    for (let beat = 0; beat < event.beats; beat += beatsPerBar) {
+      repeat = previousChord === event.chord ? repeat + 1 : 0;
+      hits.push({ chord: event.chord, start: event.start + beat * beatSeconds,
+        duration: Math.min(beatsPerBar, event.beats - beat) * beatSeconds,
+        notes: pianoVoicing(event.chord, repeat) });
+      previousChord = event.chord;
+    }
+  }
+  return hits;
+}
