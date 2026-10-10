@@ -1,3 +1,5 @@
+import { rainbowChoices } from './routePalette.js';
+
 // A hold is one visit; a return to the chord is another numbered visit.
 export function nodeVisits(song) {
   const visits = Object.fromEntries(song.nodes.map(node => [node.id, []]));
@@ -18,8 +20,8 @@ export function branchColors(song, section, palette) {
     const outgoing = edges.filter(edge => edge.source === source).sort((a,b) => firstVisit(a) - firstVisit(b));
     const destinations = [...new Set(outgoing.map(edge => edge.target))];
     if (destinations.length < 2) continue;
-    const base = section.color || '#cc480e';
-    const choices = [base, ...palette.filter(color => color !== base)];
+    const base = section.color || '#c43b32';
+    const choices = rainbowChoices(base, palette);
     outgoing.forEach(edge => { colors[edge.id] = choices[destinations.indexOf(edge.target)]; });
   }
   return colors;

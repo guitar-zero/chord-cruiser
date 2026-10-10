@@ -157,19 +157,24 @@ without crossing behind the nut. Changing the key stops playback and resets
 the current-chord indicator; press Play to hear the new key. Source JSON remains
 unchanged. Returning to a song defaults to its original key.
 
-## Section carousel
+## Section layout
 
-All songs use a two-panel carousel with no sidebar. Previous/Next, the section
-selector, left/right arrow keys, and horizontal swipes navigate the panels.
-Playback highlights either visible panel and advances the carousel when the
-next section is offscreen; seeking and looping bring the destination section
-into view. A single-panel song previews its next loop in the second panel,
-without duplicating the current-chord flower. Stopping returns to panel one.
+Every chart section is always visible. Both string modes use one chart per row. Three-string maps use expanded
+fret spacing for more room between nodes. Playback highlights its active section
+without changing section order or hiding other sections. Layout changes preserve
+playback. Single-section songs occupy one grid cell.
 
-The renderer crops each section from its existing measured coordinates, so
-legacy side-by-side layouts (All Of Me) and generated stacked layouts use the
-same carousel. **Download section SVG** exports the current visible section
-(or the first panel when stopped). Changing songs or keys explicitly stops all
-scheduled voices and resets transport before mounting the new chart. The Vite
-entry reuses its React root across development updates to avoid orphaned app
-and audio instances.
+The renderer crops each section from its measured coordinates, so legacy and
+generated layouts use the same section grid. **Download section SVG** exports
+the active section, or the first when stopped. Changing songs or keys stops
+scheduled voices and resets transport.
+
+The **Use 2 strings: E + A** button remaps the chart onto low E and A across
+at least seven consecutive frets, expanding when needed. Root positions follow
+playback order and favor the closest available fret/string to the preceding
+chord; repeated roots retain their chosen anchor. Positions use string tuning;
+chord qualities sharing a root stay on the same string/fret with separate
+nodes. Routes are rebuilt around intervening nodes. Playback order, harmony,
+and timing stay unchanged, including during playback. Toggle back to restore
+the original three-string map. This display preference carries across songs
+and works with transposition.

@@ -12,7 +12,7 @@ body { margin: 0; }
 main { max-width: 1560px; padding: 48px 36px 28px; margin: auto; }
 header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 30px; }
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .22em; color: var(--muted); margin: 0 0 10px; }
-h1 { font-family: Georgia, serif; font-size: clamp(30px, 4vw, 48px); margin: 0; letter-spacing: -.04em; }
+h1 { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-size: clamp(30px, 4vw, 48px); margin: 0; letter-spacing: -.04em; }
 .subtitle { color: var(--muted); margin: 10px 0 0; }
 .download { color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--border); padding: 12px 18px; border-radius: 9px; font-size: 14px; white-space: nowrap; }
 .download:hover { background: var(--hover); }
@@ -26,12 +26,12 @@ h1 { font-family: Georgia, serif; font-size: clamp(30px, 4vw, 48px); margin: 0; 
 .chart { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 35px var(--ink)08; }
 .chart svg { width: 100%; height: auto; display: block; }
 aside { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 26px; }
-h2 { font-family: Georgia, serif; font-size: 25px; margin: 0 0 24px; }
+h2 { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-size: 25px; margin: 0 0 24px; }
 .route + .route { border-top: 1px solid var(--border); margin-top: 22px; padding-top: 22px; }
 h3 { display: flex; align-items: center; gap: 10px; font-size: 13px; margin: 0 0 14px; }
 .line { width: 25px; border-top: 3px solid var(--accent); }
 .line.dotted { border-top-style: dotted; }
-.chords { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 23px; font-family: Georgia, serif; font-weight: 700; }
+.chords { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 23px; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700; }
 .arrow { color: var(--accent); font-size: 18px; }
 .note, .tip { color: var(--muted); font-size: 13px; line-height: 1.6; }
 .note { margin: 12px 0 0; }
@@ -50,7 +50,7 @@ footer { font-size: 12px; color: var(--muted); margin-top: 20px; }
 .transport input[type=range] { width: 110px; accent-color: var(--ink); }
 .transport :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .player-status { display: flex; align-items: baseline; flex-wrap: wrap; gap: 16px; margin-top: 18px; font-size: 13px; color: var(--muted); }
-.current-chord { font: 700 25px Georgia, serif; color: var(--ink); }
+.current-chord { font: 700 25px system-ui, -apple-system, BlinkMacSystemFont, sans-serif; color: var(--ink); }
 .player progress { display: block; width: 100%; height: 6px; margin-top: 12px; accent-color: var(--accent); }
 .audio-error { color: #9e3026; }
 @media (prefers-reduced-motion: reduce) { .chart svg rect { transition: none !important; } }
@@ -79,16 +79,9 @@ footer { font-size: 12px; color: var(--muted); margin-top: 20px; }
 .song-picker input:focus-visible, .song-picker select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .song-picker .note { margin: 0 0 9px; }
 
-.carousel-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
-.carousel-controls button, .carousel-controls select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 10px 14px; cursor: pointer; }
-.carousel-controls button:hover { background: var(--hover); }
-.carousel-controls label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; flex: 1; min-width: 0; }
-.carousel-controls select { min-width: 0; max-width: 100%; }
-.carousel-position { color: var(--muted); font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.section-carousel:focus-visible, .carousel-controls button:focus-visible, .carousel-controls select:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
-.section-carousel .chart { touch-action: pan-y pinch-zoom; }
-@media (max-width: 600px) { .carousel-controls label { order: 3; flex-basis: 100%; } .carousel-position { flex: 1; text-align: center; } }
-.carousel-panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; touch-action: pan-y pinch-zoom; }
-.carousel-panel { min-width: 0; }
+ .chart-sections { display: grid; grid-template-columns: repeat(var(--chart-columns, 2), minmax(0, 1fr)); gap: 24px 20px; align-items: start; }
+.chart-section { min-width: 0; }
 .panel-caption { font-size: 13px; color: var(--muted); margin: 0 0 9px; }
-@media (max-width: 600px) { .carousel-panels { gap: 8px; } .panel-caption { font-size: 11px; } }
+@media (max-width: 600px) { .chart-sections { gap: 16px 8px; } .panel-caption { font-size: 11px; } }
+
+.shell-footnote { font-size: 11px; font-style: italic; margin-top: 5px; }

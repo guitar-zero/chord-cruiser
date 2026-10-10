@@ -4,7 +4,7 @@ import { songs, songsById } from './songs.js';
 import { chartTarget } from '../audio/chartTarget.js';
 import catalogue from '../../scripts/data/catalogue-index.json' with { type: 'json' };
 
-test('Carousel crops both legacy side-by-side and stacked layouts without clipping roots or route bends', async () => {
+test('Section rendering crops both legacy side-by-side and stacked layouts without clipping roots or route bends', async () => {
   const { sectionViewport } = await import('./sectionViewport.js');
   const { routeVertices } = await import('./reciprocalRoutes.js');
   for (const song of songs) for (const section of song.layout.sections) {
@@ -25,17 +25,6 @@ test('Carousel crops both legacy side-by-side and stacked layouts without clippi
   assert.equal(first[2],second[2]);
   assert.equal(first[3],second[3]);
   assert.notEqual(first[0],second[0]);
-});
-
-test('Two-panel carousel follows section handoffs, seeks, and loops', async () => {
-  const { visibleSectionIndices, followSection } = await import('./carousel.js');
-  assert.deepEqual(visibleSectionIndices(0,4),[0,1]);
-  assert.deepEqual(visibleSectionIndices(3,4),[3,0]);
-  assert.deepEqual(visibleSectionIndices(0,1),[0,0]); // One-panel songs preview the next loop.
-  assert.equal(followSection(0,1,4),0); // Flower moves to the already visible second panel.
-  assert.equal(followSection(0,2,4),2); // Next page brings its active panel into view.
-  assert.equal(followSection(3,0,4,true),0); // Loop/seek returns to the beginning.
-  assert.equal(followSection(0,1,4,true),1); // Seeking starts with the requested section.
 });
 
 test('Complete repertoire has 201 songs with playable qualities and meter-aware timing', async () => {
@@ -242,5 +231,125 @@ test('Transposition updates chord roots, slash basses, sound, and fret anchors w
       assert.equal((notePitch(after.root)-notePitch(before.root)+12)%12,(after.fret-before.fret+12)%12);
       assert.equal(after.string,before.string);
     }
+  }
+});
+
+ test('Two-string maps preserve playback and map every root accurately in every key', async () => {
+  const { twoStringLayout } = await import('./stringLayout.js');
+  const { transposeSong, keyRoots, notePitch } = await import('./transpose.js');
+  for (const original of songs) {
+    const snapshot=JSON.stringify(original);
+    for (const key of keyRoots) {
+      const source=transposeSong(original,key);
+      const mapped=twoStringLayout(source);
+      assert.deepEqual(mapped.playback,source.playback);
+      assert.deepEqual(mapped.nodes.map(node=>node.id),source.nodes.map(node=>node.id));
+      assert.equal(mapped.edges.length,source.edges.length);
+      for (const section of mapped.layout.sections) {
+        assert.equal(section.rows.length,2);
+        assert.ok(section.frets.length>=7);
+        const anchors=new Map();
+        for (const node of mapped.nodes.filter(node=>node.section===section.id)) {
+          assert.ok(['E','A'].includes(node.string));
+          assert.ok(section.frets.includes(node.fret));
+          assert.equal((node.fret+(node.string==='E'?4:9))%12,notePitch(node.root));
+          assert.ok(Number.isFinite(node.x) && Number.isFinite(node.y));
+          const pitch=notePitch(node.root), anchor=[node.string,node.fret,node.y];
+          if(anchors.has(pitch)) assert.deepEqual(anchor,anchors.get(pitch));
+          anchors.set(pitch,anchor);
+        }
+      }
+    }
+    assert.equal(JSON.stringify(original),snapshot);
+  }
+});
+
+test('All Of Me chooses nearby A roots instead of jumping to fret twelve', async () => {
+  const { twoStringLayout } = await import('./stringLayout.js');
+  const mapped=twoStringLayout(songsById['all-of-me']);
+  const a=mapped.nodes.filter(node=>node.section===mapped.layout.sections[0].id && node.root==='A');
+  assert.ok(a.length>=2);
+  for(const node of a) { assert.equal(node.string,'E'); assert.equal(node.fret,5); }
+});
+
+test('Unrelated overlapping route segments receive parallel lanes with different colors', async () => {
+  const { reciprocalRoutes, parallelOverlap } = await import('./reciprocalRoutes.js');
+  const song={edges:[{id:'a',section:'s',source:'one',target:'two'},{id:'b',section:'s',source:'three',target:'four'},{id:'c',section:'s',source:'five',target:'six'}],playback:[]};
+  const paths={a:'M0 0 L300 0',b:'M50 100 L50 0 L250 0 L250 100',c:'M80 0 L280 0'};
+  const result=reciprocalRoutes(song,{id:'s'},['#cc480e','#267b99','#8b4695'],paths,{});
+  const resolved=song.edges.map(edge=>({path:result[edge.id]?.path||paths[edge.id],color:result[edge.id]?.color||'#cc480e'}));
+  for(let i=0;i<resolved.length;i++) for(let j=i+1;j<resolved.length;j++) {
+    assert.equal(parallelOverlap(resolved[i].path,resolved[j].path),false);
+    assert.notEqual(resolved[i].color,resolved[j].color);
+  }
+});
+
+test('Color changes advance through the rainbow from the current color and wrap', async () => {
+  const { routePalette, rainbowChoices }=await import('./routePalette.js');
+  assert.deepEqual(rainbowChoices('#cc480e').slice(0,4),['#cc480e','#a06a16','#576b24','#29805d']);
+  assert.deepEqual(rainbowChoices('#8b4695').slice(0,3),['#8b4695','#be3d6a','#c43b32']);
+  assert.deepEqual(rainbowChoices('#a06a16',['#cc480e','#267b99','#8b4695']),['#267b99','#8b4695','#cc480e']);
+  assert.equal(routePalette[0],'#c43b32');
+  assert.equal(new Set(routePalette).size,routePalette.length);
+});
+
+test('Chronological color changes never reuse a color before completing the rainbow', async () => {
+  const { chronologicalColors, routePalette }=await import('./routePalette.js');
+  const source=['red','red','orange','red','cyan','red','orange','cyan','red','orange','red'];
+  const colors=chronologicalColors(source);
+  assert.equal(colors[0],colors[1]);
+  const changes=colors.filter((color,i)=>i===0 || color!==colors[i-1]);
+  assert.deepEqual(changes.slice(0,routePalette.length),routePalette);
+  assert.equal(changes[routePalette.length],routePalette[0]);
+});
+
+test('Section headings stay above badges and fret labels stay below the board', async () => {
+  const { sectionHeaderPositions, sectionViewport }=await import('./sectionViewport.js');
+  for(const song of songs) for(const section of song.layout.sections) {
+    const header=sectionHeaderPositions(song,section.id);
+    assert.ok(header.titleY<=section.top-95);
+    assert.ok(header.fretY>=section.bottom+90);
+    for(const node of song.nodes.filter(node=>node.section===section.id)) assert.ok(header.titleY<=node.y+(node.badgeOffset ?? -68)-80);
+    assert.ok(Number(sectionViewport(song,section.id).split(' ')[1])<=header.titleY-65);
+  }
+});
+
+test('Three-string maps widen fret spacing while preserving roots, string rows, and playback', async () => {
+  const { threeStringLayout }=await import('./threeStringLayout.js');
+  for(const source of songs) {
+    const mapped=threeStringLayout(source);
+    assert.deepEqual(mapped.playback,source.playback);
+    for(const [i,node] of mapped.nodes.entries()) {
+      assert.equal(node.y,source.nodes[i].y);
+      assert.equal(node.fret,source.nodes[i].fret);
+      assert.equal(node.string,source.nodes[i].string);
+    }
+    for(const [i,section] of mapped.layout.sections.entries()) {
+      assert.ok(Math.abs((section.right-section.left)/(source.layout.sections[i].right-source.layout.sections[i].left)-1.65)<1e-9);
+      assert.equal(section.sideGutterRight,45);
+    }
+  }
+});
+
+test('Second node on the same fret and string is square, ordered by first playback visit', async () => {
+  const { positionNodeShapes }=await import('./chordShapes.js');
+  const song={nodes:[{id:'minor',section:'a',string:'E',fret:10},{id:'dominant',section:'a',string:'E',fret:10},{id:'other',section:'b',string:'E',fret:10},{id:'differentString',section:'a',string:'A',fret:10}],playback:[{nodeId:'dominant'},{nodeId:'minor'},{nodeId:'dominant'}]};
+  assert.deepEqual(positionNodeShapes(song),{dominant:'circle',minor:'square',other:'circle',differentString:'circle'});
+});
+
+test('Experimental vertical stacking preserves fret anchors and playback across both string modes', async () => {
+  const { stackSharedNodes }=await import('./stackSharedNodes.js');
+  const { twoStringLayout }=await import('./stringLayout.js');
+  const { threeStringLayout }=await import('./threeStringLayout.js');
+  for(const source of songs) for(const layout of [twoStringLayout,threeStringLayout]) {
+    const original=layout(source), snapshot=JSON.stringify(original);
+    const mapped=stackSharedNodes(original);
+    assert.deepEqual(mapped.playback,original.playback);
+    const groups=Object.groupBy(mapped.nodes,node=>`${node.section}:${node.string}:${node.fret}`);
+    for(const group of Object.values(groups)) if(group.length>1) {
+      assert.ok(group.every(node=>node.x===group[0].x));
+      assert.equal(new Set(group.map(node=>node.y)).size,group.length);
+    }
+    assert.equal(JSON.stringify(original),snapshot);
   }
 });

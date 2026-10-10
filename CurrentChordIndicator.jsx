@@ -3,7 +3,7 @@ import { pointAlongRoute } from './src/data/motion.js';
 
 const center = box => ({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
 
-export default function CurrentChordIndicator({ svgRef, target, initial }) {
+export default function CurrentChordIndicator({ svgRef, target, initial, directMotion = false, onMotion }) {
   const [box, setBox] = useState(initial);
   const previous = useRef(null);
   const displayed = useRef(initial);
@@ -18,11 +18,11 @@ export default function CurrentChordIndicator({ svgRef, target, initial }) {
     const bounds = shape?.getBBox();
     const destination = !target ? initial : bounds ? { x: bounds.x - 9, y: bounds.y - 9, width: bounds.width + 18, height: bounds.height + 18 } : null;
     const start = displayed.current;
-    const show = value => { displayed.current = value; setBox(value); };
+    const show = (value, progress = 1) => { displayed.current = value; setBox(value); onMotion?.(value ? center(value) : null, progress, old?.node, target?.node); };
     const sequential = old && target && target.visitIndex === old.visitIndex + 1 && target.seekVersion === old.seekVersion;
     if (!destination || !start || !sequential || old.node === target.node || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(destination); return; }
     const group = [...svg.querySelectorAll('[data-source][data-target]')].find(edge => edge.dataset.source === old.node && edge.dataset.target === target.node);
-    const path = group?.querySelector('path[data-arrow-tip]');
+    const path = directMotion ? null : group?.querySelector('path[data-arrow-tip]');
     const points = [center(start)];
     if (path) {
       const length = path.getTotalLength();
@@ -40,12 +40,12 @@ export default function CurrentChordIndicator({ svgRef, target, initial }) {
       const position = pointAlongRoute(points, eased);
       const width = start.width + (destination.width - start.width) * eased;
       const height = start.height + (destination.height - start.height) * eased;
-      show({ x: position.x - width / 2, y: position.y - height / 2, width, height });
+      show({ x: position.x - width / 2, y: position.y - height / 2, width, height }, eased);
       if (progress < 1) frame = requestAnimationFrame(animate);
     }
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
-  }, [target?.node, target?.visitIndex, target?.seekVersion, svgRef]);
+  }, [target?.node, target?.visitIndex, target?.seekVersion, svgRef, directMotion, onMotion]);
   if (!box) return null;
   const { x, y, width, height } = box;
   const radius = Math.max(width, height) / 2 + 13;

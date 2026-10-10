@@ -1,6 +1,7 @@
 import React, { useId } from 'react';
 
-export const routePalette = ['#cc480e', '#267b99', '#8b4695', '#29805d', '#a06a16', '#be3d6a', '#485aa3', '#576b24'];
+import { routePalette, rainbowChoices } from './src/data/routePalette.js';
+export { routePalette };
 
 // The triangle extends 15 units past the shaft. Reserve another six for a
 // visible gap before the original node attachment point.
@@ -83,14 +84,14 @@ export function colorRoutes(routes, clearance = 18) {
     if (routes[i].fixed) continue;
     const used = new Set(colors.filter((_, j) => conflicts[i][j]));
     const palette = routes[i].palette || routePalette;
-    const choices = [routes[i].preferred, ...palette].filter(color => color && palette.includes(color));
+    const choices = rainbowChoices(routes[i].preferred, palette);
     colors[i] = choices.find(color => !used.has(color));
     if (!colors[i]) throw new Error('Route palette needs more distinct colors for this graph.');
   }
   return colors;
 }
 
-export default function RouteColors({ children, distinguishPasses = false, palette, preferredColor = '#cc480e', secondPassColor = '#8b4695', ...props }) {
+export default function RouteColors({ children, distinguishPasses = false, palette, preferredColor = '#c43b32', secondPassColor = '#8b4695', ...props }) {
   const id = useId();
   const paths = [];
   function collect(items) {

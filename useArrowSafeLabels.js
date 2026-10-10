@@ -6,7 +6,7 @@ export default function useArrowSafeLabels() {
   useLayoutEffect(() => {
     const svg = ref.current;
     if (!svg) return;
-    const tips = [...svg.querySelectorAll('[data-arrow-tip]')].map(path => {
+    const tips = [...svg.querySelectorAll('[data-arrow-tip]')].filter(path => !path.closest('[aria-hidden="true"]')).map(path => {
       const length = path.getTotalLength();
       const end = path.getPointAtLength(length);
       const before = path.getPointAtLength(Math.max(0, length - 1));

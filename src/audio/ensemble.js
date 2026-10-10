@@ -51,7 +51,7 @@ export class JazzPlayer {
     this.buffers.set(midi, buffer);
     return buffer;
   }
-  async start(timeline, offset = 0) {
+  async start(timeline, offset = 0, beforePlayback) {
     if (this.stopped) return;
     await this.context.resume();
     // Allow React to paint the spinner, then prepare notes in short chunks.
@@ -71,6 +71,8 @@ export class JazzPlayer {
       if (!this.buffers.has('brushes')) this.buffers.set('brushes', makeBrushBuffers(this.context));
       this.brushes = this.buffers.get('brushes');
     }
+    await beforePlayback?.();
+    if (this.stopped || this.context.state === 'closed') return;
     this.seek(offset);
   }
   track(source) {
