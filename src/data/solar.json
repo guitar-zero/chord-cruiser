@@ -1,0 +1,563 @@
+{
+  "schemaVersion": 1,
+  "id": "solar",
+  "title": "Solar",
+  "key": "C minor",
+  "sourceUrl": "https://standardrepertoire.com/solar.html",
+  "description": "Simplified twelve-bar Solar progression. Cm, Gm, C7, F, Fm, B flat seven, E flat, E flat minor, A flat seven, D flat, D diminished, G7. Each chord has a separate node. Root positions follow frets eight through eleven on the low E, A, and D strings.",
+  "layout": {
+    "viewBox": "0 0 1500 1220",
+    "subtitle": "C minor · Frets 8–11",
+    "sections": [
+      {
+        "id": "main",
+        "left": 190,
+        "right": 1230,
+        "boundaries": [
+          190,
+          450,
+          710,
+          970,
+          1230
+        ],
+        "rows": [
+          350,
+          620,
+          890
+        ],
+        "top": 285,
+        "bottom": 960,
+        "frets": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "centers": [
+          320,
+          580,
+          840,
+          1100
+        ],
+        "fretY": 266,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "stringFontSize": 34,
+        "fretFontSize": 35,
+        "gridColor": "#45888a",
+        "gridWidth": 3
+      }
+    ],
+    "footer": "Follow steps 1–12. Separate nodes share the same root position.",
+    "titleSize": 94,
+    "subtitleSize": 43,
+    "footerY": 1187,
+    "footerSize": 25,
+    "startLabel": {
+      "x": 260,
+      "y": 975
+    },
+    "startOutline": {
+      "x": 205.0,
+      "y": 835.0,
+      "width": 110.0,
+      "height": 110.0
+    }
+  },
+  "startNodeId": "cm",
+  "nodes": [
+    {
+      "id": "cm",
+      "section": "main",
+      "chord": "Cm",
+      "x": 260.0,
+      "y": 890.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "C",
+      "fret": 8,
+      "string": "E",
+      "step": 1,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "gm",
+      "section": "main",
+      "chord": "Gm",
+      "x": 780.0,
+      "y": 620.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "G",
+      "fret": 10,
+      "string": "A",
+      "step": 2,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "c7",
+      "section": "main",
+      "chord": "C7",
+      "x": 380.0,
+      "y": 890.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "C",
+      "fret": 8,
+      "string": "E",
+      "step": 3,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "f",
+      "section": "main",
+      "chord": "F",
+      "x": 260.0,
+      "y": 620.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "F",
+      "fret": 8,
+      "string": "A",
+      "step": 4,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "fm",
+      "section": "main",
+      "chord": "Fm",
+      "x": 380.0,
+      "y": 620.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "F",
+      "fret": 8,
+      "string": "A",
+      "step": 5,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "bb7",
+      "section": "main",
+      "chord": "B♭7",
+      "x": 320.0,
+      "y": 350.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "B♭",
+      "fret": 8,
+      "string": "D",
+      "step": 6,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "eb",
+      "section": "main",
+      "chord": "E♭",
+      "x": 1040.0,
+      "y": 890.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "E♭",
+      "fret": 11,
+      "string": "E",
+      "step": 7,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "ebm",
+      "section": "main",
+      "chord": "E♭m",
+      "x": 1160.0,
+      "y": 890.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "E♭",
+      "fret": 11,
+      "string": "E",
+      "step": 8,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "ab7",
+      "section": "main",
+      "chord": "A♭7",
+      "x": 1100.0,
+      "y": 620.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "A♭",
+      "fret": 11,
+      "string": "A",
+      "step": 9,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "db",
+      "section": "main",
+      "chord": "D♭",
+      "x": 1100.0,
+      "y": 350.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "D♭",
+      "fret": 11,
+      "string": "D",
+      "step": 10,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "ddim",
+      "section": "main",
+      "chord": "D°",
+      "x": 840.0,
+      "y": 890.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "D",
+      "fret": 10,
+      "string": "E",
+      "step": 11,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    },
+    {
+      "id": "g7",
+      "section": "main",
+      "chord": "G7",
+      "x": 900.0,
+      "y": 620.0,
+      "shape": "circle",
+      "radius": 46.0,
+      "width": 0.0,
+      "height": 0.0,
+      "root": "G",
+      "fret": 10,
+      "string": "A",
+      "step": 12,
+      "badgeOffset": -64.0,
+      "badgeColor": "#cc480e",
+      "fontSize": 35.0,
+      "textOffset": 5.0,
+      "strokeWidth": 4.0
+    }
+  ],
+  "edges": [
+    {
+      "id": "main-1",
+      "section": "main",
+      "source": "cm",
+      "target": "gm",
+      "path": "M308.812 864.655 L731.188 645.345",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-2",
+      "section": "main",
+      "source": "gm",
+      "target": "c7",
+      "path": "M734.413 650.771 L425.587 859.229",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#8b4695"
+    },
+    {
+      "id": "main-3",
+      "section": "main",
+      "source": "c7",
+      "target": "f",
+      "path": "M357.662 839.74 L282.338 670.26",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#267b99"
+    },
+    {
+      "id": "main-4",
+      "section": "main",
+      "source": "f",
+      "target": "fm",
+      "path": "M315 620 L337 620",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-5",
+      "section": "main",
+      "source": "fm",
+      "target": "bb7",
+      "path": "M368.069 566.31 L331.931 403.69",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-6",
+      "section": "main",
+      "source": "bb7",
+      "target": "eb",
+      "path": "M364 383 L996 857",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#267b99"
+    },
+    {
+      "id": "main-7",
+      "section": "main",
+      "source": "eb",
+      "target": "ebm",
+      "path": "M1095 890 L1117 890",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-8",
+      "section": "main",
+      "source": "ebm",
+      "target": "ab7",
+      "path": "M1148.07 836.31 L1111.93 673.69",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-9",
+      "section": "main",
+      "source": "ab7",
+      "target": "db",
+      "path": "M1100 565 L1100 405",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    },
+    {
+      "id": "main-10",
+      "section": "main",
+      "source": "db",
+      "target": "ddim",
+      "path": "M1076.14 399.555 L863.86 840.445",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#8b4695"
+    },
+    {
+      "id": "main-11",
+      "section": "main",
+      "source": "ddim",
+      "target": "g7",
+      "path": "M851.931 836.31 L888.069 673.69",
+      "passNumber": 1,
+      "width": 6.0,
+      "preferredColor": "#cc480e"
+    }
+  ],
+  "playback": [
+    {
+      "chord": "CmMaj7",
+      "bars": 2,
+      "section": "",
+      "nodeId": "cm"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "gm"
+    },
+    {
+      "chord": "C7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "c7"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 2,
+      "section": "",
+      "nodeId": "f"
+    },
+    {
+      "chord": "Fm7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "fm"
+    },
+    {
+      "chord": "Bb7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "bb7"
+    },
+    {
+      "chord": "Ebmaj7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "eb"
+    },
+    {
+      "chord": "Ebm7",
+      "bars": 0.5,
+      "section": "",
+      "nodeId": "ebm"
+    },
+    {
+      "chord": "Ab7",
+      "bars": 0.5,
+      "section": "",
+      "nodeId": "ab7"
+    },
+    {
+      "chord": "Dbmaj7",
+      "bars": 1,
+      "section": "",
+      "nodeId": "db"
+    },
+    {
+      "chord": "Dm7b5",
+      "bars": 0.5,
+      "section": "",
+      "nodeId": "ddim"
+    },
+    {
+      "chord": "G7b9",
+      "bars": 0.5,
+      "section": "",
+      "nodeId": "g7"
+    }
+  ],
+  "tip": {
+    "title": "One node per chord.",
+    "text": "Cm/C7, F/Fm, Gm/G7, and E♭/E♭m share root positions. D° represents Dm7♭5."
+  },
+  "routes": [
+    {
+      "title": "12-bar progression",
+      "nodeIds": [
+        "cm",
+        "gm",
+        "c7",
+        "f",
+        "fm",
+        "bb7",
+        "eb",
+        "ebm",
+        "ab7",
+        "db",
+        "ddim",
+        "g7"
+      ],
+      "note": "Follow nodes 1–12. Bars 2 and 6 hold the preceding chord.",
+      "kind": "solid"
+    }
+  ],
+  "footerNote": "Chord names are simplified; duration labels show holds and split bars.",
+  "durationLabels": [
+    {
+      "nodeId": "cm",
+      "offsetX": 0.0,
+      "offsetY": 112.0,
+      "text": "×2"
+    },
+    {
+      "nodeId": "f",
+      "offsetX": 0.0,
+      "offsetY": 72.0,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ebm",
+      "offsetX": 0.0,
+      "offsetY": 72.0,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "ab7",
+      "offsetX": 0.0,
+      "offsetY": 72.0,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "ddim",
+      "offsetX": 0.0,
+      "offsetY": 72.0,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "g7",
+      "offsetX": 0.0,
+      "offsetY": 72.0,
+      "text": "half-bar"
+    }
+  ]
+}

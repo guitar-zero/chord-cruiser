@@ -1,10 +1,11 @@
 // Quiet swung ride, brushed snare sweeps, and a soft hi-hat on two and four.
-export function brushPattern(beats) {
+export function brushPattern(beats, beatsPerBar = 4) {
   const hits = [];
   for (let beat = 0; beat < beats; beat++) {
-    hits.push({ kind: 'ride', beat, strength: beat % 2 ? .75 : .55 });
-    hits.push({ kind: 'brush', beat, strength: beat % 2 ? .6 : .4 });
-    if (beat % 2 === 1) {
+    const offbeat = beatsPerBar === 3 ? beat % 3 !== 0 : beat % 2 === 1;
+    hits.push({ kind: 'ride', beat, strength: offbeat ? .75 : .55 });
+    hits.push({ kind: 'brush', beat, strength: offbeat ? .6 : .4 });
+    if (offbeat) {
       hits.push({ kind: 'hat', beat, strength: .28 });
       if (beat + 2 / 3 < beats) hits.push({ kind: 'ride', beat: beat + 2 / 3, strength: .35 });
     }
@@ -44,7 +45,7 @@ export function makeBrushBuffers(context) {
 
 export function scheduleBrushes(context, bus, buffers, timeline, startedAt, offset = 0, track = () => {}) {
   const beatSeconds = timeline.duration / timeline.beats;
-  for (const hit of brushPattern(timeline.beats)) {
+  for (const hit of brushPattern(timeline.beats, timeline.beatsPerBar || 4)) {
     if (hit.beat * beatSeconds < offset) continue;
     const at = startedAt + hit.beat * beatSeconds;
     const source = context.createBufferSource(); source.buffer = buffers[hit.kind];

@@ -1,0 +1,806 @@
+[
+  {
+    "id": "a-foggy-day",
+    "title": "A Foggy Day"
+  },
+  {
+    "id": "afro-blue",
+    "title": "Afro Blue"
+  },
+  {
+    "id": "afternoon-in-paris",
+    "title": "Afternoon In Paris"
+  },
+  {
+    "id": "airegin",
+    "title": "Airegin"
+  },
+  {
+    "id": "all-blues",
+    "title": "All Blues"
+  },
+  {
+    "id": "all-of-me",
+    "title": "All Of Me"
+  },
+  {
+    "id": "all-of-you",
+    "title": "All Of You"
+  },
+  {
+    "id": "all-the-things-you-are",
+    "title": "All The Things You Are"
+  },
+  {
+    "id": "alone-together",
+    "title": "Alone Together"
+  },
+  {
+    "id": "along-came-betty",
+    "title": "Along Came Betty"
+  },
+  {
+    "id": "angel-eyes",
+    "title": "Angel Eyes"
+  },
+  {
+    "id": "anthropology",
+    "title": "Anthropology"
+  },
+  {
+    "id": "as-time-goes-by",
+    "title": "As Time Goes By"
+  },
+  {
+    "id": "au-privave",
+    "title": "Au Privave"
+  },
+  {
+    "id": "autumn-leaves",
+    "title": "Autumn Leaves"
+  },
+  {
+    "id": "back-home-again-in-indiana",
+    "title": "Back Home Again In Indiana"
+  },
+  {
+    "id": "bags-groove",
+    "title": "Bags Groove"
+  },
+  {
+    "id": "beatrice",
+    "title": "Beatrice"
+  },
+  {
+    "id": "beautiful-love",
+    "title": "Beautiful Love"
+  },
+  {
+    "id": "bernies-tune",
+    "title": "Bernie's Tune"
+  },
+  {
+    "id": "bessies-blues",
+    "title": "Bessie's Blues"
+  },
+  {
+    "id": "billies-bounce",
+    "title": "Billie's Bounce"
+  },
+  {
+    "id": "birks-works",
+    "title": "Birks Works"
+  },
+  {
+    "id": "black-orpheus",
+    "title": "Black Orpheus"
+  },
+  {
+    "id": "blue-bossa",
+    "title": "Blue Bossa"
+  },
+  {
+    "id": "blue-in-green",
+    "title": "Blue In Green"
+  },
+  {
+    "id": "blue-monk",
+    "title": "Blue Monk"
+  },
+  {
+    "id": "blue-train",
+    "title": "Blue Train"
+  },
+  {
+    "id": "blues-by-five",
+    "title": "Blues By Five"
+  },
+  {
+    "id": "blues-for-alice",
+    "title": "Blues For Alice"
+  },
+  {
+    "id": "blues-in-the-closet",
+    "title": "Blues In The Closet"
+  },
+  {
+    "id": "bluesette",
+    "title": "Bluesette"
+  },
+  {
+    "id": "body-and-soul",
+    "title": "Body And Soul"
+  },
+  {
+    "id": "broadway",
+    "title": "Broadway"
+  },
+  {
+    "id": "but-beautiful",
+    "title": "But Beautiful"
+  },
+  {
+    "id": "but-not-for-me",
+    "title": "But Not For Me"
+  },
+  {
+    "id": "bye-bye-blackbird",
+    "title": "Bye Bye Blackbird"
+  },
+  {
+    "id": "cantaloupe-island",
+    "title": "Cantaloupe Island"
+  },
+  {
+    "id": "caravan",
+    "title": "Caravan"
+  },
+  {
+    "id": "ceora",
+    "title": "Ceora"
+  },
+  {
+    "id": "cherokee",
+    "title": "Cherokee"
+  },
+  {
+    "id": "come-rain-or-come-shine",
+    "title": "Come Rain Or Come Shine"
+  },
+  {
+    "id": "confirmation",
+    "title": "Confirmation"
+  },
+  {
+    "id": "corcovado",
+    "title": "Corcovado"
+  },
+  {
+    "id": "countdown",
+    "title": "Countdown"
+  },
+  {
+    "id": "darn-that-dream",
+    "title": "Darn That Dream"
+  },
+  {
+    "id": "days-of-wine-and-roses",
+    "title": "Days Of Wine And Roses"
+  },
+  {
+    "id": "desafinado",
+    "title": "Desafinado"
+  },
+  {
+    "id": "dolphin-dance",
+    "title": "Dolphin Dance"
+  },
+  {
+    "id": "donna-lee",
+    "title": "Donna Lee"
+  },
+  {
+    "id": "dont-get-around-much-anymore",
+    "title": "Don't Get Around Much Anymore"
+  },
+  {
+    "id": "doxy",
+    "title": "Doxy"
+  },
+  {
+    "id": "embraceable-you",
+    "title": "Embraceable You"
+  },
+  {
+    "id": "equinox",
+    "title": "Equinox"
+  },
+  {
+    "id": "esp",
+    "title": "E.S.P."
+  },
+  {
+    "id": "fee-fi-fo-fum",
+    "title": "Fee Fi Fo Fum"
+  },
+  {
+    "id": "fly-me-to-the-moon",
+    "title": "Fly Me To The Moon"
+  },
+  {
+    "id": "footprints",
+    "title": "Footprints"
+  },
+  {
+    "id": "for-heavens-sake",
+    "title": "For Heaven's Sake"
+  },
+  {
+    "id": "four",
+    "title": "Four"
+  },
+  {
+    "id": "freddie-freeloader",
+    "title": "Freddie Freeloader"
+  },
+  {
+    "id": "freedom-jazz-dance",
+    "title": "Freedom Jazz Dance"
+  },
+  {
+    "id": "georgia-on-my-mind",
+    "title": "Georgia On My Mind"
+  },
+  {
+    "id": "giant-steps",
+    "title": "Giant Steps"
+  },
+  {
+    "id": "good-bait",
+    "title": "Good Bait"
+  },
+  {
+    "id": "groovin-high",
+    "title": "Groovin High"
+  },
+  {
+    "id": "half-nelson",
+    "title": "Half Nelson"
+  },
+  {
+    "id": "have-you-met-miss-jones",
+    "title": "Have You Met Miss Jones"
+  },
+  {
+    "id": "heres-that-rainy-day",
+    "title": "Here's That Rainy Day"
+  },
+  {
+    "id": "honeysuckle-rose",
+    "title": "Honeysuckle Rose"
+  },
+  {
+    "id": "hot-house",
+    "title": "Hot House"
+  },
+  {
+    "id": "how-deep-is-the-ocean",
+    "title": "How Deep Is The Ocean"
+  },
+  {
+    "id": "how-high-the-moon",
+    "title": "How High The Moon"
+  },
+  {
+    "id": "how-insensitive",
+    "title": "How Insensitive"
+  },
+  {
+    "id": "i-cant-get-started",
+    "title": "I Can't Get Started"
+  },
+  {
+    "id": "i-could-write-a-book",
+    "title": "I Could Write A Book"
+  },
+  {
+    "id": "i-got-rhythm",
+    "title": "I Got Rhythm"
+  },
+  {
+    "id": "i-hear-a-rhapsody",
+    "title": "I Hear A Rhapsody"
+  },
+  {
+    "id": "i-love-you",
+    "title": "I Love You"
+  },
+  {
+    "id": "i-mean-you",
+    "title": "I Mean You"
+  },
+  {
+    "id": "i-remember-you",
+    "title": "I Remember You"
+  },
+  {
+    "id": "i-should-care",
+    "title": "I Should Care"
+  },
+  {
+    "id": "i-thought-about-you",
+    "title": "I Thought About You"
+  },
+  {
+    "id": "i-wish-i-knew-how-it-would-feel-to-be-free",
+    "title": "I Wish I Knew How It Would Feel To Be Free"
+  },
+  {
+    "id": "if-i-were-a-bell",
+    "title": "If I Were A Bell"
+  },
+  {
+    "id": "ill-remember-april",
+    "title": "I'll Remember April"
+  },
+  {
+    "id": "impressions",
+    "title": "Impressions"
+  },
+  {
+    "id": "in-a-mellow-tone",
+    "title": "In A Mellow Tone"
+  },
+  {
+    "id": "in-a-sentimental-mood",
+    "title": "In A Sentimental Mood"
+  },
+  {
+    "id": "in-your-own-sweet-way",
+    "title": "In Your Own Sweet Way"
+  },
+  {
+    "id": "inner-urge",
+    "title": "Inner Urge"
+  },
+  {
+    "id": "invitation",
+    "title": "Invitation"
+  },
+  {
+    "id": "it-could-happen-to-you",
+    "title": "It Could Happen To You"
+  },
+  {
+    "id": "it-dont-mean-a-thing",
+    "title": "It Don't Mean A Thing"
+  },
+  {
+    "id": "it-had-to-be-you",
+    "title": "It Had To Be You"
+  },
+  {
+    "id": "it-might-as-well-be-spring",
+    "title": "It Might As Well Be Spring"
+  },
+  {
+    "id": "its-you-or-no-one",
+    "title": "It's You Or No One"
+  },
+  {
+    "id": "joy-spring",
+    "title": "Joy Spring"
+  },
+  {
+    "id": "just-friends",
+    "title": "Just Friends"
+  },
+  {
+    "id": "killer-joe",
+    "title": "Killer Joe"
+  },
+  {
+    "id": "lady-bird",
+    "title": "Lady Bird"
+  },
+  {
+    "id": "laura",
+    "title": "Laura"
+  },
+  {
+    "id": "lazy-bird",
+    "title": "Lazy Bird"
+  },
+  {
+    "id": "like-someone-in-love",
+    "title": "Like Someone In Love"
+  },
+  {
+    "id": "little-sunflower",
+    "title": "Little Sunflower"
+  },
+  {
+    "id": "love-for-sale",
+    "title": "Love For Sale"
+  },
+  {
+    "id": "lover-man",
+    "title": "Lover Man"
+  },
+  {
+    "id": "lullaby-of-birdland",
+    "title": "Lullaby Of Birdland"
+  },
+  {
+    "id": "mack-the-knife",
+    "title": "Mack The Knife"
+  },
+  {
+    "id": "maiden-voyage",
+    "title": "Maiden Voyage"
+  },
+  {
+    "id": "meditation",
+    "title": "Meditation"
+  },
+  {
+    "id": "mercy-mercy-mercy",
+    "title": "Mercy Mercy Mercy"
+  },
+  {
+    "id": "milestones",
+    "title": "Milestones"
+  },
+  {
+    "id": "misty",
+    "title": "Misty"
+  },
+  {
+    "id": "moanin",
+    "title": "Moanin"
+  },
+  {
+    "id": "moments-notice",
+    "title": "Moment's Notice"
+  },
+  {
+    "id": "mood-indigo",
+    "title": "Mood Indigo"
+  },
+  {
+    "id": "moonglow",
+    "title": "Moonglow"
+  },
+  {
+    "id": "moonlight-in-vermont",
+    "title": "Moonlight In Vermont"
+  },
+  {
+    "id": "mr-pc",
+    "title": "Mr P.C."
+  },
+  {
+    "id": "my-favourite-things",
+    "title": "My Favourite Things"
+  },
+  {
+    "id": "my-foolish-heart",
+    "title": "My Foolish Heart"
+  },
+  {
+    "id": "my-funny-valentine",
+    "title": "My Funny Valentine"
+  },
+  {
+    "id": "my-little-suede-shoes",
+    "title": "My Little Suede Shoes"
+  },
+  {
+    "id": "my-one-and-only-love",
+    "title": "My One And Only Love"
+  },
+  {
+    "id": "my-romance",
+    "title": "My Romance"
+  },
+  {
+    "id": "my-shining-hour",
+    "title": "My Shining Hour"
+  },
+  {
+    "id": "nardis",
+    "title": "Nardis"
+  },
+  {
+    "id": "nicas-dream",
+    "title": "Nica's Dream"
+  },
+  {
+    "id": "night-and-day",
+    "title": "Night And Day"
+  },
+  {
+    "id": "night-in-tunisia",
+    "title": "Night In Tunisia"
+  },
+  {
+    "id": "nows-the-time",
+    "title": "Now's The Time"
+  },
+  {
+    "id": "oleo",
+    "title": "Oleo"
+  },
+  {
+    "id": "on-green-dolphin-street",
+    "title": "On Green Dolphin Street"
+  },
+  {
+    "id": "on-the-sunny-side-of-the-street",
+    "title": "On The Sunny Side Of The Street"
+  },
+  {
+    "id": "once-i-loved",
+    "title": "Once I Loved"
+  },
+  {
+    "id": "one-note-samba",
+    "title": "One Note Samba"
+  },
+  {
+    "id": "ornithology",
+    "title": "Ornithology"
+  },
+  {
+    "id": "our-love-is-here-to-stay",
+    "title": "Our Love Is Here To Stay"
+  },
+  {
+    "id": "out-of-nowhere",
+    "title": "Out Of Nowhere"
+  },
+  {
+    "id": "peace",
+    "title": "Peace"
+  },
+  {
+    "id": "perdido",
+    "title": "Perdido"
+  },
+  {
+    "id": "polka-dots-and-moonbeams",
+    "title": "Polka Dots And Moonbeams"
+  },
+  {
+    "id": "prelude-to-a-kiss",
+    "title": "Prelude To A Kiss"
+  },
+  {
+    "id": "recordame",
+    "title": "Recordame"
+  },
+  {
+    "id": "round-midnight",
+    "title": "Round Midnight"
+  },
+  {
+    "id": "sandu",
+    "title": "Sandu"
+  },
+  {
+    "id": "satin-doll",
+    "title": "Satin Doll"
+  },
+  {
+    "id": "scrapple-from-the-apple",
+    "title": "Scrapple From The Apple"
+  },
+  {
+    "id": "seven-steps-to-heaven",
+    "title": "Seven Steps To Heaven"
+  },
+  {
+    "id": "shadow-of-your-smile",
+    "title": "Shadow Of Your Smile"
+  },
+  {
+    "id": "skylark",
+    "title": "Skylark"
+  },
+  {
+    "id": "so-what",
+    "title": "So What"
+  },
+  {
+    "id": "softly-as-in-a-morning-sunrise",
+    "title": "Softly As In A Morning Sunrise"
+  },
+  {
+    "id": "solar",
+    "title": "Solar"
+  },
+  {
+    "id": "someday-my-prince-will-come",
+    "title": "Someday My Prince Will Come"
+  },
+  {
+    "id": "someone-to-watch-over-me",
+    "title": "Someone To Watch Over Me"
+  },
+  {
+    "id": "song-for-my-father",
+    "title": "Song For My Father"
+  },
+  {
+    "id": "sophisticated-lady",
+    "title": "Sophisticated Lady"
+  },
+  {
+    "id": "speak-low",
+    "title": "Speak Low"
+  },
+  {
+    "id": "speak-no-evil",
+    "title": "Speak No Evil"
+  },
+  {
+    "id": "st-james-infirmary",
+    "title": "St. James Infirmary"
+  },
+  {
+    "id": "st-thomas",
+    "title": "St. Thomas"
+  },
+  {
+    "id": "stablemates",
+    "title": "Stablemates"
+  },
+  {
+    "id": "star-eyes",
+    "title": "Star Eyes"
+  },
+  {
+    "id": "stardust",
+    "title": "Stardust"
+  },
+  {
+    "id": "stella-by-starlight",
+    "title": "Stella By Starlight"
+  },
+  {
+    "id": "stolen-moments",
+    "title": "Stolen Moments"
+  },
+  {
+    "id": "stompin-at-the-savoy",
+    "title": "Stompin At The Savoy"
+  },
+  {
+    "id": "straight-no-chaser",
+    "title": "Straight No Chaser"
+  },
+  {
+    "id": "summertime",
+    "title": "Summertime"
+  },
+  {
+    "id": "sweet-georgia-brown",
+    "title": "Sweet Georgia Brown"
+  },
+  {
+    "id": "take-five",
+    "title": "Take Five"
+  },
+  {
+    "id": "take-the-a-train",
+    "title": "Take The A Train"
+  },
+  {
+    "id": "tenderly",
+    "title": "Tenderly"
+  },
+  {
+    "id": "tenor-madness",
+    "title": "Tenor Madness"
+  },
+  {
+    "id": "the-girl-from-ipanema",
+    "title": "The Girl From Ipanema"
+  },
+  {
+    "id": "the-nearness-of-you",
+    "title": "The Nearness Of You"
+  },
+  {
+    "id": "the-night-has-a-thousand-eyes",
+    "title": "The Night Has A Thousand Eyes"
+  },
+  {
+    "id": "the-song-is-you",
+    "title": "The Song Is You"
+  },
+  {
+    "id": "there-is-no-greater-love",
+    "title": "There Is No Greater Love"
+  },
+  {
+    "id": "there-will-never-be-another-you",
+    "title": "There Will Never Be Another You"
+  },
+  {
+    "id": "things-aint-what-they-used-to-be",
+    "title": "Things Ain’t What They Used To Be"
+  },
+  {
+    "id": "this-i-dig-of-you",
+    "title": "This I Dig Of You"
+  },
+  {
+    "id": "triste",
+    "title": "Triste"
+  },
+  {
+    "id": "tune-up",
+    "title": "Tune Up"
+  },
+  {
+    "id": "walkin",
+    "title": "Walkin'"
+  },
+  {
+    "id": "watermelon-man",
+    "title": "Watermelon Man"
+  },
+  {
+    "id": "wave",
+    "title": "Wave"
+  },
+  {
+    "id": "way-you-look-tonight-the",
+    "title": "Way You Look Tonight, The"
+  },
+  {
+    "id": "well-you-needent",
+    "title": "Well You Needen't"
+  },
+  {
+    "id": "what-is-this-thing-called-love",
+    "title": "What Is This Thing Called Love?"
+  },
+  {
+    "id": "whats-new",
+    "title": "What's New"
+  },
+  {
+    "id": "when-i-fall-in-love",
+    "title": "When I Fall In Love"
+  },
+  {
+    "id": "whisper-not",
+    "title": "Whisper Not"
+  },
+  {
+    "id": "willow-weep-for-me",
+    "title": "Willow Weep For Me"
+  },
+  {
+    "id": "work-song",
+    "title": "Work Song"
+  },
+  {
+    "id": "yardbird-suite",
+    "title": "Yardbird Suite"
+  },
+  {
+    "id": "yesterdays",
+    "title": "Yesterdays"
+  },
+  {
+    "id": "you-dont-know-what-love-is",
+    "title": "You Don't Know What Love Is"
+  },
+  {
+    "id": "you-stepped-out-of-a-dream",
+    "title": "You Stepped Out Of A Dream"
+  }
+]

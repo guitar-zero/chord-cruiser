@@ -1,57 +1,83 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import TakeTheATrain from '../TakeTheATrain.jsx';
-import AutumnLeaves from '../AutumnLeaves.jsx';
-import Solar from '../Solar.jsx';
 import './style.css';
 import ChordPlayer from './ChordPlayer.jsx';
+import ChartCarousel from './ChartCarousel.jsx';
+import { songs, songsById } from './data/songs.js';
 import { chartTarget } from './audio/chartTarget.js';
-
-const routes = [
-  { title: 'Chorus · first pass', chords: ['C6', 'D7', 'Dm', 'G7', 'C6'], note: 'Follow the solid arrows.', kind: 'solid' },
-  { title: 'Chorus · second pass', chords: ['C6', 'Dm', 'G7'], note: 'Follow the dotted arrows, then move to the verse.', kind: 'dotted' },
-  { title: 'Verse', chords: ['F6', 'D7', 'Dm', 'G7'], note: 'Return to the chorus after G7.', kind: 'solid' },
-];
+import { keyRoots, minorKeyRoots, displayNote, transposeSong, notePitch } from './data/transpose.js';
 
 function App() {
-  const [song, setSong] = useState('solar');
+  const [darkMode, setDarkMode] = useState(() => {
+    try { const saved = localStorage.getItem('chord-map-theme'); if (saved) return saved === 'dark'; } catch {}
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = darkMode ? 'dark' : 'light';
+    try { localStorage.setItem('chord-map-theme', darkMode ? 'dark' : 'light'); } catch {}
+  }, [darkMode]);
+  const [songId, setSongId] = useState('all-of-me');
+  const [targetKey, setTargetKey] = useState('');
+  const [search, setSearch] = useState('');
+  const filteredSongs = songs.filter(item => item.title.toLowerCase().includes(search.toLowerCase()));
   const [playback, setPlayback] = useState(null);
-  const currentChord = chartTarget(song, playback?.song === song ? playback.event : null);
-  const autumn = song === 'autumn-leaves';
-  const solar = song === 'solar';
-  const title = solar ? 'Solar' : autumn ? 'Autumn Leaves' : 'Take the A Train';
-  const visibleRoutes = solar ? [
-    { title: '12-bar progression', chords: ['Cm', 'Gm', 'C7', 'F', 'Fm', 'B♭7', 'E♭', 'E♭m', 'A♭7', 'D♭', 'D°', 'G7'], note: 'Follow nodes 1–12. Bars 2 and 6 hold the preceding chord.', kind: 'solid' },
-  ] : autumn ? [
-    { title: 'Opening progression', chords: ['Dm', 'G7', 'C', 'F', 'B°', 'E7', 'Am'], note: 'Start at the boxed Dm and follow the numbered arrows.', kind: 'solid' },
-  ] : routes;
-  return (
-    <main>
-      <header>
-        <div><p className="eyebrow">CHORD PATHS</p><h1>{title}</h1><p className="subtitle">{solar ? 'In C minor' : 'In C'} · {solar ? 'Frets 8–11' : autumn ? 'Frets 7–10' : 'Follow the movement'}</p></div>
-        <a className="download" href={`/${song}.svg`} download>Download SVG <span aria-hidden="true">↗</span></a>
-      </header>
-      <nav className="songs" aria-label="Choose a song">
-        {[['autumn-leaves', 'Autumn Leaves'], ['take-the-a-train', 'Take the A Train'], ['solar', 'Solar']].map(([value, label]) => <button key={value} type="button" aria-pressed={song === value} onClick={() => setSong(value)}>{label}</button>)}
-      </nav>
-      <ChordPlayer key={song} song={song} onChordChange={setPlayback} />
-      <div className="layout">
-        <section className="chart" aria-label="Chord movement chart">{solar ? <Solar currentChord={currentChord} /> : autumn ? <AutumnLeaves currentChord={currentChord} /> : <TakeTheATrain currentChord={currentChord} />}</section>
-        <aside aria-label="Chord sequences">
-          <h2>The chord routes</h2>
-          {visibleRoutes.map(route => (
-            <section className="route" key={route.title}>
-              <h3><span className={`line ${route.kind}`} aria-hidden="true" />{route.title}</h3>
-              <p className="chords" aria-label={route.chords.join(' to ')}>{route.chords.map((chord, index) => <React.Fragment key={index}>{index > 0 && <span className="arrow" aria-hidden="true">→</span>}<span>{chord}</span></React.Fragment>)}</p>
-              <p className="note">{route.note}</p>
-            </section>
-          ))}
-          {solar ? <p className="tip"><strong>One node per chord.</strong> Cm/C7, F/Fm, Gm/G7, and E♭/E♭m share root positions. D° represents Dm7♭5.</p> : autumn ? <p className="tip"><strong>Roots on the fretboard.</strong> Dm starts on fret 10 of the low E string. B° represents the simplified half-diminished chord.</p> : <p className="tip"><strong>Same root, different chord.</strong> D7 → Dm changes chord quality while the root stays in place.</p>}
-        </aside>
+  const svgRef = useRef(null);
+  const playerRef = useRef(null);
+  const song = useMemo(() => transposeSong(songsById[songId], targetKey), [songId, targetKey]);
+  const selectionKey = `${songId}:${song.key}`;
+  const availableKeys = /minor|-$/.test(song.key) ? minorKeyRoots : keyRoots;
+  const handleChordChange = useCallback(value => setPlayback(value && { ...value, key: song.key }), [song.key]);
+  const target = chartTarget(songId, playback?.song === songId && playback?.key === song.key ? playback.event : null);
+  const currentChord = target && { ...target, visitIndex: playback?.visitIndex, seekVersion: playback?.seekVersion };
+  function changeSong(id) {
+    playerRef.current?.stop();
+    setPlayback(null); setTargetKey(''); setSongId(id);
+  }
+  function changeKey(key) {
+    playerRef.current?.stop();
+    setPlayback(null); setTargetKey(key);
+  }
+  function downloadSvg() {
+    const clone = svgRef.current.cloneNode(true);
+    clone.querySelectorAll('rect').forEach(rect => rect.style.removeProperty('transition'));
+    const blob = new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = `${song.id}-${song.key.replaceAll(' ', '-')}-${clone.dataset.sectionId}.svg`; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  return <main>
+    <header>
+      <div><p className="eyebrow">CHORD PATHS</p><h1>{song.title}</h1><p className="subtitle">In {song.key} · Follow the movement</p></div>
+      <div className="header-actions">
+      <button className="theme-toggle" type="button" aria-pressed={darkMode} onClick={() => setDarkMode(value => !value)}>{darkMode ? '☀ Light mode' : '☾ Dark mode'}</button>
+      <button className="download" type="button" onClick={downloadSvg}>Download section SVG <span aria-hidden="true">↗</span></button>
       </div>
-      <footer>A movement map based on {solar ? <a href="https://standardrepertoire.com/solar.html" target="_blank" rel="noreferrer">the Solar chart</a> : 'your card'}. {solar ? 'Chord names are simplified; duration labels show holds and split bars.' : autumn ? 'Opening excerpt transposed from B♭ to C with simplified chord names.' : 'Duration labels show holds and split bars; unlabelled nodes last one bar.'}</footer>
-    </main>
-  );
+    </header>
+    <nav className="song-picker" aria-label="Choose a song">
+      <label htmlFor="song-search">Find a song <input id="song-search" type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search by title…" /></label>
+      <label htmlFor="song-select">Song <select id="song-select" value={songId} onChange={event => changeSong(event.target.value)}>
+        {!filteredSongs.some(item => item.id === songId) && <option value={songId}>{song.title}</option>}
+        {filteredSongs.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
+      </select></label>
+      <label htmlFor="key-select">Key <select id="key-select" value={targetKey} onChange={event => changeKey(event.target.value)}>
+        <option value="">Original: {songsById[songId].key}</option>
+        {availableKeys.filter(root => notePitch(root) !== notePitch(songsById[songId].key)).map(root => <option key={root} value={root}>{displayNote(root)}{/minor|-$/.test(song.key) ? ' minor' : ''}</option>)}
+      </select></label>
+      <span className="note">{filteredSongs.length} of {songs.length} songs</span>
+    </nav>
+    <ChordPlayer key={selectionKey} ref={playerRef} song={songId} songData={song} onChordChange={handleChordChange} />
+    <ChartCarousel key={selectionKey} ref={svgRef} song={song} darkMode={darkMode} currentChord={currentChord} />
+    <footer>A movement map based on <a href={song.sourceUrl} target="_blank" rel="noreferrer">the source chart</a>. {song.footerNote}</footer>
+  </main>;
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+// Reuse the root across Vite updates; recreating it leaves orphaned app/audio
+// instances and can accumulate headers in the same container.
+const container = document.getElementById('root');
+const root = import.meta.hot?.data.root || createRoot(container);
+if (import.meta.hot) {
+  import.meta.hot.data.root = root;
+  import.meta.hot.accept();
+}
+root.render(<App />);

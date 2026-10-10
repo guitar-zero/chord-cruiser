@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "id": "blue-monk",
+  "title": "Blue Monk",
+  "key": "B♭",
+  "sourceUrl": "https://standardrepertoire.com/blue-monk.html",
+  "beatsPerBar": 4,
+  "sourceNote": "",
+  "description": "Blue Monk: measured section graphs on the three lowest guitar strings. Badges show every visit in playback order.",
+  "startNodeId": "section-1-node-1",
+  "nodes": [
+    {
+      "id": "section-1-node-1",
+      "section": "section-1",
+      "chord": "B♭7",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 620.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 1
+    },
+    {
+      "id": "section-1-node-2",
+      "section": "section-1",
+      "chord": "E♭7",
+      "root": "E♭",
+      "string": "A",
+      "fret": 6,
+      "x": 620.0,
+      "y": 710,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 2
+    },
+    {
+      "id": "section-2-node-3",
+      "section": "section-2",
+      "chord": "F7",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 1840,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 3
+    },
+    {
+      "id": "section-2-node-4",
+      "section": "section-2",
+      "chord": "B♭7",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 620.0,
+      "y": 2140,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 4
+    }
+  ],
+  "edges": [
+    {
+      "id": "section-1-edge-1",
+      "section": "section-1",
+      "source": "section-1-node-1",
+      "target": "section-1-node-2",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-2",
+      "section": "section-1",
+      "source": "section-1-node-2",
+      "target": "section-1-node-1",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-2-edge-1",
+      "section": "section-2",
+      "source": "section-2-node-3",
+      "target": "section-2-node-4",
+      "width": 5,
+      "passNumber": 1
+    }
+  ],
+  "playback": [
+    {
+      "chord": "Bb7",
+      "bars": 1.0,
+      "section": "Blues · part 1",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Eb7",
+      "bars": 1.0,
+      "section": "Blues · part 1",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Bb7",
+      "bars": 2.0,
+      "section": "Blues · part 1",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Eb7",
+      "bars": 2.0,
+      "section": "Blues · part 1",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Bb7",
+      "bars": 2.0,
+      "section": "Blues · part 1",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "F7",
+      "bars": 2.0,
+      "section": "Blues · part 2",
+      "nodeId": "section-2-node-3"
+    },
+    {
+      "chord": "Bb7",
+      "bars": 2.0,
+      "section": "Blues · part 2",
+      "nodeId": "section-2-node-4"
+    }
+  ],
+  "durationLabels": [
+    {
+      "nodeId": "section-1-node-1",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "1 bar / ×2"
+    },
+    {
+      "nodeId": "section-1-node-2",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "1 bar / ×2"
+    },
+    {
+      "nodeId": "section-2-node-3",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-2-node-4",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    }
+  ],
+  "layout": {
+    "viewBox": "0 0 1820 2540",
+    "titleSize": 83,
+    "subtitleSize": 35,
+    "subtitle": "B♭ · 12 bars · 4/4 · Frets 5–9",
+    "sections": [
+      {
+        "id": "section-1",
+        "title": "Blues · part 1 · bars 1–8",
+        "titleY": 270,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          410,
+          710,
+          1010
+        ],
+        "top": 355,
+        "bottom": 1080,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 330,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      },
+      {
+        "id": "section-2",
+        "title": "Blues · part 2 · bars 9–12",
+        "titleY": 1400,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          1540,
+          1840,
+          2140
+        ],
+        "top": 1485,
+        "bottom": 2210,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 1460,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#267b99"
+      }
+    ],
+    "footerY": 2500,
+    "footerSize": 25,
+    "footer": "Continue panel by panel. Badges list every visit; durations are in bars.",
+    "startLabel": {
+      "x": 620.0,
+      "y": 1165
+    },
+    "startOutline": {
+      "x": 565.0,
+      "y": 955,
+      "width": 110,
+      "height": 110
+    }
+  },
+  "routes": [
+    {
+      "title": "Blues · part 1 · bars 1–8",
+      "nodeIds": [
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-1"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "Blues · part 2 · bars 9–12",
+      "nodeIds": [
+        "section-2-node-3",
+        "section-2-node-4"
+      ],
+      "kind": "solid",
+      "note": "Playback loops from here."
+    }
+  ],
+  "tip": {
+    "title": "Follow the movement. ",
+    "text": "Major circles, minor triangles, dominant squares, diminished hexagons. Chord qualities share fret/string anchors. "
+  },
+  "footerNote": "Full source qualities and durations drive playback; optional alternatives are omitted.",
+  "playbackNote": "12 bars in 4/4. "
+}

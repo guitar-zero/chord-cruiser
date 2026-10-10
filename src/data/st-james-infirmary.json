@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "id": "st-james-infirmary",
+  "title": "St. James Infirmary",
+  "key": "D minor",
+  "sourceUrl": "https://standardrepertoire.com/st-james-infirmary.html",
+  "beatsPerBar": 4,
+  "sourceNote": "The source image is transcribed as 8 bars; the page lists 16. Playback follows the image and its repeat markings.",
+  "description": "St. James Infirmary: measured section graphs on the three lowest guitar strings. Badges show every visit in playback order.",
+  "startNodeId": "section-1-node-1",
+  "nodes": [
+    {
+      "id": "section-1-node-1",
+      "section": "section-1",
+      "chord": "Dm",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 710,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 1
+    },
+    {
+      "id": "section-1-node-2",
+      "section": "section-1",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 340.0,
+      "y": 410,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 2
+    },
+    {
+      "id": "section-1-node-3",
+      "section": "section-1",
+      "chord": "B♭7",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 620.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 3
+    },
+    {
+      "id": "section-1-node-4",
+      "section": "section-1",
+      "chord": "A7",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 4
+    }
+  ],
+  "edges": [
+    {
+      "id": "section-1-edge-1",
+      "section": "section-1",
+      "source": "section-1-node-1",
+      "target": "section-1-node-2",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-2",
+      "section": "section-1",
+      "source": "section-1-node-2",
+      "target": "section-1-node-1",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-3",
+      "section": "section-1",
+      "source": "section-1-node-1",
+      "target": "section-1-node-3",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-4",
+      "section": "section-1",
+      "source": "section-1-node-3",
+      "target": "section-1-node-4",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-5",
+      "section": "section-1",
+      "source": "section-1-node-4",
+      "target": "section-1-node-1",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-6",
+      "section": "section-1",
+      "source": "section-1-node-1",
+      "target": "section-1-node-4",
+      "width": 5,
+      "passNumber": 1
+    }
+  ],
+  "playback": [
+    {
+      "chord": "Dm7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1.5,
+      "section": "A",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1.5,
+      "section": "A",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1.0,
+      "section": "A",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Bb7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-3"
+    },
+    {
+      "chord": "A7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-4"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "A7",
+      "bars": 0.5,
+      "section": "A",
+      "nodeId": "section-1-node-4"
+    }
+  ],
+  "durationLabels": [
+    {
+      "nodeId": "section-1-node-1",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar / ×1.5 / 1 bar"
+    },
+    {
+      "nodeId": "section-1-node-2",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "section-1-node-3",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "section-1-node-4",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar"
+    }
+  ],
+  "layout": {
+    "viewBox": "0 0 1820 1410",
+    "titleSize": 83,
+    "subtitleSize": 35,
+    "subtitle": "D minor · 8 bars · 4/4 · Frets 5–9",
+    "sections": [
+      {
+        "id": "section-1",
+        "title": "A · bars 1–8",
+        "titleY": 270,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          410,
+          710,
+          1010
+        ],
+        "top": 355,
+        "bottom": 1080,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 330,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      }
+    ],
+    "footerY": 1370,
+    "footerSize": 25,
+    "footer": "Continue panel by panel. Badges list every visit; durations are in bars.",
+    "startLabel": {
+      "x": 340.0,
+      "y": 865
+    },
+    "startOutline": {
+      "x": 285.0,
+      "y": 655,
+      "width": 110,
+      "height": 110
+    }
+  },
+  "routes": [
+    {
+      "title": "A · bars 1–8",
+      "nodeIds": [
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-1",
+        "section-1-node-3",
+        "section-1-node-4",
+        "section-1-node-1",
+        "section-1-node-4"
+      ],
+      "kind": "solid",
+      "note": "Playback loops from here."
+    }
+  ],
+  "tip": {
+    "title": "Follow the movement. ",
+    "text": "Major circles, minor triangles, dominant squares, diminished hexagons. Chord qualities share fret/string anchors. The source image is transcribed as 8 bars; the page lists 16. Playback follows the image and its repeat markings."
+  },
+  "footerNote": "Full source qualities and durations drive playback; optional alternatives are omitted.",
+  "playbackNote": "8 bars in 4/4. The source image is transcribed as 8 bars; the page lists 16. Playback follows the image and its repeat markings."
+}

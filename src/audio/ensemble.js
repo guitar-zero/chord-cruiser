@@ -52,18 +52,21 @@ export class JazzPlayer {
     return buffer;
   }
   async start(timeline, offset = 0) {
+    if (this.stopped) return;
     await this.context.resume();
     // Allow React to paint the spinner, then prepare notes in short chunks.
     await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
+    if (this.stopped) return;
     this.timeline = timeline;
     for (const event of timeline.events) {
+      if (event.chord === 'NC') continue;
       for (const note of chordNotes(event.chord)) {
-        if (this.context.state === 'closed') return;
+        if (this.stopped || this.context.state === 'closed') return;
         if (!this.buffers.has(note)) { this.buffer(note); await yieldToUI(); }
       }
       if (this.bassEnabled && !this.buffers.has(`bass-${bassNote(event.chord)}`)) { this.bassBuffer(bassNote(event.chord)); await yieldToUI(); }
     }
-    if (this.context.state === 'closed') return;
+    if (this.stopped || this.context.state === 'closed') return;
     if (this.drumsEnabled) {
       if (!this.buffers.has('brushes')) this.buffers.set('brushes', makeBrushBuffers(this.context));
       this.brushes = this.buffers.get('brushes');
@@ -84,11 +87,12 @@ export class JazzPlayer {
     if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, this.startedAt, this.offset, source => this.track(source));
     const beatSeconds = timeline.duration / timeline.beats;
     for (const event of timeline.events) {
+      if (event.chord === 'NC') continue;
       const notes = chordNotes(event.chord);
       // A quiet piano chord each bar maintains audibility through ×2/×4 holds.
-      for (let beat = 0; beat < event.beats; beat += 4) {
+      for (let beat = 0; beat < event.beats; beat += (timeline.beatsPerBar || 4)) {
         const originalStart = event.start + beat * beatSeconds;
-        const originalLength = Math.min(4, event.beats - beat) * beatSeconds;
+        const originalLength = Math.min(timeline.beatsPerBar || 4, event.beats - beat) * beatSeconds;
         if (originalStart + originalLength <= this.offset) continue;
         const start = Math.max(originalStart, this.offset);
         const length = originalStart + originalLength - start;
@@ -134,7 +138,22 @@ export class JazzPlayer {
     return buffer;
   }
   get elapsed() { return Math.max(this.offset || 0, this.context.currentTime - this.startedAt); }
+  loopPosition() {
+    const elapsed = this.elapsed;
+    const wrapped = elapsed >= this.timeline.duration;
+    const position = wrapped ? elapsed % this.timeline.duration : elapsed;
+    if (wrapped) this.seek(position);
+    return { position, wrapped };
+  }
   pause() { return this.context.suspend(); }
   resume() { return this.context.resume(); }
-  stop() { return this.context.state !== 'closed' ? this.context.close() : Promise.resolve(); }
+  stop() {
+    this.stopped = true;
+    // Silence immediately, including while close() or sound preparation is pending.
+    if (this.context.state === 'closed') return Promise.resolve();
+    for (const bus of [this.master, this.drumBus, this.bassBus]) bus.gain.setValueAtTime(0, this.context.currentTime);
+    for (const source of this.sources) { try { source.stop(); } catch {} }
+    this.sources.clear();
+    return this.context.close();
+  }
 }

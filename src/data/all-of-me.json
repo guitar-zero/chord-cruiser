@@ -1,0 +1,827 @@
+{
+  "schemaVersion": 1,
+  "id": "all-of-me",
+  "title": "All Of Me",
+  "key": "C major",
+  "sourceUrl": "https://standardrepertoire.com/all-of-me.html",
+  "description": "32-bar ABAC chord movement graph in C. Two measured fretboard panels show A to B and A to C. Separate chord qualities share string and fret anchors.",
+  "startNodeId": "ab-c",
+  "nodes": [
+    {
+      "id": "ab-c",
+      "chord": "C",
+      "root": "C",
+      "fret": 8,
+      "string": "E",
+      "x": 430,
+      "y": 990,
+      "section": "ab",
+      "step": 1,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-e7",
+      "chord": "E7",
+      "root": "E",
+      "fret": 7,
+      "string": "A",
+      "x": 260,
+      "y": 680,
+      "section": "ab",
+      "step": 2,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-a7",
+      "chord": "A7",
+      "root": "A",
+      "fret": 7,
+      "string": "D",
+      "x": 200,
+      "y": 370,
+      "section": "ab",
+      "step": 3,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-dm",
+      "chord": "Dm",
+      "root": "D",
+      "fret": 10,
+      "string": "E",
+      "x": 830,
+      "y": 990,
+      "section": "ab",
+      "step": 4,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-am",
+      "chord": "Am",
+      "root": "A",
+      "fret": 7,
+      "string": "D",
+      "x": 320,
+      "y": 370,
+      "section": "ab",
+      "step": 5,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-d7",
+      "chord": "D7",
+      "root": "D",
+      "fret": 10,
+      "string": "E",
+      "x": 710,
+      "y": 990,
+      "section": "ab",
+      "step": 6,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ab-g7",
+      "chord": "G7",
+      "root": "G",
+      "fret": 10,
+      "string": "A",
+      "x": 770,
+      "y": 680,
+      "section": "ab",
+      "step": 7,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#cc480e"
+    },
+    {
+      "id": "ac-c",
+      "chord": "C",
+      "root": "C",
+      "fret": 8,
+      "string": "E",
+      "x": 1520,
+      "y": 990,
+      "section": "ac",
+      "step": 8,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-e7",
+      "chord": "E7",
+      "root": "E",
+      "fret": 7,
+      "string": "A",
+      "x": 1350,
+      "y": 680,
+      "section": "ac",
+      "step": 9,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-a7",
+      "chord": "A7",
+      "root": "A",
+      "fret": 7,
+      "string": "D",
+      "x": 1410,
+      "y": 370,
+      "section": "ac",
+      "step": 10,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-dm",
+      "chord": "Dm",
+      "root": "D",
+      "fret": 10,
+      "string": "E",
+      "x": 1920,
+      "y": 990,
+      "section": "ac",
+      "step": 11,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-f",
+      "chord": "F",
+      "root": "F",
+      "fret": 8,
+      "string": "A",
+      "x": 1520,
+      "y": 680,
+      "section": "ac",
+      "step": 12,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-fm",
+      "chord": "Fm6",
+      "root": "F",
+      "fret": 8,
+      "string": "A",
+      "x": 1640,
+      "y": 680,
+      "section": "ac",
+      "step": 13,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-em",
+      "chord": "Em",
+      "root": "E",
+      "fret": 7,
+      "string": "A",
+      "x": 1470,
+      "y": 680,
+      "section": "ac",
+      "step": 14,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-g7",
+      "chord": "G7",
+      "root": "G",
+      "fret": 10,
+      "string": "A",
+      "x": 1920,
+      "y": 680,
+      "section": "ac",
+      "step": 15,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-c6",
+      "chord": "C6",
+      "root": "C",
+      "fret": 8,
+      "string": "E",
+      "x": 1640,
+      "y": 990,
+      "section": "ac",
+      "step": 16,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    },
+    {
+      "id": "ac-ebdim",
+      "chord": "E♭°7",
+      "root": "E♭",
+      "fret": 11,
+      "string": "E",
+      "x": 2090,
+      "y": 990,
+      "section": "ac",
+      "step": 17,
+      "shape": "circle",
+      "radius": 40,
+      "fontSize": 31,
+      "textOffset": 4,
+      "badgeOffset": -60,
+      "badgeColor": "#267b99"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ab-1",
+      "section": "ab",
+      "source": "ab-c",
+      "target": "ab-e7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-2",
+      "section": "ab",
+      "source": "ab-e7",
+      "target": "ab-a7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-3",
+      "section": "ab",
+      "source": "ab-a7",
+      "target": "ab-dm",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-4",
+      "section": "ab",
+      "source": "ab-dm",
+      "target": "ab-e7",
+      "passNumber": 1,
+      "width": 5,
+      "path": "M830 1039 V1145 H110 V680 H211"
+    },
+    {
+      "id": "ab-5",
+      "section": "ab",
+      "source": "ab-e7",
+      "target": "ab-am",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-6",
+      "section": "ab",
+      "source": "ab-am",
+      "target": "ab-d7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-7",
+      "section": "ab",
+      "source": "ab-d7",
+      "target": "ab-dm",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ab-8",
+      "section": "ab",
+      "source": "ab-dm",
+      "target": "ab-g7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-1",
+      "section": "ac",
+      "source": "ac-c",
+      "target": "ac-e7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-2",
+      "section": "ac",
+      "source": "ac-e7",
+      "target": "ac-a7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-3",
+      "section": "ac",
+      "source": "ac-a7",
+      "target": "ac-dm",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-4",
+      "section": "ac",
+      "source": "ac-dm",
+      "target": "ac-f",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-5",
+      "section": "ac",
+      "source": "ac-f",
+      "target": "ac-fm",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-6",
+      "section": "ac",
+      "source": "ac-fm",
+      "target": "ac-em",
+      "passNumber": 1,
+      "width": 5,
+      "path": "M1640 729 V815 H1470 V729"
+    },
+    {
+      "id": "ac-7",
+      "section": "ac",
+      "source": "ac-em",
+      "target": "ac-a7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-8",
+      "section": "ac",
+      "source": "ac-dm",
+      "target": "ac-g7",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-9",
+      "section": "ac",
+      "source": "ac-g7",
+      "target": "ac-c6",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-10",
+      "section": "ac",
+      "source": "ac-c6",
+      "target": "ac-ebdim",
+      "passNumber": 1,
+      "width": 5
+    },
+    {
+      "id": "ac-11",
+      "section": "ac",
+      "source": "ac-ebdim",
+      "target": "ac-dm",
+      "passNumber": 1,
+      "width": 5,
+      "path": "M2090 1039 V1145 H1920 V1039"
+    }
+  ],
+  "playback": [
+    {
+      "chord": "Cmaj7",
+      "bars": 2,
+      "nodeId": "ab-c",
+      "section": "A · first pass"
+    },
+    {
+      "chord": "E7",
+      "bars": 2,
+      "nodeId": "ab-e7",
+      "section": "A · first pass"
+    },
+    {
+      "chord": "A7",
+      "bars": 2,
+      "nodeId": "ab-a7",
+      "section": "A · first pass"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 2,
+      "nodeId": "ab-dm",
+      "section": "A · first pass"
+    },
+    {
+      "chord": "E7",
+      "bars": 2,
+      "nodeId": "ab-e7",
+      "section": "B"
+    },
+    {
+      "chord": "Am7",
+      "bars": 2,
+      "nodeId": "ab-am",
+      "section": "B"
+    },
+    {
+      "chord": "D7",
+      "bars": 2,
+      "nodeId": "ab-d7",
+      "section": "B"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1,
+      "nodeId": "ab-dm",
+      "section": "B"
+    },
+    {
+      "chord": "G7",
+      "bars": 1,
+      "nodeId": "ab-g7",
+      "section": "B"
+    },
+    {
+      "chord": "Cmaj7",
+      "bars": 2,
+      "nodeId": "ac-c",
+      "section": "A · second pass"
+    },
+    {
+      "chord": "E7",
+      "bars": 2,
+      "nodeId": "ac-e7",
+      "section": "A · second pass"
+    },
+    {
+      "chord": "A7",
+      "bars": 2,
+      "nodeId": "ac-a7",
+      "section": "A · second pass"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 2,
+      "nodeId": "ac-dm",
+      "section": "A · second pass"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 1,
+      "nodeId": "ac-f",
+      "section": "C"
+    },
+    {
+      "chord": "Fm6",
+      "bars": 1,
+      "nodeId": "ac-fm",
+      "section": "C"
+    },
+    {
+      "chord": "Em7",
+      "bars": 1,
+      "nodeId": "ac-em",
+      "section": "C"
+    },
+    {
+      "chord": "A7",
+      "bars": 1,
+      "nodeId": "ac-a7",
+      "section": "C"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1,
+      "nodeId": "ac-dm",
+      "section": "C"
+    },
+    {
+      "chord": "G7",
+      "bars": 1,
+      "nodeId": "ac-g7",
+      "section": "C"
+    },
+    {
+      "chord": "C6",
+      "bars": 0.5,
+      "nodeId": "ac-c6",
+      "section": "C"
+    },
+    {
+      "chord": "Ebdim7",
+      "bars": 0.5,
+      "nodeId": "ac-ebdim",
+      "section": "C"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 0.5,
+      "nodeId": "ac-dm",
+      "section": "C"
+    },
+    {
+      "chord": "G7",
+      "bars": 0.5,
+      "nodeId": "ac-g7",
+      "section": "C"
+    }
+  ],
+  "durationLabels": [
+    {
+      "nodeId": "ab-c",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ab-e7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ab-a7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ab-dm",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "A: ×2 · B: 1 bar"
+    },
+    {
+      "nodeId": "ab-am",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ab-d7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ac-c",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ac-e7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "×2"
+    },
+    {
+      "nodeId": "ac-a7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "A: ×2 · C: 1 bar"
+    },
+    {
+      "nodeId": "ac-dm",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "A: ×2 · C: 1 / ½ bar"
+    },
+    {
+      "nodeId": "ac-g7",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "1 / ½ bar"
+    },
+    {
+      "nodeId": "ac-c6",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "ac-ebdim",
+      "offsetX": 0,
+      "offsetY": 90,
+      "text": "half-bar"
+    }
+  ],
+  "layout": {
+    "viewBox": "0 0 2310 1270",
+    "titleSize": 94,
+    "subtitleSize": 43,
+    "subtitle": "C major · 32 bars · ABAC · Frets 7–11",
+    "sections": [
+      {
+        "id": "ab",
+        "title": "A → B · bars 1–16",
+        "left": 175,
+        "right": 1025,
+        "boundaries": [
+          175,
+          345,
+          515,
+          685,
+          855,
+          1025
+        ],
+        "centers": [
+          260,
+          430,
+          600,
+          770,
+          940
+        ],
+        "rows": [
+          370,
+          680,
+          990
+        ],
+        "top": 315,
+        "bottom": 1060,
+        "frets": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "fretY": 310,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      },
+      {
+        "id": "ac",
+        "title": "A → C · bars 17–32",
+        "left": 1325,
+        "right": 2175,
+        "boundaries": [
+          1325,
+          1495,
+          1665,
+          1835,
+          2005,
+          2175
+        ],
+        "centers": [
+          1410,
+          1580,
+          1750,
+          1920,
+          2090
+        ],
+        "rows": [
+          370,
+          680,
+          990
+        ],
+        "top": 315,
+        "bottom": 1060,
+        "frets": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "fretY": 310,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#267b99"
+      }
+    ],
+    "footerY": 1230,
+    "footerSize": 27,
+    "footer": "A → B → A → C. Badges show every visit in playback order.",
+    "startLabel": {
+      "x": 430,
+      "y": 1125
+    },
+    "startOutline": {
+      "x": 381,
+      "y": 941,
+      "width": 98,
+      "height": 98
+    }
+  },
+  "routes": [
+    {
+      "title": "A → B · bars 1–16",
+      "nodeIds": [
+        "ab-c",
+        "ab-e7",
+        "ab-a7",
+        "ab-dm",
+        "ab-e7",
+        "ab-am",
+        "ab-d7",
+        "ab-dm",
+        "ab-g7"
+      ],
+      "note": "Visits 1–9. Two-bar holds until the final Dm and G7.",
+      "kind": "solid"
+    },
+    {
+      "title": "A → C · bars 17–32",
+      "nodeIds": [
+        "ac-c",
+        "ac-e7",
+        "ac-a7",
+        "ac-dm",
+        "ac-f",
+        "ac-fm",
+        "ac-em",
+        "ac-a7",
+        "ac-dm",
+        "ac-g7",
+        "ac-c6",
+        "ac-ebdim",
+        "ac-dm",
+        "ac-g7"
+      ],
+      "note": "Visits 10–23. Final two bars split in half.",
+      "kind": "solid"
+    }
+  ],
+  "tip": {
+    "title": "Same root, separate nodes. ",
+    "text": "A7/Am, D7/Dm, E7/Em, F/Fm6, and C/C6 retain their fret/string anchors. The second A uses its own panel for a clearer route."
+  },
+  "footerNote": "Display labels are simplified; playback preserves source chord qualities and durations.",
+  "playbackNote": "Complete 32-bar ABAC form, including the half-bar turnaround."
+}

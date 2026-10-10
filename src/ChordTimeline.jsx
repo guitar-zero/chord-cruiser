@@ -28,7 +28,7 @@ export default function ChordTimeline({ timeline, activeIndex, onSeek, disabled 
   return <div ref={ref} className="chord-timeline" style={{ height: `${laneCount * 29 + 12}px` }} aria-label="Chords along the playback timeline">
     {labels.map((label, index) => <React.Fragment key={index}>
       <span aria-hidden="true" className={`chord-tick ${index === activeIndex ? 'active' : ''}`} style={{ left: `${label.startX}px`, height: `${label.lane * 29 + 10}px` }} />
-      <button type="button" disabled={disabled} className={`timeline-chord ${index === activeIndex ? 'active' : ''}`} style={{ left: `${label.x}px`, top: `${label.lane * 29 + 9}px`, width: `${label.size}px` }} onClick={() => onSeek(timeline.events[index].start)} aria-current={index === activeIndex ? 'step' : undefined} aria-label={`${label.label}, bar ${timeline.events[index].startBeat / 4 + 1}, seek to ${timeline.events[index].start.toFixed(1)} seconds`} title={`${timeline.events[index].chord} · ${timeline.events[index].bars} ${timeline.events[index].bars === 1 ? 'bar' : 'bars'}`}>
+      <button type="button" disabled={disabled} className={`timeline-chord ${index === activeIndex ? 'active' : ''}`} style={{ left: `${label.x}px`, top: `${label.lane * 29 + 9}px`, width: `${label.size}px` }} onClick={() => onSeek(timeline.events[index].start)} aria-current={index === activeIndex ? 'step' : undefined} aria-label={`${label.label}, bar ${timeline.events[index].startBeat / (timeline.beatsPerBar || 4) + 1}, seek to ${timeline.events[index].start.toFixed(1)} seconds`} title={`${timeline.events[index].chord} · ${timeline.events[index].bars} ${timeline.events[index].bars === 1 ? 'bar' : 'bars'}`}>
         {label.label}
       </button>
     </React.Fragment>)}

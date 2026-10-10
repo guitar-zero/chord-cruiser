@@ -4,13 +4,13 @@ import assert from 'node:assert/strict';
 import { buildTimeline, playbackSongs, chordNotes, bassNote } from './songs.js';
 import { JazzPlayer } from './ensemble.js';
 
-test('Source chart durations total 8, 12, and 32 bars', () => {
-  for (const [song, bars] of [['autumn-leaves', 8], ['solar', 12], ['take-the-a-train', 32]]) {
+test('Source chart durations total 32, 12, and 32 bars', () => {
+  for (const [song, bars] of [['autumn-leaves', 32], ['solar', 12], ['take-the-a-train', 32]]) {
     const timeline = buildTimeline(playbackSongs[song], 120);
     assert.equal(timeline.beats, bars * 4);
     assert.equal(timeline.duration, bars * 2);
     assert.equal(timeline.events.at(-1).start + timeline.events.at(-1).duration, timeline.duration);
-    for (const event of timeline.events) assert.equal(chordNotes(event.chord).length, 4);
+    for (const event of timeline.events) assert.ok(chordNotes(event.chord).length >= 4);
   }
 });
 
@@ -25,12 +25,12 @@ test('Solar half-bar changes and repeated bars keep exact timing', () => {
   assert.equal(events[11].start, 23);
 });
 
-test('A Train includes first and second endings plus the four-bar F6 bridge', () => {
+test('A Train includes first and second endings plus the canonical four-bar Fmaj7 bridge', () => {
   const { events } = buildTimeline(playbackSongs['take-the-a-train'], 120);
   assert.equal(events.find(e => e.chord === 'Gm7').start, 30);
   assert.equal(events.find(e => e.chord === 'C7').start, 31);
-  const bridge = events.find(e => e.section === 'Verse');
-  assert.equal(bridge.chord, 'F6'); assert.equal(bridge.start, 32); assert.equal(bridge.duration, 8);
+  const bridge = events.find(e => e.section === 'B');
+  assert.equal(bridge.chord, 'Fmaj7'); assert.equal(bridge.start, 32); assert.equal(bridge.duration, 8);
 });
 
 test('Voicings preserve minor-major seventh, half-diminished, and alterations', () => {
@@ -42,7 +42,7 @@ test('Voicings preserve minor-major seventh, half-diminished, and alterations', 
 
 test('Piano schedules held-bar rearticulations and half-bar notes, pauses, resumes, and stops', async () => {
   const scheduled = [];
-  const parameter = () => ({ value: 0, setValueAtTime() {}, linearRampToValueAtTime() {} });
+  const parameter = () => ({ value: 0, setValueAtTime(value) { this.value = value; }, linearRampToValueAtTime() {} });
   class Context {
     constructor() { this.currentTime = 0; this.sampleRate = 4000; this.state = 'suspended'; this.destination = {}; }
     createGain() { return { gain: parameter(), connect() {}, disconnect() {} }; }
@@ -71,7 +71,27 @@ test('Piano schedules held-bar rearticulations and half-bar notes, pauses, resum
   assert.ok(scheduled.slice(0, 20).every(note => note.stop === undefined)); // Old voices canceled.
 
   await guitar.resume(); assert.equal(guitar.context.state, 'running');
+  guitar.context.currentTime = guitar.startedAt + guitar.timeline.duration + .125;
+  const beforeLoop = scheduled.length;
+  const loop = guitar.loopPosition();
+  assert.equal(loop.wrapped, true);
+  assert.ok(Math.abs(loop.position - .125) < 1e-9);
+  assert.ok(scheduled.length > beforeLoop); // New first-chord voices are scheduled.
+  assert.equal(guitar.context.state, 'running');
+  assert.equal(guitar.loopPosition().wrapped, false);
+  guitar.context.currentTime = guitar.startedAt + guitar.timeline.duration * 3;
+  assert.equal(guitar.loopPosition().position, 0); // Exact boundary, even after a delayed frame.
   await guitar.stop(); assert.equal(guitar.context.state, 'closed');
+  assert.equal(guitar.sources.size, 0);
+  assert.equal(guitar.master.gain.value, 0);
+  assert.equal(guitar.drumBus.gain.value, 0);
+  assert.equal(guitar.bassBus.gain.value, 0);
+  const stoppedCount = scheduled.length;
+  const loadingPlayer = new JazzPlayer({ drums: false, bass: false });
+  const preparation = loadingPlayer.start(buildTimeline([{ chord: 'C6', bars: 1 }],120));
+  await loadingPlayer.stop();
+  await preparation;
+  assert.equal(scheduled.length, stoppedCount); // Changing songs while loading cannot start old audio.
   delete globalThis.window;
   delete globalThis.requestAnimationFrame;
 });
@@ -105,7 +125,8 @@ test('Bass is exactly a perfect fifth below each source-chart root', () => {
   assert.equal(bassNote('Cmaj7'), 41); // F2 below C3.
   assert.equal(bassNote('G7'), 48); // C3 below G3.
   for (const events of Object.values(playbackSongs)) for (const event of events) {
-    assert.equal(chordNotes(event.chord)[0] - bassNote(event.chord), 7);
+    if (event.chord === 'NC') { assert.deepEqual(chordNotes('NC'), []); assert.equal(bassNote('NC'), null); continue; }
+    assert.equal(chordNotes(event.chord.split('/')[0])[0] - bassNote(event.chord), 7);
   }
 });
 
@@ -114,8 +135,13 @@ test('Playback selects correct graph nodes, including section-specific D7/Dm', a
   for (const song of ['solar', 'autumn-leaves']) for (const event of playbackSongs[song]) {
     assert.notEqual(chartTarget(song, event).node, 'unmapped');
   }
-  assert.deepEqual(chartTarget('take-the-a-train', { chord: 'D7', section: 'Verse' }), { node: 'd7', section: 'verse' });
-  assert.deepEqual(chartTarget('take-the-a-train', { chord: 'Dm7', section: 'Final chorus' }), { node: 'dm', section: 'chorus' });
-  assert.equal(chartTarget('take-the-a-train', { chord: 'Gm7', section: 'Chorus · second pass' }).node, 'unmapped');
+  for (const event of playbackSongs['take-the-a-train']) {
+    assert.equal(chartTarget('take-the-a-train', event).node, event.nodeId);
+    assert.notEqual(event.nodeId, null);
+  }
+  const dominant = chartTarget('take-the-a-train', { chord: 'D7', section: 'B' });
+  const minor = chartTarget('take-the-a-train', { chord: 'Dm7', section: 'B' });
+  assert.notEqual(dominant.node, minor.node);
+  assert.notEqual(dominant.node, 'unmapped');
   assert.equal(chartTarget('solar', null), null);
 });

@@ -2,10 +2,12 @@
 
 Every new chart must label chord nodes in progression order using the shared
 `StepBadge` component, matching Solar: a small filled circle above the node,
-with a readable white sequence number. Number by first appearance in the
-displayed traversal; continue across sections. Revisited nodes keep their
-number. Explain alternate routes with number sequences rather than renumbering
-the same node on each pass.
+with a readable white sequence number. Number visits in playback order across sections. Revisited nodes list every
+visit index in the same badge; a multi-bar hold counts as one visit. Derive
+these indices from playback JSON. When a source has multiple destinations,
+its first destination uses the section default color; later destinations use
+distinct colors, ordered by first traversal. Preserve those branch colors
+when applying crossing/nearby-route coloring.
 
 Keep distinct chord qualities as independent graph nodes even when they share
 a root. Position these within the same string and fret, with adequate spacing.
@@ -25,5 +27,14 @@ and “half-bar” for half-bar changes. When a reused chord has different durat
 label the initial hold and later/turnaround duration explicitly. Do not count
 a repeated bar as a new chord node.
 
-After chart edits, regenerate the corresponding SVG in `public/` and any
-existing standalone copy, and run the production build.
+Store songs in `src/data/*.json` and register them in `src/data/songs.js`.
+Use `src/SongChart.jsx` for every chart; do not add per-song React components
+or checked-in SVG copies. Playback events reference graph nodes by `nodeId`;
+use null for source chords omitted from the simplified diagram. Preserve full
+source qualities in playback and simplified display labels in nodes. Optional
+edge paths preserve carefully arranged routes. SVG exports are generated from
+the rendered chart on demand. Run tests and the production build after edits.
+
+For reciprocal movements A → B and B → A, use parallel, spaced lanes
+with different colors and a single destination arrow on each. Use the shared
+`reciprocalRoutes` renderer helper; preserve obstacle-avoiding bends.

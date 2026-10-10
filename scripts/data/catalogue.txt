@@ -1,0 +1,194 @@
+# Reviewed source bars. Commas split a bar equally unless explicit @durations.
+# % repeats the preceding whole bar. A field @NAME repeats that section.
+angel-eyes|A1:Dm@.5,E7@.25,Eb7@.25 Dm,Bb7 Dm,Bm7b5 Em7b5,A7b9 Dm@.5,E7@.25,Eb7@.25 Dm,B7alt Bb7,A7b9 Dm|@A1|B:Cm7,F7 Bbmaj7,G7 Cm7,F7 Bbmaj7 Bm7,E7 Amaj7 Ebm7,G#7 Em7,A7|@A1
+anthropology|A1:Bbmaj7,G7 Cm7,F7 Dm7,G7 Cm7,F7 Fm7,Bb7 Eb7,Ab7 Dm7,G7 Cm7,F7|A2:Bbmaj7,G7 Cm7,F7 Dm7,G7 Cm7,F7 Fm7,Bb7 Eb7,Ab7 Cm7,F7 Bb6|B:D7 % G7 % C7 % F7 %|A3:Bbmaj7,G7 Cm7,F7 Dm7,G7 Cm7,F7 Fm7,Bb7 Eb7,Ab7 Cm7,F7 Bb6
+as-time-goes-by|A1:Fm7,Bb7 Fm7,Bb7 Ebmaj7,Bb7#5 Ebmaj7 Fm7,F#dim7 Fm7,Bb7 Ebmaj7,Fm7 Gm7,C7b9|A2:Fm7,Bb7 Fm7,Bb7 Ebmaj7,Bb7#5 Ebmaj7 Fm7,F#dim7 Fm7,Bb7 Ebmaj7 Bbm7,Eb7|B:Abmaj7 C7b9 Fm7 F#dim7 Cm7 F7 Fm7,C7b9 Fm7@.5,Bb7@.25,C7@.25|A3:Fm7,Bb7 Fm7,Bb7 Ebmaj7,Bb7#5 Ebmaj7 Fm7,F#dim7 Gm7,C7b9 Fm7,Bb7 Eb6,C7b9
+au-privave|Blues:F7 Bb7 F7 Cm7,F7 Bb7 Bdim7 F7 Am7,D7 Gm7 C7 F7,D7 Gm7,C7
+back-home-again-in-indiana|A:Fmaj7,Eb7 D7 G7 % Gm7 C7 Fmaj7 Cm7,F7 Bbmaj7 Bbm7,Eb7 Fmaj7 D7 G7 % Gm7 C7|B:Fmaj7,Eb7 D7 G7 % Em7b5 A7b9 Dm Em7b5,A7b9 Dm Em7b5,A7 Dm,Dm7/C Bdim7 Am7,D7 Gm7,C7 F6,F#dim7 Gm7,C7
+bags-groove|Blues:F7 Bb7 F7 % Bb7 % F7 Am7,D7 Gm7 C7 F7,D7 Gm7,C7
+beatrice|A:Fmaj7 Gbmaj7#11 Fmaj7 Ebmaj7#11 Dm7 Ebmaj7#11 Dm7,Cm7 Bbm7|B:Am7 Bbmaj7 Em7b5,A7b9 Dm7 Gm7 Gbmaj7#11 Fmaj7 Gbmaj7#11
+beautiful-love|A1:Em7b5 A7b9 Dm % Gm7 C7 Fmaj7 Em7b5,A7b9|B:Dm Gm7 Bb7 A7b9 Dm G7#11 Em7b5 A7b9|@A1|C:Dm Gm7 Bb7 A7b9 Dm,Bm7 Bb7#11,A7b9 Dm %
+bernies-tune|A1:Dm7 % Bb7 % Em7b5 A7b9 Dm7 Em7b5,A7b9|A2:Dm7 % Bb7 % Em7b5 A7b9 Dm7 Cm7,F7|B:Bb6,Gm7 Cm7,F7 Bb6,Gm7 Cm7,F7 Bb6,Gm7 Cm7,F7 Bb6 Em7b5,A7b9|A3:Dm7 % Bb7 % Em7b5 A7b9 Dm7 %
+bessies-blues|Blues:Eb7 Ab7 Eb7 % Ab7 % Eb7 % Bb7 Ab7 Eb7 Bb7
+billies-bounce|Blues:F7 Bb7 F7 Cm7,F7 Bb7 Bdim7 F7 Am7,D7 Gm7 C7 F7,D7 Gm7,C7
+birks-works|Blues:Fm6 Gm7b5,C7b9 Fm6 Cm7b5,F7b9 Bbm7 % Fm6 % Abm7,Db7 Gm7b5,C7b9 Fm6 %
+black-orpheus|A:Cm Dm7b5,G7b9 Cm Dm7b5,G7b9 Cm Fm7,Bb7 Ebmaj7 C7b9 Fm7 Bb7 Ebmaj7 Abmaj7 Dm7b5 G7b9 Cm Dm7b5,G7b9|B:Cm Dm7b5,G7b9 Cm % Gm7b5 C7b9 Fm % Fm7 Dm7b5,G7b9 Cm,Cm7/Bb Abmaj7 Dm7b5 G7b9 Cm Dm7b5,G7b9
+blue-bossa|A:Cm7 % Fm7 % Dm7b5 G7b9 Cm7 %|B:Ebm7 Ab7 Dbmaj7 % Dm7b5 G7b9 Cm7 Dm7b5,G7b9
+blue-in-green|Form:Gm6 A7#9 Dm7,Db7 Cm7,F7 Bbmaj7#11 A7#9 Dm6 E7b13 Am7 Dm7
+blue-monk|Blues:Bb7 Eb7 Bb7 % Eb7 % Bb7 % F7 % Bb7 %
+blue-train|Blues:Eb7#9 % % % Ab13#11 % Eb7#9 % Bb7#9 % Eb7#9 %
+blues-by-five|Blues:C7 % % % F7 % C7 % G7 % C7,A7 Dm7,G7
+blues-for-alice|Blues:Fmaj7 Em7b5,A7 Dm7,G7 Cm7,F7 Bb7 Bbm7,Eb7 Am7,D7 Abm7,Db7 Gm7 C7 F7,D7 Gm7,C7
+blues-in-the-closet|Blues:G7 % % % C7 % G7 % Am7 D7 G7 %
+bluesette|Waltz:Bbmaj7 % Am7b5 D7b9 Gm7 C7b9 Fm7 Bb7 Ebmaj7 % Ebm7 Ab7 Dbmaj7 % C#m7 F#7 Bmaj7 % Cm7 F7 Dm7 G7 Cm7 F7
+body-and-soul|A1:Ebm7,Bb7b13 Ebm7,Ab7 Dbmaj7,Gb7 Fm7,Edim7 Ebm7,Ebm7/Db Cm7b5,F7b9 Bbm7@.5,Ebm7@.25,Ab7@.25 Db6,Gb7,Fm7b5,Bb7|A2:Ebm7,Bb7b13 Ebm7,Ab7 Dbmaj7,Gb7 Fm7,Edim7 Ebm7,Ebm7/Db Cm7b5,F7b9 Bbm7@.5,Ebm7@.25,Ab7@.25 Db6@.5,Em7@.25,A7@.25|B:Dmaj7,Em7 Dmaj7/F#@.5,Gm7@.25,C7@.25 F#m7,Bm7,Em7,A7 Dmaj7 Dm7,G7 Em7,Ebdim7 Dm7,G7 C7@.25,B7@.25,Bb7@.5|@A1
+broadway|A1:Ebmaj7 % Ab7 % Fm7 Bb7 Ebmaj7,C7 Fm7,Bb7|A2:Ebmaj7 % Ab7 % Fm7 Bb7 Eb6 %|B:Bbm7 Eb7 Abmaj7 % Abm Db7 Gb7 B7,Bb7|@A2
+but-beautiful|A:Gmaj7 Bm7b5,E7b9 Am7 C#m7b5,F#7b9 Gmaj7 Bm7b5,E7b9 A7 %|B:D7,D7/C Bm7,Em7 Am7,D7 Gmaj7 Em7 A7 Am7 D7|@A|C:D7,D7/C Bm7,Em7 Am7@.5,F#m7b5@.25,B7@.25 Em7,E7 Bm7,E7 Am7,D7 G6,Em7 Am7,D7
+but-not-for-me|A:F7 Bb7 Ebmaj7,Ab7 Gm7,C7 F7 Bb7 Ebmaj7 Bbm7,Eb7|B:Abmaj7 Db7 Ebmaj7 C7 Fm7 % F7 Bb7|@A|C:Abmaj7 Db7 Ebmaj7,Ab7 Gm7,C7 Fm7 Bb7 Eb6 %
+bye-bye-blackbird|A:Fmaj7 Gm7,C7 Fmaj7 % Fmaj7 Am7b5,D7b9 Gm7 C7 Gm7 D7 Gm7 C7 Gm7 C7 F6 %|B:Fm7 Em7,Eb7 Dm7 D7b9 Gm7 % Db7 C7 Fmaj7 Gm7,C7 Fmaj7 Am7b5,D7b9 Gm7 C7 Fmaj7 Gm7,C7
+cantaloupe-island|Form:Fm11 % % % Db7#11 % % % Dm11 % % % Fm11 % % %
+caravan|A:C7b9 % % % % % % % % % % % Fm % % %|@A|B:F7 % % % Bb7 % % % Eb7 % % % Ab6 % G7 Db7|@A
+ceora|A:Abmaj7 Bbm7,Eb7 Abmaj7 Ebm7,Ab7 Dbmaj7 Dm7,G7 Cm7 F7 Bbm7 Eb7 Cm7 F7 Dm7 G7 Cm7,F7 Bbm7,Eb7|B:Abmaj7 Bbm7,Eb7 Abmaj7 Ebm7,Ab7 Dbmaj7 Dm7,G7 Cm7 F7alt Bbm7 Eb7 Cm7b5 F7alt Bbm7 Eb7 Abmaj7 Bbm7,Eb7
+cherokee|A1:Bb6 % Fm7 Bb7 Ebmaj7 % Ab7 % Bb6 % C7 % Cm7 G7b9 Cm7 F7#5|A2:Bb6 % Fm7 Bb7 Ebmaj7 % Ab7 % Bb6 % C7 % Cm7 F7 Bb6 %|B:C#m7 F#7 Bmaj7 % Bm7 E7 Amaj7 % Am7 D7 Gmaj7 % Gm7 C7 Cm7 F7#5|@A2
+come-rain-or-come-shine|A:Fmaj7 Em7b5,A7b9 Dm % G7 C7 Fmaj7 Cm7,F7 Bbm7 Fm7 Bbm7 Gm7,C7 Bm7b5,E7b9 Am7b5,D7b9 Am7b5,D7b9 Gm7,C7|B:Fmaj7 Em7b5,A7b9 Dm % Bm7 E7 A7 % D7 % G7 Bb7,A7b9 Dm,Bm7b5 Em7b5,A7b9 Dm Gm7,C7
+confirmation|A1:Fmaj7 Em7b5,A7b9 Dm7,G7 Cm7,F7 Bb7 Am7,D7 G7 C7b9|A2:Fmaj7 Em7b5,A7b9 Dm7,G7 Cm7,F7 Bb7 Am7,D7 Gm7,C7 Fmaj7|B:Cm7 F7 Bbmaj7 % Ebm7 Ab7 Dbmaj7 Gm7,C7alt|A3:Fmaj7 Em7b5,A7b9 Dm7,G7 Cm7,F7 Bb7 Am7,D7 Gm7,C7 Fmaj7,C7
+corcovado|A:Am6 % Abdim7 % Gm7 C7 Fdim7,Fmaj7 Fmaj7|B:Fm7 Bb7 Em7 A7b13 D7 % Dm7 G7|@A|C:Fm7 Bb7 Em7 Am7 Dm7 G7 Em7 Am7 Dm7 G7
+countdown|Form:Em7,F7 Bbmaj7,Db7 Gbmaj7,A7 Dmaj7 Dm7,Eb7 Abmaj7,B7 Emaj7,G7 Cmaj7 Cm7,Db7 Gbmaj7,A7 Dmaj7,F7 Bbmaj7 Em7 F7 Bbmaj7 A7
+darn-that-dream|A1:G6@.5,Bbm7@.25,Eb7@.25 Am7,B7#11 Em,Em/D,A7/C#,C7 Bm7b5,E7 Am7,F7 Bm7,Bbm7 Am7,D7 Bm7,Bb7,Am7,D7|A2:G6@.5,Bbm7@.25,Eb7@.25 Am7,B7#11 Em,Em/D,A7/C#,C7 Bm7b5,E7 Am7,F7 Bm7,Bbm7 Am7,D7 G6@.5,Fm7@.25,Bb7@.25|B:Ebmaj7,Cm7 Fm7,Bb7 Gm7@.5,F#m7@.25,B7@.25 Fm7,Bb7 Ebmaj7,Cm7 Gm Am7,D7 Bbm7,Eb7,Am7,D7|A3:G6@.5,Bbm7@.25,Eb7@.25 Am7,B7#11 Em,Em/D,A7/C#,C7 Bm7b5,E7 Am7,F7 Bm7,Bbm7 Am7,D7 G6@.5,Am7@.25,D7@.25
+days-of-wine-and-roses|A:Fmaj7 Eb7#11 Am7 D7b9 Gm7 % Eb9 %|B:Am7 D7 Gm7 Gm7/F Em7b5,A7b9 Dm7,G7 Gm7 C7|@A|C:Am7 Dm7,Dm7/C Bm7b5 E7b9 Am7,D7 Gm7,C7 F6 Gm7,C7
+desafinado|A1:Fmaj7 % G7#11 % Gm7 C7 Am7b5 D7b9 Gm7 A7b9 D7 D7b9 G7b9 % Gbmaj7 %|A2:Fmaj7 % G7#11 % Gm7 C7 Am7b5 D7b9 Gm7 Bbm6 Fmaj7 E7#9 Amaj7 Bbdim7 Bm7 E7|B:Amaj7 Bbdim7 Bm7 E7 Amaj7 F#m7 Bm7 E7 Cmaj7 C#dim7 Dm7 G7 Gm7 Ebm6 G7 C7b9|A3:Fmaj7 % G7#11 % Gm7 C7 Am7b5 D7b9 Gm7 Bbm6 Fmaj7 D7 G7 % Eb7 % G7 Gm7,C7 F6 C7
+dolphin-dance|Intro:Ebmaj7 Dbmaj7/Eb Ebmaj7 D,G|A:Cm Abmaj7#11 Cm7 Am7,D7 Gmaj7 Abm7 Fm Fm,G7#5 Cm % Am7 D7 Gmaj7 G7sus4 A/G Ebmaj7#11/G F7sus4 D/F F7sus4 Em7,A7|C:Fm7 Am7,D7 Bm E7,F7 C#m F#7|D:Dmaj7/E Cmaj7/E Dmaj7/E Cmaj7/E Dbmaj7/Eb Bb13b9/Eb Abmaj7#5/Eb G7#5
+donna-lee|A:Abmaj7 F7 Bb7 % Bbm7 Eb7 Abmaj7 Ebm7,Ab7 Dbmaj7 Gb7 Abmaj7 F7 Bb7 % Bbm7 Eb7|B:Abmaj7 F7 Bb7 % Gm7b5 C7b9 Fm C7b9 Fm C7b9 Fm Bdim7 Cm7,F7 Bbm7,Eb7 Abmaj7 Bbm7,Eb7
+dont-get-around-much-anymore|A1:Cmaj7@.5,Dm7@.25,Ebdim7@.25 Em7 Cmaj7@.5,B7@.25,Bb7@.25 A7 Dm7 G7 C6 G7|A2:Cmaj7@.5,Dm7@.25,Ebdim7@.25 Em7 Cmaj7@.5,B7@.25,Bb7@.25 A7 Dm7 G7 C6 Gm7,C7|B:Fmaj7 Bb7 Cmaj7 C7 Fmaj7 F#m7b5,B7b9 Em7,Ebdim7 Dm7,G7|@A1
+doxy|A:Bb7,A7 Ab7,G7 C7,F7 Bb7 Bb7,A7 Ab7,G7 C7 F7|B:Bb7 % Eb7 Edim7 Bb7,A7 Ab7,G7 C7,F7 Bb7,F7
+embraceable-you|A1:Gmaj7 Bbdim7 Am7 D7 Am7 Cm6 Gmaj7 F#m7b5,B7b9|B:Em,Em/D C#m7b5,F#7#5 Bm7 Em7,A7 Dmaj7,Bm7 Em7,A7 Am7 D7|A2:Gmaj7 Bbdim7 Am7 D7 Am7 Cm6 Gmaj7 Dm7,G7|C:Cmaj7 F#m7b5,B7b9 Em7,Emaj7/D C#m7b5,Cm6 Bm7,E7 Am7b5,D7b9 Gmaj7 Am7,D7
+equinox|Blues:C#m7 % % % F#m7 % C#m7 % A7 G#7 C#m7 %
+esp|A:E7alt % Fmaj7 % E7alt % Ebmaj7#11 % D7alt Eb7#11 E7alt Fmaj7,Ebmaj7 Dm7 G7 Gm7 Gb7|B:E7alt % Fmaj7 % E7alt % Ebmaj7#11 % D7alt Eb7#11 E7alt Fmaj7,Ebmaj7 Db7#11 Gm7 Dbm7,Gb7 Fmaj7
+fee-fi-fo-fum|A1:Eb7,D7#9 Gm7,Abmaj7 Bmaj7,D7 Dm7,G7 Eb7,D7#9 Gm7,Abmaj7 C7,F7 Bb7|B:Eb7 % Bb7 % Eb7 % Bbm7,Eb7 Am7,D7|A2:Eb7,D7#9 Gm7,Abmaj7 Bmaj7,D7 Dm7,G7 Eb7,D7#9 Dbmaj7,C7 Bmaj7 %
+fly-me-to-the-moon|A:Am7 Dm7 G7 Cmaj7 Fmaj7 Bm7b5 E7b9 Am7,A7 Dm7 G7 Cmaj7,F7 Em7,A7 Dm7 G7 Cmaj7 Bm7b5,E7b9|B:Am7 Dm7 G7 Cmaj7 Fmaj7 Bm7b5 E7b9 Am7,A7 Dm7 G7 Em7 A7 Dm7 G7 Cmaj7 Bm7b5,E7b9
+footprints|Form:Cm11 % % % Cm11 % % % Fm11 % % % Cm11 % % % F#m7b5 F7#11 E7alt A7alt Cm11 % % %
+for-heavens-sake|A:Gm7b5,C7b9 Am7,D7b9 Gm7b5,C7b9 Fmaj7,B7#11 Bbm7 Am7,Abdim7 Gm7,C7sus4 F6|@A|B:Ebm7,Ab7 Dbmaj7,Bb7b9 Ebm7,Ab7 Dbmaj7 Fm6,Dm7b5 Gdim7,C7,Fm7 Bbm7,Bbm7/Ab Gm7,C7|@A
+four|A:Ebmaj7 % Ebm7 Ab7 Fm7 % Abm7 Db7|B:Ebmaj7/G F#m7,B7 Fm7 Bb7 Ebmaj7/G F#m7,B7 Fm7 Bb7|@A|C:Ebmaj7/G F#m7,B7 Fm7 Bb7 Gm7,Gb7 Fm7,Bb7 Ebmaj7 %
+freddie-freeloader|A1:Bb7 % % % Eb7 % Bb7 % F7 Eb7 Ab7 %|A2:Bb7 % % % Eb7 % Bb7 % F7 Eb7 Bb7 %
+freedom-jazz-dance|Head:NC NC@.75,Bb7@.25 Bb7 % NC NC@.75,Bb7@.25 Bb7 % NC NC NC NC@.75,Bb7#9@.25 Bb7#9 % % %
+georgia-on-my-mind|A1:Fmaj7 Em7b5,A7b9 Dm,Dm/C G/B@.5,Bb7@.25,Eb7@.25 Am7,D7 Gm7,C7 Am7,D7 Gm7,C7#5|A2:Fmaj7 Em7b5,A7b9 Dm,Dm/C G/B@.5,Bb7@.25,Eb7@.25 Am7,D7 Gm7,C7 F6 Em7b5,A7b9|B:Dm,A7b9 Dm,Bb7 Dm,A7b9 Dm,G7/B Dm,A7b9 Dm@.5,Bdim7@.25,E7@.25 Am7,D7 Gm7,C7#5|A3:Fmaj7 Em7b5,A7b9 Dm,Dm/C G/B@.5,Bb7@.25,Eb7@.25 Am7,D7 Gm7,C7 F6 Gm7,C7
+giant-steps|Form:Bmaj7,D7 Gmaj7,Bb7 Ebmaj7 Am7,D7 Gmaj7,Bb7 Ebmaj7,F#7 Bmaj7 Fm7,Bb7 Ebmaj7 Am7,D7 Gmaj7 C#m7,F#7 Bmaj7 Fm7,Bb7 Ebmaj7 C#m7,F#7
+good-bait|A1:Bb6,Gm7 Cm7,F7 Bb6,Gm7 Cm7,F7 Bbmaj7,Bb7 Ebmaj7,Ab7 Dm,Db7,Cm,B7 Bb6,F7alt|A2:Bb6,Gm7 Cm7,F7 Bb6,Gm7 Cm7,F7 Bbmaj7,Bb7 Ebmaj7,Ab7 Dm,Db7,Cm,B7 Bb6,Bb7#5|B:Eb6,Cm7 Fm7,Bb7 Eb6,Cm7 Fm7,Bb7 Ebmaj7,E7 Abm7,Db7 Gm,Gb7,Fm,E7 Eb6,F7|@A1
+groovin-high|A1:Ebmaj7 % Am7 D7 Ebmaj7 % Gm7 C7 F7 % Fm7 Bb7 Gm7 F#m7 Fm7 Bb7|A2:Ebmaj7 % Am7 D7 Ebmaj7 % Gm7 C7 F7 % Fm7 Bb7 Fm7 Abm7,Db7 Eb6 Fm7,Bb7
+half-nelson|Form:Cmaj7 % Fm7 Bb7 Cmaj7 % Bm7,E7 Bbm7,Eb7 Abmaj7 % Am7 D7 Dm7 G7 Cmaj7,Ebmaj7 Abmaj7,Dbmaj7
+have-you-met-miss-jones|A1:Fmaj7 D7 Gm7 C7 Am7 D7 Gm7 C7|A2:Fmaj7 D7 Gm7 C7 Am7 D7 Cm7 F7|B:Bbmaj7 Abm7,Db7 Gbmaj7 Em7,A7 Dmaj7 Abm7,Db7 Gbmaj7 Gm7,C7|A3:Fmaj7,Bb7 Am7,D7 Gm7 C7 Am7,D7 Gm7,C7 F6 Gm7,C7
+heres-that-rainy-day|A:Gm,GmMaj7/F# Fm6,Bb7 Ebmaj7 Abmaj7 Am7 D7 Gmaj7 Dm7,G7 Cm7 F7 Bbmaj7 Ebmaj7 Am7 D7 Gmaj7,Em7 Am7,D7|B:Gm,GmMaj7/F# Fm6,Bb7 Ebmaj7 Abmaj7 Am7 D7 Gmaj7 Dm7,G7 Cmaj7 Am7,D7 Bm7,Em7 A7 Am7 D7 G6,Em7 Am7,D7
+honeysuckle-rose|A1:Gm7,C7 Gm7,C7 Gm7,C7 Gm7,C7 F6,F7/A Bb6,C7 F6,Bb7 Am7,D7|A2:Gm7,C7 Gm7,C7 Gm7,C7 Gm7,C7 F6,F7/A Bb6,C7 F6 %|B:F7 % Bb6 % G7 % C7 %|@A1
+hot-house|A:Gm7b5 C7b9 FmMaj7 % Dm7b5 G7b9 Cmaj7 %|@A|B:Cm7 F7b9 Bbmaj7 % Ab7b9 % G7b9 %|@A
+how-deep-is-the-ocean|A:Cm7 Dm7b5,G7b9 Cm7 Am7b5,D7b9 Gm7 Am7b5,D7b9 Gm7,Gb7 Fm7,Bb7|B:Eb7 % Ab7 % B7 % Bb7 Dm7b5,G7b9|@A|C:Ebmaj7 Gm7,C7b9 Fm7 Abm7,Db7 Ebmaj7,G7 Cm7,F7 Fm7,Bb7 Eb6,G7b9
+how-high-the-moon|A:Gmaj7 % Gm7 C7 Fmaj7 % Fm7 Bb7 Ebmaj7 Am7b5,D7b9 Gm7 Am7b5,D7b9 Gmaj7 Em7 Am7 D7|B:Gmaj7 % Gm7 C7 Fmaj7 % Fm7 Bb7 Ebmaj7 Am7b5,D7b9 Gmaj7 Am7,D7 Bm7,Em7 Am7,D7 G6 Am7,D7
+how-insensitive|A:Dm % C#dim7 % Cm6 % G7/B % Bbmaj7 % Ebmaj7#11 % Em7b5 A7b9 Dm Dm@.5,Db7@.5|B:Cm6 % Bdim7 % Bbmaj7 Em7b5,A7b9 Dm Dm,Db7 Cm7 F7 Bm7 E7b9 Bbmaj7 A7b9 Dm %
+i-cant-get-started|A1:Cmaj7,Am7 Dm7,G7 Bm7,E7,Bbm7,Eb7 Am7,D7,Abm7,Db7 Cmaj7,Am7 Dm7,G7b9 E7,A7 D7,G7|A2:Cmaj7,Am7 Dm7,G7 Bm7,E7,Bbm7,Eb7 Am7,D7,Abm7,Db7 Cmaj7,Am7 Dm7,G7b9 Cmaj7 %|B:Em7,A7 Em7,A7 Dmaj7 % Dm7,G7 Dm7,G7 Em7,Ebdim7 Dm7,G7sus4|A3:Cmaj7,Am7 Dm7,G7 Bm7,E7,Bbm7,Eb7 Am7,D7,Abm7,Db7 Cmaj7,A7#5 Dm7,G7 C6,A7 D7,G7
+i-could-write-a-book|A:Cmaj7,Am7 Dm7,G7 Cmaj7,Am7 Dm7,G7 Cmaj7,Dm7 Em7,A7#9 Dm7 Bm7b5,E7b9|B:Am7 Ab7,G7 F#m7b5,B7b9 Em7,A7 Am7 D7 Dm7 G7|@A|C:Am7 Ab7 Gm7b5,C7b9 Fmaj7,Bb7 Em7,A7 Dm7,G7 C6 Dm7,G7
+i-got-rhythm|A1:Bb6,Gm7 Cm7,F7 Dm7,Gm7 Cm7,F7 Bb7,Bb7/D Eb7,Edim7 Bb6/F,F7 Bb6,F7|A2:Bb6,Gm7 Cm7,F7 Dm7,Gm7 Cm7,F7 Bb7,Bb7/D Eb7,Edim7 Bb6/F,F7 Bb6|B:D7 % G7 % C7 % F7 %|A3:Bb6,Gm7 Cm7,F7 Dm7,Gm7 Cm7,F7 Bb7,Bb7/D Eb7,Edim7 Bb6/F,Eb9 Dm7,G7 Cm7,F7 Bb6
+i-hear-a-rhapsody|A1:Cm7 Fm7,Bb7 Ebmaj7,Ab7 Gm7b5,C7b9 Fm7,Abm7 Bm7,Bb7 Ebmaj7 Dm7b5,G9#5|A2:Cm7 Fm7,Bb7 Ebmaj7,Ab7 Gm7b5,C7b9 Fm7,Abm7 Bm7,Bb7 Ebmaj7 Am7b5,D7b9|B:Gm7 Am7b5,D7b9 Gm7 Cm7,F7 Bbmaj7 Fm7 Dm7b5,G7b9 G9#5|@A1
+i-love-you|A:Gm7b5 C7b9 Fmaj7 % Gm7 C7 Fmaj7 % Gm7b5 C7b9 Fmaj7 Bm7,E7 Amaj7 Bm7,E7 Amaj7 %|B:Gm7 C7 Fmaj7 % Am7b5 D7b9 Gm7 C7 Gm7b5 C7b9 Fmaj7 Am7b5,D7b9 G7 C7 F6 %
+i-mean-you|Intro:Eb7 % % %|A:F6 % Db7 D7 Gm7 C7 F6 %|@A|B:Eb7 % F6 % Db7 % Gb7 %|@A
+i-remember-you|A1:Fmaj7 Bm7,E7 Fmaj7 Cm7,F7 Bbmaj7 Bbm7,Eb7 Am7,D7 Gm7,C7|A2:Fmaj7 Bm7,E7 Fmaj7 Cm7,F7 Bbmaj7 Bbm7,Eb7 Fmaj7 Cm7,F7|B:Bbmaj7 Em7,A7 Dmaj7 Em7,A7 Dmaj7 Dm7,G7 Cmaj7 Gm7,C7|A3:Fmaj7 Bm7,E7 Fmaj7 Cm7,F7 Bbmaj7 Bbm7,Eb7 Am7,D7 Bm7,E7 Am7,D7 Gm7,C7 F6 Gm7,C7
+i-should-care|A1:Dm7,G7 Em7,A7 Dm7,G7 Cmaj7 Em7b5 A7 Dm F,Bb7|B:Cmaj7 Bm7b5,E7b9 Gm7,C7 Fmaj7 Bm7b5,E7b9 Am Am7,D7 Dm7,G7|A2:F#m7b5,B7b9 Em7,A7 Dm7,G7 Cmaj7 Em7b5 A7 Dm7 F,Bb7|C:C6 Bm7b5,E7b9 Dm7 G7 Dm7 G7 C6,F7 Em7,A7
+i-thought-about-you|A:Bm7b5,Bb7#11 Am7,D7b13 G7,Ab7 G7 Gm7,Gm7/F Em7b5,A7b9 D7 C7,F7 Bbmaj7 Bbm7,Eb7 Fmaj7 % Bm7b5,E7b9 Ab7 Gm7 C7|B:Bm7b5,Bb7#11 Am7,D7b13 G7,Ab7 G7 Gm7,Gm7/F Em7b5,A7b9 D7 C7,F7 Bbmaj7 Bbm7,Eb7 Fmaj7,Dm7 Bm7b5,Bb7#11 Am7,D7 Gm7,C7 F6 Gm7,C7
+i-wish-i-knew-how-it-would-feel-to-be-free|Form:F,A7 Dm,Cm7 Bb,C7sus4 F F@.5,Bb@.25,F/A@.25 F@.5,C/E@.25,F@.25 C/E,G7 C7 F,A7 Dm,Cm7 Bb,C7sus4 F,Bdim7 F/C,C#dim7 Dm,Bdim7 F/C,C7sus4 F
+if-i-were-a-bell|A:G7 C7 Fmaj7 % Am7b5 D7 G7 C7|B:F6,F7/A Bb6,C7 F6 Em7b5,A7 Dm7,Dm7/C Bm7b5,E7 Amaj7 Gm7,C7|@A|C:F6,F7/A Bb6,Bdim7 F6/C,Bb7 Am7b5,D7 Gm7 C7 F6 Am7b5,D7
+ill-remember-april|A:Gmaj7 G6 Gmaj7 G6 Gm7 Gm6 Gm7 Gm6 Am7b5 D7b9 Bm7b5 E7b9 Am7 D7 Gmaj7 %|B:Cm7 F7 Bbmaj7 Gm7 Cm7 F7 Bbmaj7 % Am7 D7 Gmaj7 % F#m7 B7 Emaj7 Am7,D7|@A
+impressions|A:Dm11 % % % Dm11 % % %|@A|B:Ebm11 % % % Ebm11 % % %|@A
+in-a-mellow-tone|A:Bb7 Eb7 Ab6 % Ebm7 Ab7 Dbmaj7 %|B:Db6 Gb7 Ab6 F7 Bb7 % Eb7 F7|@A|C:Db7 Ddim7 Ab6/Eb F7 Bb7 Eb7 Ab6 F7
+in-a-sentimental-mood|A1:Dm,DmMaj7 Dm7,Dm6 Gm,GmMaj7 Gm7@.5,Gm7@.25,A7@.25 Dm D9#5 Gm7,C7b9 F6@.5,Edim7@.25,A7@.25|A2:Dm,DmMaj7 Dm7,Dm6 Gm,GmMaj7 Gm7@.5,Gm7@.25,A7@.25 Dm D9#5 Gm7,C7b9 F6@.5,Ebm7@.25,Ab7@.25|B:Dbmaj7,Bbm7 Ebm7,Ab7 Db6,Bb7#5 Ebm7,Ab7 Dbmaj7,Bbm7 Ebm7,Ab7 Gm7 C7|@A1
+in-your-own-sweet-way|A:Am7b5,D7b9 Gm7,C7 Cm7,F7 Bb7,Ebmaj7 Abm7,Db7 Gbmaj7,Bmaj7 F7alt,B7 Bb7,Eb6|@A|B:Em7,A7 Dmaj7 Em7,A7 Dmaj7 Dm7,G7 Em7,A7 Dm7b5,Ab7 G7,C7|@A|C:Ab7sus4 % % % Ab7sus4 % % %
+inner-urge|Form:F#m7b5 % % % Fmaj7#11 % % % Ebmaj7#11 % % % Dbmaj7#11 % % % Emaj7#11 Dbmaj7#11 Dmaj7#11 Bmaj7#11 Cmaj7 Amaj7 Bbmaj7 Gmaj7
+invitation|A:Cm7 % % % Cm7 F7 Bb7 % Ebm7 % % % Ebm7 Ab7 Db7#11 %|B:C#m7 F#7,F#7alt Bm7 % Bm7 E7,E7alt Am7 % Am7 D7,D7alt Gm7 % Em7b5 Eb7 D7alt G7alt
+it-could-happen-to-you|A:Ebmaj7 Edim7 Fm7 F#dim7 Ebmaj7 Abmaj7 Gm7b5 C7b9|B:Fm7 Bb7 Ebmaj7 Dm7b5,G7b9 Cm7 F7 Fm7 Bb7|@A|C:Fm7 Bb7 Ebmaj7,Ab7 Gm7b5,C7b9 Fm7 Bb7 Ebmaj7,C7 Fm7,Bb7
+it-dont-mean-a-thing|A1:Gm,Gm/F# Gm/F,C7/E Eb7,D7 Gm C7 C#dim7 Bb6/D D7b5|A2:Gm,Gm/F# Gm/F,C7/E Eb7,D7 Gm C7 F7 Bb6 %|B:Fm7 Bb7 Eb6 % Gm7 C7 F7 D7|A3:Gm,Gm/F# Gm/F,C7/E Eb7,D7 Gm C7 C#dim7 Bb6 %
+it-had-to-be-you|A1:Gmaj7,D7#5 Gmaj7,F7 E7,Bm7 E7 A7,Em7 A7,Em7 A7,Em7 A7|B:D7 F#m7b5,B7b9 Em7,B7b9 Em7,Bb7#11 A7,Em7 A7 Am7 D7,D7#5|A2:Gmaj7,D7#5 Gmaj7,F7 E7,Bm7 E7 A7,Em7 A7,Em7 A7,Em7 A7@.5,Dm7@.25,G7@.25|C:Cmaj7 F7 Gmaj7,B7b9 Em7,Ebdim7 D7/A,Abdim7 D7/A,D7 G6,E7 Am7,D7
+it-might-as-well-be-spring|A1:Gmaj7 Am7 Bm7,E7 Am7,D7 Gmaj7 % Dm7 G7 Cmaj7 C#dim7,F#7b9 Bm7 E7 Am7 D7 Bm7,Em7 Am7,D7|A2:Gmaj7 Am7 Bm7,E7 Am7,D7 Gmaj7 % Dm7 G7 Cmaj7 C#dim7,F#7b9 Bm7 E7 Am7 D7 Gmaj7 Dm7,G7|B:Cmaj7 Am7 Dm7 G7 Dm7 G7 Cmaj7 Bdim7,E7 Am7 Am7/G F#m7b5 B7b9 Em7 A7 Am7 D7|A3:Gmaj7 Am7 Bm7,E7 Am7,D7 Gmaj7 % Dm7 G7 Cmaj7 C#dim7,F#7b9 Bm7 E7 Am7 D7 Bm7 E7 Am7 % Cm7 F7 Gmaj7,Gmaj7/F# Em7,Em7/D C#dim7 Cm6 Bm7 E7 Am7 D7 Gmaj7 % Am7 D7
+its-you-or-no-one|A1:Gm7 C7 Fmaj7,Bb7 Am7,D7 Gm7 C7 Fmaj7 %|B:Bbm7 Eb7 Abmaj7 % Cmaj7,Am7 Dm7,G7 Gm7 C7|A2:Gm7 C7 Fmaj7,Bb7 Am7,D7 Gm7 C7 Am7b5 D7b9|C:Bdim7 Bbm7,Eb7 Am7,Dm7 Abm7,Db7 Gm7 C7 F6 Am7,D7
+joy-spring|A1:Fmaj7 Gm7,C7 Fmaj7 Bbm7,Eb7 Am7,Ab7 Gm7,C7 Fmaj7 Abm7,Db7|B:Gbmaj7 Abm7,Db7 Gbmaj7 Bm7,E7 Bbm7,A7 Abm7,Db7 Gbmaj7 Am7,D7|C:Gmaj7 Gm7,C7 Fmaj7 Fm7,Bb7 Ebmaj7 Abm7,Db7 Gbmaj7 Gm7,C7|A2:Fmaj7 Gm7,C7 Fmaj7 Bbm7,Eb7 Am7,Ab7 Gm7,C7 Fmaj7 Gm7,C7
+just-friends|A:Cmaj7 % Cm7 F7 Gmaj7 % Bbm7 Eb7 Am7 D7 Gmaj7 Em7 A7 % Am7 D7,G7|B:Cmaj7 % Cm7 F7 Gmaj7 % Bbm7 Eb7 Am7 D7 F#m7b5,B7b9 Em7 A7 Am7,D7 G6 Dm7,G7
+killer-joe|A:C9 Bb9#11 C9 Bb9#11 C9 Bb9#11 C9 Bb9#11|@A|B:Em7b5 A7b9 Ebm7 Ab7 A7 Ab7 Em7 A7|@A
+lady-bird|Form:Cmaj7 % Fm7 Bb7 Cmaj7 % Bbm7 Eb7 Abmaj7 % Am7 D7 Dm7 G7 Cmaj7,Ebmaj7 Abmaj7,Dbmaj7
+laura|A:Am9 D7b9 G6 % Gm9 C7b9 Fmaj7 %|B:Fm7 Bb7sus4,Bb7b9 Ebmaj7 Cm7 Am7b5,D7b5 D7b5,D7 Gmaj7 E7b13|@A|C:Fm7,Fm7/Eb Dm7b5,G7b9 Cmaj7,Am7 D7 D7b9 G7 C6 Bm7b5,E7b9
+lazy-bird|A1:Am7,D7 Cm7,F7 Fm7 Bb7 Ebmaj7 Am7,D7 Gmaj7 Abm7,Db7|A2:Am7,D7 Cm7,F7 Fm7 Bb7 Ebmaj7 Am7,D7 Gmaj7 %|B:Bm7 E7 Amaj7 Bbm7,Eb7 Am7 D7 Gmaj7 Abm7,Db7|@A2
+like-someone-in-love|A:Ebmaj7,G7/D Cm7,Cm7/Bb Am7b5,Ab7 Gm7,C7 Fm7 Am7,D7 Gm7 Bbm7,Eb7|B:Abmaj7 Dm7,G7 Cmaj7 % Cm7 F7 Fm7 Bb7#5|@A|C:Abmaj7 Dm7,G7 Cmaj7 F#dim7 Gm7,C7 Fm7,Bb7 Eb6 Fm7,Bb7
+little-sunflower|A:Dm7 % % % % % % %|@A|B:Ebmaj7 % % % Dmaj7 % % %|@B|@A|@A
+love-for-sale|A:Ebmaj7 % Bbm7 % Ebmaj7 % Bbm7 % Ebm7 Ab7 Dbmaj7 Gb7 Cm7b5 F7b13 Bbm6 %|@A|B:Ebm7 Ab7 Dbmaj7 Bb7 Ebm7 Ab7 Dbmaj7 % Bb7 Bm7,Bb7 Ebm6 % Gm7b5,C7b9 Gm7b5,C7b9 F#m7,B7 Fm7b5,Bb7|@A
+lover-man|A1:Dm7,G7 Dm7,G7 Gm7,C7 Gm7,C7 F7 Bb7 Abm7,Db7,Gm7,C7 Fmaj7@.5,Edim7@.25,A7@.25|A2:Dm7,G7 Dm7,G7 Gm7,C7 Gm7,C7 F7 Bb7 Abm7,Db7,Gm7,C7 Fmaj7,E7b9|B:Am,AmMaj7 Am7,D7 Gmaj7,Am7 Bm7@.5,Am7@.25,D7@.25 Gm,GmMaj7 Gm7,C7 Fmaj7 Em7b5,A7b9|A3:Dm7,G7 Dm7,G7 Gm7,C7 Gm7,C7 F7 Bb7 Abm7,Db7,Gm7,C7 Fmaj7
+lullaby-of-birdland|A1:Gm,Em7b5 A7,D7 Gm Cm7,F7 Dm7,Gm7 Cm7,F7 Bbmaj7 Am7b5,D7b9|A2:Gm,Em7b5 A7,D7 Gm Cm7,F7 Dm7,Gm7 Cm7,F7 Bbmaj7,F7 Bbmaj7|B:Dm7b5,G7b9 Cm7 Cm7,F7b9 Bbmaj7 Dm7b5,G7b9 Cm7 Cm7,F7b9 Bbmaj7,D7b9|A3:Gm,Em7b5 A7,D7 Gm Cm7,F7 Dm7,Gm7 Cm7,F7 Bbmaj7,F7 Bbmaj7@.5,Am7b5@.25,D7@.25
+mack-the-knife|Form:Bb6 % Cm7 % F7 % Bb6 % Gm7 % Cm7 % Cm7 Cm7,F7 Bb6 %
+maiden-voyage|A:D9sus4 % % % F9sus4 % % %|@A|B:Eb9sus4 % % % C#m9 % % %|@A
+meditation|A:C6 % B7sus4 B7 C6 % Em7 A7b13 Dm7 % Fm6 % Em7 A7b13 Dm7 G7#5|@A|B:Fmaj7 % Fm6 % Em7 Ebdim7 Dm7 G7#5|@A
+mercy-mercy-mercy|A:Bb7 Eb7 Bb7 Eb7 Bb7 Eb7 Bb7 Eb7|B:Bb,Eb/Bb Bb7,Eb/Bb Bb,Eb/Bb Bb7,Eb/Bb Bb@.5,Bb/D@.25,Eb@.25 F7sus4 Bb@.5,Bb/D@.25,Eb@.25 F7sus4 Cm7 Dm7 Gm,F,Gm,F Gm
+milestones|A:Gm7 % % % % % % %|@A|B:Am % % % % % % % % % % % % % % %|@A
+misty|A1:Ebmaj7 Bbm7,Eb7 Abmaj7 Abm7,Db7 Ebmaj7,Cm7 Fm7,Bb7 Gm7,C7 Fm7,Bb7|A2:Ebmaj7 Bbm7,Eb7 Abmaj7 Abm7,Db7 Ebmaj7,Cm7 Fm7,Bb7 Eb6 %|B:Bbm7 Eb7b9 Abmaj7 % Am7 D7,F7 Gm7b5,C7 Fm7,Bb7|A3:Ebmaj7 Bbm7,Eb7 Abmaj7 Abm7,Db7 Ebmaj7,Cm7 Fm7,Bb7 Eb6 Fm7,Bb7
+moanin|A1:Fm7,Ab7 G9,Gb9/C Fm7,Ab7 G9,Gb9/C Fm7,Ab7 G9,Gb9/C Fm7,Ab7 G9,Gb9/C|A2:Fm7,Ab7 G9,Gb9/C Fm7,Ab7 G9,Gb9/C Fm7,Ab7 G9,Gb9/C Fm7,Gm7 Ab6@.5,Ab9@.25,Adim7@.25|B:Bbm7,Ab9 G7b9,C7#9 Fm7 Fm7#5 Bbm7,Ab9 G7b9 Gm7b5 C7#9|@A1
+moments-notice|A:Em7,A7 Fm7,Bb7 Ebmaj7 Abm7,Db7 Dm7,G7 Ebm7,Ab7 Dbmaj7 Dm7,G7 Cm7,B7 Bbm7,Eb7 Abmaj7 Abm7,Db7|B1:Gm7,C7 Abm7,Db7 Gb6 Fm7,Bb7|@A|B2:Gm7,C7 Fm7,Bb7 Eb6/Bb Fm7/Bb Gm7/Bb Fm7/Bb Eb6/Bb,Fm7/Bb Gm7/Bb,Fm7/Bb Eb6,NC NC
+mood-indigo|A:Abmaj7 Bb7 Ebm7,Eb7#5 Abmaj7 Abmaj7 Bb7 E7 Eb7 Abmaj7 A7 Db6 Gb7 Abmaj7 Bb7 Ebm7,Eb7#5 Abmaj7|B:Abmaj7,F7 Bb7 Bbm7,Eb7 Abmaj7,Eb7 Abmaj7,F7 Bb7 E7 Eb7 Abmaj7 A7 Db6 Gb7 Abmaj7,F7 Bb7 Bbm7,Eb7 Ab6,Eb7
+moonglow|A:Cmaj7 F7#11 G6/B,Em7 A7 Am7 D7 G6,Gdim7 Am7b5/G@.5,Gdim7@.25,G6@.25|@A|B:G7 G7@.5,Gb7@.25,F7@.25 E7 % A7 % D7,Eb7 D7,G7|@A
+moonlight-in-vermont|A:Eb6,Cm7 Fm7,Bb7 Eb6,Cm7 Db7 Fm7,Bb7sus4 Eb6|@A|B:Am7,D7 Gmaj7,Em7 Am7,D7 Gmaj7 Bbm7,Eb7 Abmaj7,Fm7 Bbm7,Eb7 Abmaj7,Bb7b9|@A
+mr-pc|Blues:Cm7 % % % Fm7 % Cm7 % Ab7 G7b13 Cm7 %
+my-favourite-things|A:Em7 F#m7 Em7 F#m7 Cmaj7 % % % Am7 D7 Gmaj7 Cmaj7 Gmaj7 Cmaj7 F#m7b5 B7b9|@A|B:Emaj7 F#m7 Emaj7 F#m7 Amaj7 % % % Am7 D7 Gmaj7 Cmaj7 Gmaj7 Cmaj7 F#m7b5 B7b9|C:Em7 % F#m7b5 B7b9 Em7 % Cmaj7 % Cmaj7 % A7 % Gmaj7 Cmaj7 % D7 G6 Cmaj7 G6 Cmaj7 Gmaj7 Cmaj7 F#m7b5 B7b9
+my-foolish-heart|A1:Bbmaj7,Ebmaj7 Dm7,G7 Cm7 Em7,A7b9 Bbmaj7,D7#9 Gm7 Cm7 Cm7,F7b9|B:Bbmaj7 Fm7,Bb7 Eb6 Am7b5,D7b9 Gm7,D7b13 Gm7,C7 Cm7,G7 Cm7,F7|A2:Bbmaj7,Ebmaj7 Dm7,G7 Cm7 Em7,A7b9 Bbmaj7,D7b9 Gm7 Cm7,Cm7/Bb Am7b5,D7b9|C:Gm7 Ebm7,Ab7 Bbmaj7,Ebmaj7 Ab7,G7 Cm7,G7 C7,F7 Bbmaj7,G7 Cm7,F7sus4
+my-funny-valentine|A1:Cm6 Dm7b5,G7b9 Cm7 F7 Abmaj7 Fm7 Dm7b5 G7b9|A2:Cm6 Dm7b5,G7b9 Cm7 F7 Abmaj7 Fm7 Fm7b5 Bb7|B:Ebmaj7,Fm7 Gm7,Fm7 Ebmaj7,Fm7 Gm7,Fm7 Ebmaj7,G7b9 Cm7,B7,Bbm7,A7 Abmaj7 Dm7b5,G7b9|C:Cm6 Dm7b5,G7b9 Cm7,B7 Bbm7,Eb7 Abmaj7 Dm7b5,G7b9 Cm7,B7 Bbm7,Eb7 Abmaj7 Fm7,Bb7 Eb6 Dm7b5,G7b9
+my-little-suede-shoes|A:Fm7,Bb7 Ebmaj7 Fm7,Bb7 Ebmaj7 Fm7,Bb7 Gm7,C7 Fm7,Bb7 Ebmaj7|@A|B:Abmaj7 Gm7,C7 Fm7,Bb7 Ebmaj7 Abmaj7 Gm7,C7 Fm7,Bb7 Ebmaj7|@A
+my-one-and-only-love|A1:Cmaj7,Am7 Dm7@.5,G7@.25,G#dim7@.25 Am7,Fmaj7 Em7,A7 Dm7@.5,G7@.25,G#dim7@.25 Am7,D7 Dm7,G7 Em7,A7,Dm7,G7|A2:Cmaj7,Am7 Dm7@.5,G7@.25,G#dim7@.25 Am7,Fmaj7 Em7,A7 Dm7@.5,G7@.25,G#dim7@.25 Am7,D7 Dm7,G7 C6@.5,F#m7b5@.25,B7@.25|B:Em7 F#m7b5,B7b9 Em7 F#m7b5,B7b9 Em,EmMaj7 Em7,A7 Dm7,A7 Dm7,G7|A3:Cmaj7,Am7 Dm7@.5,G7@.25,G#dim7@.25 Am7,Fmaj7 Em7,A7 Dm7@.5,G7@.25,G#dim7@.25 Am7,D7 Dm7,G7 C6,G7
+my-romance|A:Cmaj7,Fmaj7 Em7,Ebdim7 Dm7,G7 Cmaj7,E7 Am7,E7 Am7,A7 Dm7,G7 Cmaj7,G7|B:Fmaj7,Bb7 Cmaj7,C7 Fmaj7,Bb7 Cmaj7 F#m7b5,B7b9 Em7,Bb7 Am7,D7 Dm7,G7|@A|C:Fmaj7,A7 Dm7,Dm7/C Bm7b5,E7b9 Am7,Ab7 Cmaj7/G,Am7 Dm7,G7 C6,Am7 Dm7,G7
+my-shining-hour|A:Ebmaj7 Cm7 Fm7 Bb7 Ebmaj7 Cm7 Dm7b5 G7b9 Cm7 % Dm7b5 G7b9 Cm7 F7 Fm7 Bb7|B:Bbm7 Eb7 Abmaj7 % Abm7 Db7 Eb6/G,Gbdim7 Fm7,Bb7 Ebmaj7 % Ebmaj7,Fm7 Gm7,Gbdim7 Fm7 Bb7 Eb6 Fm7,Bb7
+nardis|A:Em7 Fmaj7 B7 Cmaj7 Am7 Fmaj7 Emaj7 Em7|@A|B:Am7 Fmaj7 Am7 Fmaj7 Dm7 G7 Cmaj7 Fmaj7|@A
+nicas-dream|A:BbmMaj7 % AbmMaj7 % BbmMaj7 % Abm7 Db7 Abm7 Db7 Gbmaj7 C7#9#5 F7#5 % BbmMaj7 %|@A|B:Ab7sus4 % Fm7b5 Bb7#5 Ebm7 Ab7 Dbmaj7 Em7,A7 Ab7sus4 % Fm7b5 Bb7#5 Ebm7 Ab7 Dbmaj7 Cm7b5,F7b9|@A
+night-and-day|A1:Abmaj7 G7 Cmaj7 % Abmaj7 G7 Cmaj7 % F#m7b5 Fm7 Em7 Ebdim7 Dm7 G7 Cmaj7 %|A2:Abmaj7 G7 Cmaj7 % Abmaj7 G7 Cmaj7 % F#m7b5 Fm7 Em7 Ebdim7 Dm7 G7 Cmaj7 Bb7|B:Ebmaj7 % Cmaj7 % Ebmaj7 % Cmaj7 % F#m7b5 Fm7 Em7 Ebdim7 Dm7 G7 C6 %
+night-in-tunisia|A:Eb7 Dm Eb7 Dm Eb7 Dm Em7b5,A7b9 Dm|@A|B:Am7b5 D7b9 Gm7 % Gm7b5 C7b9 Fmaj7 Em7b5,A7b9|@A
+nows-the-time|Blues:F7 Bb7 F7 Cm7,F7 Bb7 Bdim7 F7 Am7,D7 Gm7 C7 F7,D7 Gm7,C7
+oleo|A1:Bbmaj7,G7 Cm7,F7 Dm7,G7 Cm7,F7 Fm7,Bb7 Eb7,Ab7 Dm7,G7 Cm7,F7|A2:Bbmaj7,G7 Cm7,F7 Dm7,G7 Cm7,F7 Fm7,Bb7 Eb7,Ab7 Cm7,F7 Bb6|B:D7 % G7 % C7 % F7 %|@A2
+on-green-dolphin-street|A:Ebmaj7 % Ebm7 % F7/Eb Emaj7/Eb Ebmaj7 C7|B:Fm7 Bb7alt Ebmaj7 % Abm7 Db7alt Gbmaj7 Fm7,Bb7|@A|C:Fm7,Fm7/Eb Dm7b5,G7b9 Cm7,Cm7/Bb Am7b5,D7b9 Gm7,C7 Fm7,Bb7 Eb6 Fm7,Bb7
+on-the-sunny-side-of-the-street|A1:C6 E7 Fmaj7 C6/G,E7b9/G# Am7 D7 Dm7,G7 Em7,A7,Dm7,G7|A2:C6 E7 Fmaj7 C6/G,E7b9/G# Am7 D7 Dm7,G7 C6|B:Gm7 C7 Fmaj7 % Am7 D7 Dm7 G7|A3:C6 E7 Fmaj7 C6/G,E7b9/G# Am7 D7 Dm7,G7 C6,G7
+once-i-loved|A1:Gm7 C7#5 Fmaj7 F#dim7 Gm7 G#dim7 Am7 Am7/G Fm7 Bb7#5 Ebmaj7 % Em7b5 A7b9 Dmaj7 D7b9|A2:Gm7 C7#5 Fmaj7 F#dim7 Gm7 G#dim7 Am7 Am7/G Fm7 Bb7#5 Ebmaj7 % Em7b5 A7b9 Dmaj7 G7|B:Cmaj7 F7 Bbmaj7 % Bdim7 Bbm6 Am6 Ab7#11 G7 Gm7,A7b9 Dm6 %
+one-note-samba|A:Dm7 Db7 Cm7 B7#11 Dm7 Db7 Cm7 B7#11 Fm7 Bb7 Ebmaj7 Ab7 Dm7 Db7 Cm7,B7#11 Bb6|B:Ebm7 Ab7 Dbmaj7 % C#m7 F#7 Bmaj7 Cm7b5,F7|C:Dm7 Db7 Cm7 B7#11 Dm7 Db7 Cm7 B7#11 Fm7 Bb7 Ebmaj7 Ab7 Db6 C7 Bmaj7 Bb6
+ornithology|A:Gmaj7 % Gm7 C7 Fmaj7 % Fm7 Bb7|B:Ebmaj7 Am7b5,D7b9 Gm7 Am7b5,D7b9 Bm7 Em7 Am7 D7|@A|C:Ebmaj7 Am7b5,D7b9 Gmaj7 Am7,D7 Bm7,Em7 Am7,D7 G6 Am7,D7
+our-love-is-here-to-stay|A:G7 Gm7,C7 F6,Bb7 Am7,D7 G7 Gm7,C7 Eb7,D7 Bm7,E7|B:Am7,D7 Gm7,C7 Fmaj7,Bbmaj7 Em7b5,A7 Dm7 G7 Gm7 C7,D7|@A|C:Am7,D7 Gm7,C7 Eb7,D7 Gm7,G#dim7 Am7,D7 Gm7,C7 F6 D7
+out-of-nowhere|A:Gmaj7 % Bbm7 Eb7 Gmaj7 % Bm7 E7b9 Bm7 E7b9 Am7 % Eb7 % Am7 D7|B:Gmaj7 % Bbm7 Eb7 Gmaj7 % Bm7 E7b9 Bm7 E7b9 Am7 Cm6 Bm7,Bbm7 Am7,D7 G6 Am7,D7
+peace|Form:Am7b5,D7b9 Gm7,C7 Bmaj7@.5,Cm7b5@.25,F7@.25 Bbmaj7 Bm7,E7 Amaj7,F#m7 Ebm7b5,Ab7 Dbmaj7 C7alt,B7#11 Bbmaj7
+perdido|A1:Cm7 F7 Bb6 Dm7,G7 Cm7 F7 Bb6 Dm7,G7|A2:Cm7 F7 Bb6 Dm7,G7 Cm7 F7 Bb6 %|B:D7 % G7 % C7 % F7 %|@A1
+polka-dots-and-moonbeams|A1:Fmaj7,Dm7 Gm7,C7 Fmaj7,Dm7 Gm7@.5,Edim7@.25,A7@.25 Dm,Db7 Dm7/C@.5,Am7@.25,Abm7@.25 Gm7,C7 Am7,Dm7,Gm7,C7|A2:Fmaj7,Dm7 Gm7,C7 Fmaj7,Dm7 Gm7@.5,Edim7@.25,A7@.25 Dm,Db7 Dm7/C@.5,Am7@.25,Abm7@.25 Gm7,C7 F6@.5,Bdim7@.25,E7@.25|B:Amaj7,A#dim7 Bm7,E7 Amaj7,F#m7 Bm7,E7 Amaj7,A#dim7 Bm7,E7 Am7,D7 Gm7,C7|A3:Fmaj7,Dm7 Gm7,C7 Fmaj7,Dm7 Gm7@.5,Edim7@.25,A7@.25 Dm,Db7 Dm7/C@.5,Am7@.25,Abm7@.25 Gm7,C7 F6@.5,Gm7@.25,C7@.25
+prelude-to-a-kiss|A1:D9,G9 C7,Fmaj7 B9,E9 A7,Dm7 G7,G#dim7 Am7,D13 Dm7,G7b9 Cmaj7@.5,Em7@.25,A7@.25|A2:D9,G9 C7,Fmaj7 B9,E9 A7,Dm7 G7,G#dim7 Am7,D13 Dm7,G7b9 Cmaj7@.5,F#dim7@.25,B7@.25|B:Emaj7,C#m7 F#m7b5,B7 G#m7,Gdim7 F#m7,B7 Emaj7,C#m7 F#m7b5,B7 Em7,A7 Dm7,Ebm7,Em7,Eb7|@A1
+recordame|Form:Am % % % Cm % % Cm7,F7 Bbmaj7 Bbm7,Eb7 Abmaj7 Abm7,Db7 Gbmaj7 Gm7,C7 Fmaj7 E7#9
+round-midnight|A1:Ebm7,Ebm7/Db Cdim7@.5,Abm7@.25,Db7@.25 Ebm6 Bm7,E7,Bbm7,Eb7 Abm7,Db7 Ebm7,Ab7 Cm7b5,B7#11 Bb7|A2:Ebm7,Ebm7/Db Cdim7@.5,Abm7@.25,Db7@.25 Ebm6 Bm7,E7,Bbm7,Eb7 Abm7,Db7 Ebm7,Ab7 Cm7b5@.25,B7@.25,Bb7sus4@.5 Eb6|B:Cm7b5,B7#11 Bb7#11 Cm7b5,B7#11 Bb7#11 Abm7@.5,Fm7@.25,Bb7@.25 Cm7b5,F7 Db9,B9 Abm7@.5,Fm7@.25,Bb7@.25|@A2
+sandu|Blues:Eb7 Ab7 Eb7 % Ab7 % Eb7 Gm7,C7 Fm7 Bb7 Eb7,C7 Fm7,Bb7
+satin-doll|A1:Dm7,G7 Dm7,G7 Em7,A7 Em7,A7 Am7,D7 Abm7,Db7 Cmaj7,F7 Em7,A7|A2:Dm7,G7 Dm7,G7 Em7,A7 Em7,A7 Am7,D7 Abm7,Db7 Cmaj7 %|B:Gm7,C7 Gm7,C7 Fmaj7 % Am7,D7 Am7,D7 G7 %|@A1
+scrapple-from-the-apple|A:Gm7 C7 Gm7 C7 Fmaj7,F7/A Bbmaj7,Bdim7 Fmaj7,Gm7 Am7,D7|@A|B:D7 % G7 % C7 % Fmaj7 %|@A
+seven-steps-to-heaven|Intro:F13 Eb13 F13 Eb13 F13 Eb13 F13 %|A:Fmaj7,Bb7 Em7b5,A7 Dm7,Ab7 G7 Gm7 C7 Eb6,F6 F6|@A|B:Cmaj7 Dm7 Em7 Fm7,Bb7 Ebmaj7 Abm7,Db7 Gbmaj7 Gm7,C7|@A
+shadow-of-your-smile|A:F#m7 B7b9 Em7 A7 Am7 D7 Gmaj7 Cmaj7 F#m7b5 B7b9 Em7 Em7/D C#m7b5 F#7b9 F#m7b5 B7b13|B:F#m7 B7b9 Em7 A7 Am7 D7 Bm7b5 E7b9 Am7 Cm7,F7 Bm7 E7b13 A7 D7sus4,D7b9 G6 %
+skylark|A1:Ebmaj7,Fm7 Ebmaj7/G,Abmaj7 Ebmaj7,A7#11 Abmaj7@.5,Gm7@.25,C7@.25 F7 Fm7,Bb7 Eb6,Cm7 Fm7,Bb7|A2:Ebmaj7,Fm7 Ebmaj7/G,Abmaj7 Ebmaj7,A7#11 Abmaj7@.5,Gm7@.25,C7@.25 F7 Fm7,Bb7 Eb6,Bb7#9 Eb6|B:Cm7,B7 Bbm7,Eb7 Abmaj7 Gm7b5,C7b9 Fm,Db7 Bbm7@.25,Eb7@.25,Ab6@.5 G6,Em7 Am7,D7,G6,Bb7|A3:Ebmaj7,Fm7 Ebmaj7/G,Abmaj7 Ebmaj7,A7#11 Abmaj7@.5,Gm7@.25,C7@.25 F7 Fm7,Bb7 Eb6,Bb7#9 Eb6,Bb7
+so-what|A:Dm11 % % % Dm11 % % %|@A|B:Ebm11 % % % Ebm11 % % %|@A
+softly-as-in-a-morning-sunrise|A1:Cm7 Dm7b5,G7b9 Cm7 Dm7b5,G7b9 Cm7 Dm7b5,G7b9 Cm7 Dm7b5,G7b9|A2:Cm7 Dm7b5,G7b9 Cm7 Dm7b5,G7b9 Cm7 Dm7b5,G7b9 Cm7 Fm7,Bb7|B:Ebmaj7 % C7b9 % Fm7 F#dim7 Dm7b5 G7b9|@A1
+someday-my-prince-will-come|A:Bbmaj7 D7#5 Ebmaj7 G7b9 Cm7 G7b9 Cm7 F7|B:Dm7 C#dim7 Cm7 F7 Dm7 C#dim7 Cm7 F7|@A|C:Fm7 Bb7 Ebmaj7 Edim7 Bbmaj7/F G7 Cm7 F7
+someone-to-watch-over-me|A1:Ebmaj7,Eb7 Abmaj7,Abdim7 Ebmaj7/G,Gbdim7 Bb7/F,Edim7 Fm7@.5,Gdim7@.25,Ab6@.25 Am7b5,Bb7 G7#5,C9 Fm7,Bb7|A2:Ebmaj7,Eb7 Abmaj7,Abdim7 Ebmaj7/G,Gbdim7 Bb7/F,Edim7 Fm7@.5,Gdim7@.25,Ab6@.25 Am7b5,Bb7 Eb6 Eb7|B:Abmaj7 % Abm6 Eb6/G Am7b5,D7b9 G7b9 C7 Fm7,Bb7|A3:Ebmaj7,Eb7 Abmaj7,Abdim7 Ebmaj7/G,Gbdim7 Bb7/F,Edim7 Fm7@.5,Gdim7@.25,Ab6@.25 Am7b5,Bb7 Eb6 Fm7,Bb7
+song-for-my-father|A:Fm7 % Eb7 % Db7 C7sus4 Fm7 %|@A|B:Eb7 % Fm7 % Eb7,Db7 C7 Fm7 %
+sophisticated-lady|A1:Bbm7 Gb7,F7,E7,Eb7 Abmaj7 Ab7,G7,Gb7,F7 Bb7 Bbm7,Eb7 Ab6 Cm7b5,F7b9|A2:Bbm7 Gb7,F7,E7,Eb7 Abmaj7 Ab7,G7,Gb7,F7 Bb7 Bbm7,Eb7 Ab6 Am7b5,D7|B:Gmaj7,Em7 Am7,D7 Bm7,E7b9 Am7,D7b9 Gmaj7,Em7 Am7,D7 Gmaj7,Cm7 Bbm7@.5,Cm7b5@.25,F7@.25|@A1
+speak-low|A1:Gm7 C7 Gm7 C7 Gm7,C7 Gm7,C7 Am7b5 D7 Bbm7 Eb7 Bbm7 Eb7 Dm7,G7 Gm7,C7 F6 Am7,D7|A2:Gm7 C7 Gm7 C7 Gm7,C7 Gm7,C7 Am7b5 D7 Bbm7 Eb7 Bbm7 Eb7 Dm7,G7 Gm7,C7 F6 %|B:F7 % Bb7 % Ebmaj7 % Db7 C7|@A1
+speak-no-evil|A:Cm7 Dbmaj7 Cm7 Dbmaj7 Cm7 Dbmaj7 Cm7 Dbmaj7,Ebm7 Em7,Cm7 Dm7,Bbm7 A7alt Bbm7 A7alt Bbm7|@A|B:Am7b5 Ab7 Gm7 Gb7 Fm7 Bb7 Ebmaj7#9#11 Dbmaj7#11|@A
+st-james-infirmary|A:Dm7,Gm7 Dm7 Dm7@.5,Gm7@.5 Dm7 Dm7,Gm7 Dm7 Bb7,A7 Dm7,A7
+st-thomas|A:Cmaj7,F7 Em7,A7 Dm7,G7 C6|@A|B:Em7b5 A7b9 Dm7 G7 Cmaj7,C7/F Fmaj7,F#dim7 G7 C6
+stablemates|A:Em7,A7 Ebm7,Ab7 Dbmaj7 C7#5 Abm7 Db7 Gbmaj7 Gm7b5,C7b9 Fm7 Bb7 Ebm7 Ab7 Dbmaj7 %|B:Fm7 Gb7 G7 C7 B7 Bb7 A7 Ab7|@A
+star-eyes|A:Ebmaj7 Fm7,Bb7 Ebmaj7 Ebm7,Ab7 Dbmaj7 Gm7,C7 Fmaj7 B7,Bb7|@A|B:Abmaj7 % Abm7 Db7 Gbmaj7 % Fm7 Bb7sus4,Bb7|@A
+stardust|Verse:Dbmaj7 Gb7#11 F7b9 Bb7 Ebm7,Ab7 Fm7,Bbm7 Gm7,C7 Ebm7,Ab7 Dbmaj7 Gb7#11 F7b9 Bb7 Ebm7,Ab7 Fm7,Bbm7 Ebm7,Ab7 Dbmaj7,Db7#5|A:Gbmaj7 % GbmMaj7 F#m7,B7 Dbmaj7 Fm7,Bb7 Ebm7,Bb7 Ebm7|Ending1:Ab7 Ebm7,Ab7 Dbmaj7@.5,Ebm7@.25,Edim7@.25 Fm7,Bb7 Eb7 Bbm7,Eb7 Ab7,Ebm7 Ab7,Db7|@A|Ending2:F#m7 B7 Dbmaj7,Bbm7 Fm7,Bb7 Ebm7 Ab7 Dbmaj7 Abm7,Db7
+stella-by-starlight|A:Em7b5 A7b9 Cm7 F7 Fm7 Bb7 Ebmaj7 Ab7 Bbmaj7 Em7b5,A7b9 Dm7 Bbm7,Eb7 Fmaj7 Em7b5 Ebmaj7#11 D7b9|B:G7b13 % Cm7 % Ab7#11 % Bbmaj7 %|C:Em7b5 A7b9 Dm7b5 G7b9 Cm7b5 F7b9 Bbmaj7 %
+stolen-moments|Intro:Cm7 Dm7/C Ebmaj7/C Dm7/C|@Intro|A:Cm7 Cm6 Cm7 Cm6 Fm7 Fm6 Cm7 Cm6|@A|B:Dm,D#m Em F#m,Fm Em,Ebm Dm7,D#dim7 C7/E F Gmaj7|@B|Solo:Cm7 % % % Fm7 % Cm7 % Dm7b5 G7#5 Cm7 G7|@Solo|@Solo|@Solo
+stompin-at-the-savoy|A1:Dbmaj7 Dbmaj7@.5,Ab7@.5 Dbmaj7 Dbmaj7@.5,Ddim7@.5 Ebm7 Ab7 Db6,Bbm7 Ebm7,Ab7|A2:Dbmaj7 Dbmaj7@.5,Ab7@.5 Dbmaj7 Dbmaj7@.5,Ddim7@.5 Ebm7 Ab7 Db6 Db7|B:Gb7,G7 Gb7 B7,C7 B7 E7,F7 E7 A7 Ab7|A3:Dbmaj7 Dbmaj7@.5,Ab7@.5 Dbmaj7 Dbmaj7@.5,Ddim7@.5 Ebm7 Ab7 Db6 Ebm7,Ab7
+straight-no-chaser|Blues:F7 Bb7 F7 % Bb7 % F7 % C7 % F7 C7
+summertime|A:Am7 Am7@.5,E7b13@.5 Am7 Am7@.5,A7b9@.5 Dm7 F7 B7#5 E7b9|B:Am7 Am7@.5,E7b13@.5 Am7 Dm7,G7b9 Cmaj7,Am7 Bm7b5,E7b13 Am7 Bm7b5,E7b13
+sweet-georgia-brown|A:F7 % % % Bb7 % % %|Ending1:Eb7 % % % Abmaj7 Bbm7,Eb7 Abmaj7 Gm7b5,C7b9|@A|Ending2:Fm Gm7b5,C7b9 Fm Bbm7,Eb7 Abmaj7,G7 Gb7,F7 Bb7,Eb7 Ab6
+take-five|A:Ebm@.6,Bbm7@.4 % % % Ebm@.6,Bbm7@.4 % % %|B:Bmaj7@.6,Abm6@.4 Bbm7@.6,Ebm7@.4 Abm7@.6,Db7@.4 Gbmaj7 Bmaj7@.6,Abm6@.4 Bbm7@.6,Ebm7@.4 Abm7@.6,Db7@.4 F7@.6,Bb7@.4|@A
+tenderly|A:Ebmaj7 Ab7 Ebm7 Ab7 Fm7 Db7#11 Ebmaj7 Gm7b5,C7b9|B:Fm7b5 Bb7 Fm7b5 Bb7,Bdim7 Cm7 F7 Fm7 Bb7|@A|C:Fm7b5 Bb7,Bdim7 Cm7 F7,F#dim7 Gm7,C7 Fm7,Bb7 Eb6 Fm7,Bb7
+tenor-madness|Blues:Bb7 Eb7 Bb7 % Eb7 % Bb7 % Cm7 F7 Bb7 F7
+the-girl-from-ipanema|A1:Fmaj7 % G7#11 % Gm7 Gb7#11 Fmaj7 Gb7|A2:Fmaj7 % G7#11 % Gm7 Gb7#11 Fmaj7 %|B:F#maj7 % B7 % F#m7 % D7 % Gm7 % Eb7 % Am7 D7b9b5 Gm7 C7b9b5|@A1
+the-nearness-of-you|A1:Fmaj7 Cm7,F7 Bbmaj7 Bbdim7 Am7,D7 Gm7,C7 Am7,D7 Gm7,C7|A2:Fmaj7 Cm7,F7 Bbmaj7 Bbdim7 Am7,D7 Gm7,C7 Fmaj7,Eb7 F6|B:Gm7 C7 Fmaj7 Cm7,F7 Bbmaj7 Am7b5,D7b9 G7 Gm7,C7|A3:Fmaj7 Cm7,F7 Bbmaj7 Bbdim7 Am7,D7 Gm7,C7 Am7b5 D7b9 Gm7 C7 Fmaj7,D7 Gm7,C7
+the-night-has-a-thousand-eyes|A1:Gmaj7/D % D7sus4 % Gmaj7/D % D7sus4 D7 Dm7 G7 Cmaj7 F7 Gmaj7/D D7sus4 G/D D7sus4|A2:Gmaj7/D % D7sus4 % Gmaj7/D % D7sus4 D7 Dm7 G7 Cmaj7 F7 Gmaj7/D D7sus4 G/D Gmaj7|B:Cm7 F7 Bbmaj7 % Bbm7 Eb7 Abmaj7 % Am7 D7sus4 Gmaj7 Em7 Gmaj7/D D7sus4 Gmaj7/D D7sus4
+the-song-is-you|A:Cmaj7 Ebdim7 Dm7 G7 Cmaj7 A7 Dm7 G7 Em7 A7 Dm7 G7|Ending1:Fm7 Bb7 Em7,A7 Dm7,G7|@A|Ending2:C6 % % F#m7b5,B7|B:Emaj7 % F#m7 B7 Emaj7 % A#m7b5 D#7b9 G#m7 % C#7 % F#7 % B7 %|A3:Cmaj7 Ebdim7 Dm7 G7 Gm7 C7 Fmaj7 Bb7 Em7 A7 Dm7 G7 C6 A7 Dm7 G7
+there-is-no-greater-love|A1:Bbmaj7 Eb7 Ab7 G7 C7 % Cm7 F7|A2:Bbmaj7 Eb7 Ab7 G7 C7 Cm7,F7 Bb6 %|B:Am7b5,D7b9 Gm6 Am7b5,D7b9 Gm6 Am7b5,D7b9 Gm7 C7 F7|A3:Bbmaj7 Eb7 Ab7 G7 C7 Cm7,F7 Bb6 Cm7,F7
+there-will-never-be-another-you|A:Ebmaj7 % Dm7b5 G7b9 Cm7 % Bbm7 Eb7|B:Abmaj7 Db7#11 Ebmaj7 Cm7 F7 % Fm7 Bb7|@A|C:Abmaj7 Db7#11 Ebmaj7 Am7b5,D7 Ebmaj7,Ab7 Gm7,C7 Fm7,Bb7 Eb6,Bb7
+things-aint-what-they-used-to-be|Blues:Ab7 Db7 Ab7 % Db7 % Ab7 % Bbm7 Eb7 Ab7,F7 Bbm7,Eb7
+this-i-dig-of-you|A:Bbmaj7/F Cm7/F Dm7/F Cm7/F Dm7/F Cm7/F Bbmaj7/F Fm7,Bb7|B:Ebmaj7 Em7b5,A7b9 Dm7 G7 C#m7 F#7 Cm7 F7|@A|C:Ebmaj7 Em7b5,A7b9 Dm7 G7 Cm7 F7 Bbmaj7 %
+triste|A:Amaj7 % Fmaj7#11 % Amaj7 % C#m7 F#7b9 Bm7 C#m7b5,C#7b9 F#m7 C#7#9 C#maj7 D#m7,G#7 C#maj7,F#7 Bm7,E7|B:Amaj7 % Am7 D7 Amaj7 % Em7 A7 Dmaj7 G7 C#m7,F#7 B7 Bm7 E7 Am7,D7 Am7,D7 Am7,D7 Am7,D7
+tune-up|A:Em7 A7 Dmaj7 % Dm7 G7 Cmaj7 % Cm7 F7 Bbmaj7 Gm7|Ending1:Em7 F7 Bbmaj7 A7|@A|Ending2:Em7 A7 Dmaj7 %
+walkin|Blues:F7 Bb7 F7 Cm7,F7 Bb7 Bdim7 F7 Am7,D7 Gm7 C7 F7,D7 Gm7,C7
+watermelon-man|A:F7#9 % % % Bb9 % F7#9 % C9 Bb9 C9 Bb9 C9 Bb9 F7#9 %
+wave|A:Dmaj7 Bbdim7 Am7 D7b9 Gmaj7 Gm6 F#13,F#7b13 B9,B7b9 E9 Bb7,A7 Dm7,G7 Dm7,G7|@A|B:Gm7/Bb C7/Bb Fmaj7/A % Fm7/Ab Bb7/Ab Ebmaj7/G A7b9|@A
+way-you-look-tonight-the|A:Fmaj7 Dm7 Gm7 C7 Fmaj7 Dm7 Gm7 C7 Cm7 F7 Bbmaj7 Gm7,C7 F6,Dm7 Gm7,C7 F6,Dm7|Ending1:Gm7,C7|@A|Ending2:Bbm7,Eb7|B:Abmaj7 Fm7 Bbm7 Eb7 Abmaj7 Fm7 Bbm7 Eb7 Abmaj7 Fm7 Bbm7 Eb7 Abmaj7 Dbmaj7 Gm7 C7|@A|Ending3:Gm7 C7 F6,Dm7 Gm7,C7
+well-you-needent|A:F6 Gb7 F6 Gb7 F6 Gb7 F6 %|@A|B:Db7 % D7 % A7,Bb7 B7,Bb7 A7,Ab7 G7,C7|@A
+what-is-this-thing-called-love|A:Gm7b5 C7b9 Fm6 % Dm7b5 G7#5 Cmaj7 %|@A|B:Cm7 F7 Bbmaj7 % Bbm7 Eb7 Abmaj7 G7|@A
+whats-new|A1:C6 Bbm7,Eb7 Abmaj7 Dm7b5,G7b9 Cm7,Am7b5 Dm7b5,G7b9 C6,Am7 Dm7,G7|A2:C6 Bbm7,Eb7 Abmaj7 Dm7b5,G7b9 Cm7,Am7b5 Dm7b5,G7b9 C6 Gm7,C7|B:F6 Ebm7,Ab7 Dbmaj7 Gm7b5,C7b9 Fm7,Dm7b5 Gm7b5,C7b9 Fm6 Dm7b5,G7b9|@A1
+when-i-fall-in-love|A:Ebmaj7,C7 Fm7,Bb7 Ebmaj7,C7 Fm7,Bb7 Ebmaj7,Ab7 G7b9,C7b9 F7 Bb7|B:Ebmaj7,C7 Fm7,Bb7 Ebmaj7,Ab7 Gm7b5,C7b9 Fm7,D7alt Gm7b5,C7b9 Fm7,C7b9 Fm7,Bb7|@A|C:Ebmaj7,A7#11 Abmaj7,D7 Gm7,C7#9 Fm7,Bb7 Ebmaj7,C7 Fm7,Bb7 Eb6 Fm7,Bb7
+whisper-not|A1:Cm7,Cm7/Bb Am7b5,D7b9 Gm7,Gm7/F Em7b5,A7b9 Dm7,Bm7b5 Em7b5,A7b9 Dm7,Em7 Fm7,G7b9|A2:Cm7,Cm7/Bb Am7b5,D7b9 Gm7,Gm7/F Em7b5,A7b9 Dm7,Bm7b5 Em7b5,A7b9 Dm7,Em7 Fm7,Bb7|B:Am7b5 D7b9 Gm7 Gm7/F Em7b5 A7b9 Dm7b5 G7b9|@A1
+willow-weep-for-me|A1:Gmaj7,C7 Gmaj7,C7 Gmaj7@.5,Am7@.25,D7@.25 G6,Am7,Bbdim7,Bm7 C7 Am7b5,D7b13 Gmaj7,E7 Am7,D7|A2:Gmaj7,C7 Gmaj7,C7 Gmaj7@.5,Am7@.25,D7@.25 G6,Am7,Bbdim7,Bm7 C7 Am7b5,D7b13 Gmaj7 Dm7,G7|B:Cm7 Gm7,G7b9 Cm7,Bb7 Ab7,G7b9 Cm7 Gm7,G7b9 Cm7,Bb7 Ab7@.5,Am7@.25,D7@.25|@A1
+work-song|A:Fm % % % Fm % C7 % Fm % % % F7 Bb7 G7,C7 Fm
+yardbird-suite|A1:C6 Fm7,Bb7 C7,Bb7 A7 D7 G7 Em7,A7 Dm7,G7|A2:C6 Fm7,Bb7 C7,Bb7 A7 D7 G7 C6 F#m7b5,B7b9|B:Em7 F#m7b5,B7b9 Em7 A7 Dm7 Em7b5,A7 D7 Dm7,G7|A3:C6 Fm7,Bb7 C7,Bb7 A7 D7 G7 C6 Dm7,G7
+yesterdays|A:Dm Em7b5,A7b9 Dm Em7b5,A7b9 Dm,DmMaj7/C# Dm7/C Bm7b5 E7 A7#5 D9 G13 C9 F13 Bbmaj7 Em7b5 A7b9
+you-dont-know-what-love-is|A1:Fm7 Db7,C7b9 Fm7,C7b9 Db7 Gm7b5,C7b9 Fm7,Em7,Ebm7,D7 Db7 Gm7b5,C7b9|A2:Fm7 Db7,C7b9 Fm7,C7b9 Db7 Gm7b5,C7b9 Fm7,Em7,Ebm7,D7 Db7,C7b9 Fm6|B:Bbm7,Eb7 Abmaj7 Bbm7,Eb7 Abmaj7 Dm7,G7 Cmaj7 Db7 C7b9|@A2
+you-stepped-out-of-a-dream|A:Cmaj7 % Dbmaj7 % Bbm7 Eb7 Abmaj7 %|B:Gm7 C7 Fmaj7 % Am7 D7 Ebm7,Ab7 Dm7,G7|A2:Cmaj7 % Dbmaj7 % Bbm7 Eb7 Gb7#11 F7|C:Dm7b5 G7 Em7 A7 Dm7 G7 Cmaj7,A7 Dm7,G7
+
+# Canonical source forms; optional alternatives omitted.
+autumn-leaves|A:Cm7 F7 Bbmaj7 Ebmaj7 Am7b5 D7b13 Gm6 %|@A|B:Am7b5 D7b13 Gm6 % Cm7 F7 Bbmaj7 Ebmaj7|C:Am7b5 D7b13 Gm7,Gb7 Fm7,E7 Am7b5 D7b13 Gm6 %
+take-the-a-train|A1:C6 % D7#11 % Dm7 G7 C6 Dm7,G7|A2:C6 % D7#11 % Dm7 G7 C6 Gm7,C7|B:Fmaj7 % % % D7 % Dm7 G7,G7b9|A3:C6 % D7#11 % Dm7 G7 C6 Dm7,G7

@@ -1,0 +1,457 @@
+{
+  "schemaVersion": 1,
+  "id": "footprints",
+  "title": "Footprints",
+  "key": "C minor",
+  "sourceUrl": "https://standardrepertoire.com/footprints.html",
+  "beatsPerBar": 3,
+  "sourceNote": "",
+  "description": "Footprints: measured section graphs on the three lowest guitar strings. Badges show every visit in playback order.",
+  "startNodeId": "section-1-node-1",
+  "nodes": [
+    {
+      "id": "section-1-node-1",
+      "section": "section-1",
+      "chord": "Cm11",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 1
+    },
+    {
+      "id": "section-2-node-2",
+      "section": "section-2",
+      "chord": "Fm11",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 1840,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 2
+    },
+    {
+      "id": "section-2-node-3",
+      "section": "section-2",
+      "chord": "Cm11",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 2140,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 3
+    },
+    {
+      "id": "section-3-node-4",
+      "section": "section-3",
+      "chord": "F♯ø7",
+      "root": "F♯",
+      "string": "A",
+      "fret": 9,
+      "x": 1460.0,
+      "y": 2970,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 4
+    },
+    {
+      "id": "section-3-node-5",
+      "section": "section-3",
+      "chord": "F7♯11",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 2970,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 5
+    },
+    {
+      "id": "section-3-node-6",
+      "section": "section-3",
+      "chord": "E7alt",
+      "root": "E",
+      "string": "A",
+      "fret": 7,
+      "x": 900.0,
+      "y": 2970,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 6
+    },
+    {
+      "id": "section-3-node-7",
+      "section": "section-3",
+      "chord": "A7alt",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 3270,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 7
+    },
+    {
+      "id": "section-3-node-8",
+      "section": "section-3",
+      "chord": "Cm11",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 3270,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 8
+    }
+  ],
+  "edges": [
+    {
+      "id": "section-2-edge-1",
+      "section": "section-2",
+      "source": "section-2-node-2",
+      "target": "section-2-node-3",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-1",
+      "section": "section-3",
+      "source": "section-3-node-4",
+      "target": "section-3-node-5",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-2",
+      "section": "section-3",
+      "source": "section-3-node-5",
+      "target": "section-3-node-6",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-3",
+      "section": "section-3",
+      "source": "section-3-node-6",
+      "target": "section-3-node-7",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-4",
+      "section": "section-3",
+      "source": "section-3-node-7",
+      "target": "section-3-node-8",
+      "width": 5,
+      "passNumber": 1
+    }
+  ],
+  "playback": [
+    {
+      "chord": "Cm11",
+      "bars": 8.0,
+      "section": "Form · part 1",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "Fm11",
+      "bars": 4.0,
+      "section": "Form · part 2",
+      "nodeId": "section-2-node-2"
+    },
+    {
+      "chord": "Cm11",
+      "bars": 4.0,
+      "section": "Form · part 2",
+      "nodeId": "section-2-node-3"
+    },
+    {
+      "chord": "F#m7b5",
+      "bars": 1.0,
+      "section": "Form · part 3",
+      "nodeId": "section-3-node-4"
+    },
+    {
+      "chord": "F7#11",
+      "bars": 1.0,
+      "section": "Form · part 3",
+      "nodeId": "section-3-node-5"
+    },
+    {
+      "chord": "E7alt",
+      "bars": 1.0,
+      "section": "Form · part 3",
+      "nodeId": "section-3-node-6"
+    },
+    {
+      "chord": "A7alt",
+      "bars": 1.0,
+      "section": "Form · part 3",
+      "nodeId": "section-3-node-7"
+    },
+    {
+      "chord": "Cm11",
+      "bars": 4.0,
+      "section": "Form · part 3",
+      "nodeId": "section-3-node-8"
+    }
+  ],
+  "durationLabels": [
+    {
+      "nodeId": "section-1-node-1",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×8"
+    },
+    {
+      "nodeId": "section-2-node-2",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×4"
+    },
+    {
+      "nodeId": "section-2-node-3",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×4"
+    },
+    {
+      "nodeId": "section-3-node-8",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×4"
+    }
+  ],
+  "layout": {
+    "viewBox": "0 0 1820 3670",
+    "titleSize": 83,
+    "subtitleSize": 35,
+    "subtitle": "C minor · 24 bars · 3/4 · Frets 5–9",
+    "sections": [
+      {
+        "id": "section-1",
+        "title": "Form · part 1 · bars 1–8",
+        "titleY": 270,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          410,
+          710,
+          1010
+        ],
+        "top": 355,
+        "bottom": 1080,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 330,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      },
+      {
+        "id": "section-2",
+        "title": "Form · part 2 · bars 9–16",
+        "titleY": 1400,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          1540,
+          1840,
+          2140
+        ],
+        "top": 1485,
+        "bottom": 2210,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 1460,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#267b99"
+      },
+      {
+        "id": "section-3",
+        "title": "Form · part 3 · bars 17–24",
+        "titleY": 2530,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          2670,
+          2970,
+          3270
+        ],
+        "top": 2615,
+        "bottom": 3340,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 2590,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#8b4695"
+      }
+    ],
+    "footerY": 3630,
+    "footerSize": 25,
+    "footer": "Continue panel by panel. Badges list every visit; durations are in bars.",
+    "startLabel": {
+      "x": 1180.0,
+      "y": 1165
+    },
+    "startOutline": {
+      "x": 1125.0,
+      "y": 955,
+      "width": 110,
+      "height": 110
+    }
+  },
+  "routes": [
+    {
+      "title": "Form · part 1 · bars 1–8",
+      "nodeIds": [
+        "section-1-node-1"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "Form · part 2 · bars 9–16",
+      "nodeIds": [
+        "section-2-node-2",
+        "section-2-node-3"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "Form · part 3 · bars 17–24",
+      "nodeIds": [
+        "section-3-node-4",
+        "section-3-node-5",
+        "section-3-node-6",
+        "section-3-node-7",
+        "section-3-node-8"
+      ],
+      "kind": "solid",
+      "note": "Playback loops from here."
+    }
+  ],
+  "tip": {
+    "title": "Follow the movement. ",
+    "text": "Major circles, minor triangles, dominant squares, diminished hexagons. Chord qualities share fret/string anchors. "
+  },
+  "footerNote": "Full source qualities and durations drive playback; optional alternatives are omitted.",
+  "playbackNote": "24 bars in 3/4. "
+}

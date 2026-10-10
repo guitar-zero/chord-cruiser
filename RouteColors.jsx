@@ -76,10 +76,11 @@ export function routesConflict(a, b, clearance = 18) {
 
 export function colorRoutes(routes, clearance = 18) {
   const conflicts = routes.map((route, i) => routes.map((other, j) => i !== j && routesConflict(route.d, other.d, clearance)));
-  const colors = [];
+  const colors = routes.map(route => route.fixed);
   // Color busiest routes first, keeping preferred colors whenever possible.
   const order = routes.map((_, i) => i).sort((a, b) => conflicts[b].filter(Boolean).length - conflicts[a].filter(Boolean).length);
   for (const i of order) {
+    if (routes[i].fixed) continue;
     const used = new Set(colors.filter((_, j) => conflicts[i][j]));
     const palette = routes[i].palette || routePalette;
     const choices = [routes[i].preferred, ...palette].filter(color => color && palette.includes(color));
@@ -103,6 +104,7 @@ export default function RouteColors({ children, distinguishPasses = false, palet
   const inheritedWidth = Number(props.strokeWidth) || 6;
   const colors = colorRoutes(paths.map(path => ({
     d: path.props.d,
+    fixed: path.props['data-fixed-color'],
     preferred: path.props.stroke || (distinguishPasses && path.props.strokeDasharray ? secondPassColor : preferredColor),
     palette,
   })));

@@ -1,0 +1,2312 @@
+{
+  "schemaVersion": 1,
+  "id": "desafinado",
+  "title": "Desafinado",
+  "key": "F",
+  "sourceUrl": "https://standardrepertoire.com/desafinado.html",
+  "beatsPerBar": 4,
+  "sourceNote": "",
+  "description": "Desafinado: measured section graphs on the three lowest guitar strings. Badges show every visit in playback order.",
+  "startNodeId": "section-1-node-1",
+  "nodes": [
+    {
+      "id": "section-1-node-1",
+      "section": "section-1",
+      "chord": "F",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 710,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 1
+    },
+    {
+      "id": "section-1-node-2",
+      "section": "section-1",
+      "chord": "G7♯11",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 410,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 2
+    },
+    {
+      "id": "section-1-node-3",
+      "section": "section-1",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 410,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 3
+    },
+    {
+      "id": "section-1-node-4",
+      "section": "section-1",
+      "chord": "C7",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 4
+    },
+    {
+      "id": "section-1-node-5",
+      "section": "section-1",
+      "chord": "Aø7",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 1010,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 5
+    },
+    {
+      "id": "section-1-node-6",
+      "section": "section-1",
+      "chord": "D7♭9",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 710,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 6
+    },
+    {
+      "id": "section-2-node-7",
+      "section": "section-2",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 1540,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 7
+    },
+    {
+      "id": "section-2-node-8",
+      "section": "section-2",
+      "chord": "A7♭9",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 2140,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 8
+    },
+    {
+      "id": "section-2-node-9",
+      "section": "section-2",
+      "chord": "D7",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 280.0,
+      "y": 1840,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 9
+    },
+    {
+      "id": "section-2-node-10",
+      "section": "section-2",
+      "chord": "D7♭9",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 400.0,
+      "y": 1840,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 10
+    },
+    {
+      "id": "section-2-node-11",
+      "section": "section-2",
+      "chord": "G7♭9",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 1540,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 11
+    },
+    {
+      "id": "section-2-node-12",
+      "section": "section-2",
+      "chord": "G♭",
+      "root": "G♭",
+      "string": "A",
+      "fret": 9,
+      "x": 1460.0,
+      "y": 1840,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 12
+    },
+    {
+      "id": "section-3-node-13",
+      "section": "section-3",
+      "chord": "F",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 2970,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 13
+    },
+    {
+      "id": "section-3-node-14",
+      "section": "section-3",
+      "chord": "G7♯11",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 2670,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 14
+    },
+    {
+      "id": "section-3-node-15",
+      "section": "section-3",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 2670,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 15
+    },
+    {
+      "id": "section-3-node-16",
+      "section": "section-3",
+      "chord": "C7",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 3270,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 16
+    },
+    {
+      "id": "section-3-node-17",
+      "section": "section-3",
+      "chord": "Aø7",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 3270,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 17
+    },
+    {
+      "id": "section-3-node-18",
+      "section": "section-3",
+      "chord": "D7♭9",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 2970,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 18
+    },
+    {
+      "id": "section-4-node-19",
+      "section": "section-4",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 340.0,
+      "y": 3800,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 19
+    },
+    {
+      "id": "section-4-node-20",
+      "section": "section-4",
+      "chord": "B♭m6",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 560.0,
+      "y": 4400,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 20
+    },
+    {
+      "id": "section-4-node-21",
+      "section": "section-4",
+      "chord": "F",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 4100,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 21
+    },
+    {
+      "id": "section-4-node-22",
+      "section": "section-4",
+      "chord": "E7♯9",
+      "root": "E",
+      "string": "A",
+      "fret": 7,
+      "x": 840.0,
+      "y": 4100,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 22
+    },
+    {
+      "id": "section-4-node-23",
+      "section": "section-4",
+      "chord": "A",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 4400,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 23
+    },
+    {
+      "id": "section-4-node-24",
+      "section": "section-4",
+      "chord": "B♭°7",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 680.0,
+      "y": 4400,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 24
+    },
+    {
+      "id": "section-4-node-25",
+      "section": "section-4",
+      "chord": "Bm",
+      "root": "B",
+      "string": "E",
+      "fret": 7,
+      "x": 900.0,
+      "y": 4400,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 25
+    },
+    {
+      "id": "section-4-node-26",
+      "section": "section-4",
+      "chord": "E7",
+      "root": "E",
+      "string": "A",
+      "fret": 7,
+      "x": 960.0,
+      "y": 4100,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 26
+    },
+    {
+      "id": "section-5-node-27",
+      "section": "section-5",
+      "chord": "A",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 5530,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 27
+    },
+    {
+      "id": "section-5-node-28",
+      "section": "section-5",
+      "chord": "B♭°7",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 620.0,
+      "y": 5530,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 28
+    },
+    {
+      "id": "section-5-node-29",
+      "section": "section-5",
+      "chord": "Bm",
+      "root": "B",
+      "string": "E",
+      "fret": 7,
+      "x": 900.0,
+      "y": 5530,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 29
+    },
+    {
+      "id": "section-5-node-30",
+      "section": "section-5",
+      "chord": "E7",
+      "root": "E",
+      "string": "A",
+      "fret": 7,
+      "x": 900.0,
+      "y": 5230,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 30
+    },
+    {
+      "id": "section-5-node-31",
+      "section": "section-5",
+      "chord": "F♯m",
+      "root": "F♯",
+      "string": "A",
+      "fret": 9,
+      "x": 1460.0,
+      "y": 5230,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 31
+    },
+    {
+      "id": "section-6-node-32",
+      "section": "section-6",
+      "chord": "C",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1120.0,
+      "y": 6660,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 32
+    },
+    {
+      "id": "section-6-node-33",
+      "section": "section-6",
+      "chord": "C♯°7",
+      "root": "C♯",
+      "string": "E",
+      "fret": 9,
+      "x": 1460.0,
+      "y": 6660,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 33
+    },
+    {
+      "id": "section-6-node-34",
+      "section": "section-6",
+      "chord": "Dm",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 6360,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 34
+    },
+    {
+      "id": "section-6-node-35",
+      "section": "section-6",
+      "chord": "G7",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 6060,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 35
+    },
+    {
+      "id": "section-6-node-36",
+      "section": "section-6",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 6060,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 36
+    },
+    {
+      "id": "section-6-node-37",
+      "section": "section-6",
+      "chord": "E♭m6",
+      "root": "E♭",
+      "string": "A",
+      "fret": 6,
+      "x": 620.0,
+      "y": 6360,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 37
+    },
+    {
+      "id": "section-6-node-38",
+      "section": "section-6",
+      "chord": "C7♭9",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1240.0,
+      "y": 6660,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#267b99",
+      "step": 38
+    },
+    {
+      "id": "section-7-node-39",
+      "section": "section-7",
+      "chord": "F",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 7490,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 39
+    },
+    {
+      "id": "section-7-node-40",
+      "section": "section-7",
+      "chord": "G7♯11",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 7190,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 22.0,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 40
+    },
+    {
+      "id": "section-7-node-41",
+      "section": "section-7",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 7190,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 41
+    },
+    {
+      "id": "section-7-node-42",
+      "section": "section-7",
+      "chord": "C7",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 7790,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 42
+    },
+    {
+      "id": "section-7-node-43",
+      "section": "section-7",
+      "chord": "Aø7",
+      "root": "A",
+      "string": "E",
+      "fret": 5,
+      "x": 340.0,
+      "y": 7790,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 43
+    },
+    {
+      "id": "section-7-node-44",
+      "section": "section-7",
+      "chord": "D7♭9",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 7490,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#8b4695",
+      "step": 44
+    },
+    {
+      "id": "section-8-node-45",
+      "section": "section-8",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 8320,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 45
+    },
+    {
+      "id": "section-8-node-46",
+      "section": "section-8",
+      "chord": "B♭m6",
+      "root": "B♭",
+      "string": "E",
+      "fret": 6,
+      "x": 620.0,
+      "y": 8920,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 27.5,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 46
+    },
+    {
+      "id": "section-8-node-47",
+      "section": "section-8",
+      "chord": "F",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 8620,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 47
+    },
+    {
+      "id": "section-8-node-48",
+      "section": "section-8",
+      "chord": "D7",
+      "root": "D",
+      "string": "A",
+      "fret": 5,
+      "x": 340.0,
+      "y": 8620,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 48
+    },
+    {
+      "id": "section-8-node-49",
+      "section": "section-8",
+      "chord": "G7",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 8320,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 49
+    },
+    {
+      "id": "section-8-node-50",
+      "section": "section-8",
+      "chord": "E♭7",
+      "root": "E♭",
+      "string": "A",
+      "fret": 6,
+      "x": 620.0,
+      "y": 8620,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#29805d",
+      "step": 50
+    },
+    {
+      "id": "section-9-node-51",
+      "section": "section-9",
+      "chord": "G7",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 280.0,
+      "y": 9450,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 51
+    },
+    {
+      "id": "section-9-node-52",
+      "section": "section-9",
+      "chord": "Gm",
+      "root": "G",
+      "string": "D",
+      "fret": 5,
+      "x": 400.0,
+      "y": 9450,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 52
+    },
+    {
+      "id": "section-9-node-53",
+      "section": "section-9",
+      "chord": "C7",
+      "root": "C",
+      "string": "E",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 10050,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 53
+    },
+    {
+      "id": "section-9-node-54",
+      "section": "section-9",
+      "chord": "F6",
+      "root": "F",
+      "string": "A",
+      "fret": 8,
+      "x": 1180.0,
+      "y": 9750,
+      "shape": "circle",
+      "radius": 46,
+      "fontSize": 32,
+      "textOffset": 4,
+      "badgeOffset": -68,
+      "badgeColor": "#cc480e",
+      "step": 54
+    }
+  ],
+  "edges": [
+    {
+      "id": "section-1-edge-1",
+      "section": "section-1",
+      "source": "section-1-node-1",
+      "target": "section-1-node-2",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1180 655 L1180 540 L280 540 L280 465"
+    },
+    {
+      "id": "section-1-edge-2",
+      "section": "section-1",
+      "source": "section-1-node-2",
+      "target": "section-1-node-3",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-3",
+      "section": "section-1",
+      "source": "section-1-node-3",
+      "target": "section-1-node-4",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-4",
+      "section": "section-1",
+      "source": "section-1-node-4",
+      "target": "section-1-node-5",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-1-edge-5",
+      "section": "section-1",
+      "source": "section-1-node-5",
+      "target": "section-1-node-6",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-2-edge-1",
+      "section": "section-2",
+      "source": "section-2-node-7",
+      "target": "section-2-node-8",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M225 1540 L200 1540 L200 2140 L285 2140"
+    },
+    {
+      "id": "section-2-edge-2",
+      "section": "section-2",
+      "source": "section-2-node-8",
+      "target": "section-2-node-9",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-2-edge-3",
+      "section": "section-2",
+      "source": "section-2-node-9",
+      "target": "section-2-node-10",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-2-edge-4",
+      "section": "section-2",
+      "source": "section-2-node-10",
+      "target": "section-2-node-11",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-2-edge-5",
+      "section": "section-2",
+      "source": "section-2-node-11",
+      "target": "section-2-node-12",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-1",
+      "section": "section-3",
+      "source": "section-3-node-13",
+      "target": "section-3-node-14",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1180 2915 L1180 2800 L280 2800 L280 2725"
+    },
+    {
+      "id": "section-3-edge-2",
+      "section": "section-3",
+      "source": "section-3-node-14",
+      "target": "section-3-node-15",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-3",
+      "section": "section-3",
+      "source": "section-3-node-15",
+      "target": "section-3-node-16",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-4",
+      "section": "section-3",
+      "source": "section-3-node-16",
+      "target": "section-3-node-17",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-3-edge-5",
+      "section": "section-3",
+      "source": "section-3-node-17",
+      "target": "section-3-node-18",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-4-edge-1",
+      "section": "section-4",
+      "source": "section-4-node-19",
+      "target": "section-4-node-20",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-4-edge-2",
+      "section": "section-4",
+      "source": "section-4-node-20",
+      "target": "section-4-node-21",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M560 4345 L560 4230 L1180 4230 L1180 4155"
+    },
+    {
+      "id": "section-4-edge-3",
+      "section": "section-4",
+      "source": "section-4-node-21",
+      "target": "section-4-node-22",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1180 4045 L1180 3970 L840 3970 L840 4045"
+    },
+    {
+      "id": "section-4-edge-4",
+      "section": "section-4",
+      "source": "section-4-node-22",
+      "target": "section-4-node-23",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-4-edge-5",
+      "section": "section-4",
+      "source": "section-4-node-23",
+      "target": "section-4-node-24",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M340 4345 L340 4270 L680 4270 L680 4345"
+    },
+    {
+      "id": "section-4-edge-6",
+      "section": "section-4",
+      "source": "section-4-node-24",
+      "target": "section-4-node-25",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-4-edge-7",
+      "section": "section-4",
+      "source": "section-4-node-25",
+      "target": "section-4-node-26",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-1",
+      "section": "section-5",
+      "source": "section-5-node-27",
+      "target": "section-5-node-28",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-2",
+      "section": "section-5",
+      "source": "section-5-node-28",
+      "target": "section-5-node-29",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-3",
+      "section": "section-5",
+      "source": "section-5-node-29",
+      "target": "section-5-node-30",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-4",
+      "section": "section-5",
+      "source": "section-5-node-30",
+      "target": "section-5-node-27",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-5",
+      "section": "section-5",
+      "source": "section-5-node-27",
+      "target": "section-5-node-31",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-5-edge-6",
+      "section": "section-5",
+      "source": "section-5-node-31",
+      "target": "section-5-node-29",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-6-edge-1",
+      "section": "section-6",
+      "source": "section-6-node-32",
+      "target": "section-6-node-33",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1120 6605 L1120 6530 L1460 6530 L1460 6605"
+    },
+    {
+      "id": "section-6-edge-2",
+      "section": "section-6",
+      "source": "section-6-node-33",
+      "target": "section-6-node-34",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1460 6605 L1460 6490 L340 6490 L340 6415"
+    },
+    {
+      "id": "section-6-edge-3",
+      "section": "section-6",
+      "source": "section-6-node-34",
+      "target": "section-6-node-35",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-6-edge-4",
+      "section": "section-6",
+      "source": "section-6-node-35",
+      "target": "section-6-node-36",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-6-edge-5",
+      "section": "section-6",
+      "source": "section-6-node-36",
+      "target": "section-6-node-37",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-6-edge-6",
+      "section": "section-6",
+      "source": "section-6-node-37",
+      "target": "section-6-node-35",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-6-edge-7",
+      "section": "section-6",
+      "source": "section-6-node-35",
+      "target": "section-6-node-38",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-7-edge-1",
+      "section": "section-7",
+      "source": "section-7-node-39",
+      "target": "section-7-node-40",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1180 7435 L1180 7320 L280 7320 L280 7245"
+    },
+    {
+      "id": "section-7-edge-2",
+      "section": "section-7",
+      "source": "section-7-node-40",
+      "target": "section-7-node-41",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-7-edge-3",
+      "section": "section-7",
+      "source": "section-7-node-41",
+      "target": "section-7-node-42",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-7-edge-4",
+      "section": "section-7",
+      "source": "section-7-node-42",
+      "target": "section-7-node-43",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-7-edge-5",
+      "section": "section-7",
+      "source": "section-7-node-43",
+      "target": "section-7-node-44",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-8-edge-1",
+      "section": "section-8",
+      "source": "section-8-node-45",
+      "target": "section-8-node-46",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-8-edge-2",
+      "section": "section-8",
+      "source": "section-8-node-46",
+      "target": "section-8-node-47",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-8-edge-3",
+      "section": "section-8",
+      "source": "section-8-node-47",
+      "target": "section-8-node-48",
+      "width": 5,
+      "passNumber": 1,
+      "path": "M1180 8565 L1180 8490 L340 8490 L340 8565"
+    },
+    {
+      "id": "section-8-edge-4",
+      "section": "section-8",
+      "source": "section-8-node-48",
+      "target": "section-8-node-49",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-8-edge-5",
+      "section": "section-8",
+      "source": "section-8-node-49",
+      "target": "section-8-node-50",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-9-edge-1",
+      "section": "section-9",
+      "source": "section-9-node-51",
+      "target": "section-9-node-52",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-9-edge-2",
+      "section": "section-9",
+      "source": "section-9-node-52",
+      "target": "section-9-node-53",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-9-edge-3",
+      "section": "section-9",
+      "source": "section-9-node-53",
+      "target": "section-9-node-54",
+      "width": 5,
+      "passNumber": 1
+    },
+    {
+      "id": "section-9-edge-4",
+      "section": "section-9",
+      "source": "section-9-node-54",
+      "target": "section-9-node-53",
+      "width": 5,
+      "passNumber": 1
+    }
+  ],
+  "playback": [
+    {
+      "chord": "Fmaj7",
+      "bars": 2.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-1"
+    },
+    {
+      "chord": "G7#11",
+      "bars": 2.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-2"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-3"
+    },
+    {
+      "chord": "C7",
+      "bars": 1.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-4"
+    },
+    {
+      "chord": "Am7b5",
+      "bars": 1.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-5"
+    },
+    {
+      "chord": "D7b9",
+      "bars": 1.0,
+      "section": "A1 · part 1",
+      "nodeId": "section-1-node-6"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-7"
+    },
+    {
+      "chord": "A7b9",
+      "bars": 1.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-8"
+    },
+    {
+      "chord": "D7",
+      "bars": 1.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-9"
+    },
+    {
+      "chord": "D7b9",
+      "bars": 1.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-10"
+    },
+    {
+      "chord": "G7b9",
+      "bars": 2.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-11"
+    },
+    {
+      "chord": "Gbmaj7",
+      "bars": 2.0,
+      "section": "A1 · part 2",
+      "nodeId": "section-2-node-12"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 2.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-13"
+    },
+    {
+      "chord": "G7#11",
+      "bars": 2.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-14"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-15"
+    },
+    {
+      "chord": "C7",
+      "bars": 1.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-16"
+    },
+    {
+      "chord": "Am7b5",
+      "bars": 1.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-17"
+    },
+    {
+      "chord": "D7b9",
+      "bars": 1.0,
+      "section": "A2 · part 1",
+      "nodeId": "section-3-node-18"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-19"
+    },
+    {
+      "chord": "Bbm6",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-20"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-21"
+    },
+    {
+      "chord": "E7#9",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-22"
+    },
+    {
+      "chord": "Amaj7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-23"
+    },
+    {
+      "chord": "Bbdim7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-24"
+    },
+    {
+      "chord": "Bm7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-25"
+    },
+    {
+      "chord": "E7",
+      "bars": 1.0,
+      "section": "A2 · part 2",
+      "nodeId": "section-4-node-26"
+    },
+    {
+      "chord": "Amaj7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-27"
+    },
+    {
+      "chord": "Bbdim7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-28"
+    },
+    {
+      "chord": "Bm7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-29"
+    },
+    {
+      "chord": "E7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-30"
+    },
+    {
+      "chord": "Amaj7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-27"
+    },
+    {
+      "chord": "F#m7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-31"
+    },
+    {
+      "chord": "Bm7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-29"
+    },
+    {
+      "chord": "E7",
+      "bars": 1.0,
+      "section": "B · part 1",
+      "nodeId": "section-5-node-30"
+    },
+    {
+      "chord": "Cmaj7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-32"
+    },
+    {
+      "chord": "C#dim7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-33"
+    },
+    {
+      "chord": "Dm7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-34"
+    },
+    {
+      "chord": "G7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-35"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-36"
+    },
+    {
+      "chord": "Ebm6",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-37"
+    },
+    {
+      "chord": "G7",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-35"
+    },
+    {
+      "chord": "C7b9",
+      "bars": 1.0,
+      "section": "B · part 2",
+      "nodeId": "section-6-node-38"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 2.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-39"
+    },
+    {
+      "chord": "G7#11",
+      "bars": 2.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-40"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-41"
+    },
+    {
+      "chord": "C7",
+      "bars": 1.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-42"
+    },
+    {
+      "chord": "Am7b5",
+      "bars": 1.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-43"
+    },
+    {
+      "chord": "D7b9",
+      "bars": 1.0,
+      "section": "A3 · part 1",
+      "nodeId": "section-7-node-44"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 1.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-45"
+    },
+    {
+      "chord": "Bbm6",
+      "bars": 1.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-46"
+    },
+    {
+      "chord": "Fmaj7",
+      "bars": 1.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-47"
+    },
+    {
+      "chord": "D7",
+      "bars": 1.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-48"
+    },
+    {
+      "chord": "G7",
+      "bars": 2.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-49"
+    },
+    {
+      "chord": "Eb7",
+      "bars": 2.0,
+      "section": "A3 · part 2",
+      "nodeId": "section-8-node-50"
+    },
+    {
+      "chord": "G7",
+      "bars": 1.0,
+      "section": "A3 · part 3",
+      "nodeId": "section-9-node-51"
+    },
+    {
+      "chord": "Gm7",
+      "bars": 0.5,
+      "section": "A3 · part 3",
+      "nodeId": "section-9-node-52"
+    },
+    {
+      "chord": "C7",
+      "bars": 0.5,
+      "section": "A3 · part 3",
+      "nodeId": "section-9-node-53"
+    },
+    {
+      "chord": "F6",
+      "bars": 1.0,
+      "section": "A3 · part 3",
+      "nodeId": "section-9-node-54"
+    },
+    {
+      "chord": "C7",
+      "bars": 1.0,
+      "section": "A3 · part 3",
+      "nodeId": "section-9-node-53"
+    }
+  ],
+  "durationLabels": [
+    {
+      "nodeId": "section-1-node-1",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-1-node-2",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-2-node-11",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-2-node-12",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-3-node-13",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-3-node-14",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-7-node-39",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-7-node-40",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-8-node-49",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-8-node-50",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "×2"
+    },
+    {
+      "nodeId": "section-9-node-52",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar"
+    },
+    {
+      "nodeId": "section-9-node-53",
+      "offsetX": 0,
+      "offsetY": 100,
+      "text": "half-bar / 1 bar"
+    }
+  ],
+  "layout": {
+    "viewBox": "0 0 1820 10450",
+    "titleSize": 83,
+    "subtitleSize": 35,
+    "subtitle": "F · 68 bars · 4/4 · Frets 5–9",
+    "sections": [
+      {
+        "id": "section-1",
+        "title": "A1 · part 1 · bars 1–8",
+        "titleY": 270,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          410,
+          710,
+          1010
+        ],
+        "top": 355,
+        "bottom": 1080,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 330,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      },
+      {
+        "id": "section-2",
+        "title": "A1 · part 2 · bars 9–16",
+        "titleY": 1400,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          1540,
+          1840,
+          2140
+        ],
+        "top": 1485,
+        "bottom": 2210,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 1460,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#267b99"
+      },
+      {
+        "id": "section-3",
+        "title": "A2 · part 1 · bars 17–24",
+        "titleY": 2530,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          2670,
+          2970,
+          3270
+        ],
+        "top": 2615,
+        "bottom": 3340,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 2590,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#8b4695"
+      },
+      {
+        "id": "section-4",
+        "title": "A2 · part 2 · bars 25–32",
+        "titleY": 3660,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          3800,
+          4100,
+          4400
+        ],
+        "top": 3745,
+        "bottom": 4470,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 3720,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#29805d"
+      },
+      {
+        "id": "section-5",
+        "title": "B · part 1 · bars 33–40",
+        "titleY": 4790,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          4930,
+          5230,
+          5530
+        ],
+        "top": 4875,
+        "bottom": 5600,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 4850,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      },
+      {
+        "id": "section-6",
+        "title": "B · part 2 · bars 41–48",
+        "titleY": 5920,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          6060,
+          6360,
+          6660
+        ],
+        "top": 6005,
+        "bottom": 6730,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 5980,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#267b99"
+      },
+      {
+        "id": "section-7",
+        "title": "A3 · part 1 · bars 49–56",
+        "titleY": 7050,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          7190,
+          7490,
+          7790
+        ],
+        "top": 7135,
+        "bottom": 7860,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 7110,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#8b4695"
+      },
+      {
+        "id": "section-8",
+        "title": "A3 · part 2 · bars 57–64",
+        "titleY": 8180,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          8320,
+          8620,
+          8920
+        ],
+        "top": 8265,
+        "bottom": 8990,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 8240,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#29805d"
+      },
+      {
+        "id": "section-9",
+        "title": "A3 · part 3 · bars 65–68",
+        "titleY": 9310,
+        "titleSize": 32,
+        "left": 200,
+        "right": 1600,
+        "boundaries": [
+          200,
+          480,
+          760,
+          1040,
+          1320,
+          1600
+        ],
+        "centers": [
+          340,
+          620,
+          900,
+          1180,
+          1460
+        ],
+        "rows": [
+          9450,
+          9750,
+          10050
+        ],
+        "top": 9395,
+        "bottom": 10120,
+        "frets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "fretY": 9370,
+        "stringLabels": [
+          "D",
+          "A",
+          "Low E"
+        ],
+        "color": "#cc480e"
+      }
+    ],
+    "footerY": 10410,
+    "footerSize": 25,
+    "footer": "Continue panel by panel. Badges list every visit; durations are in bars.",
+    "startLabel": {
+      "x": 1180.0,
+      "y": 865
+    },
+    "startOutline": {
+      "x": 1125.0,
+      "y": 655,
+      "width": 110,
+      "height": 110
+    }
+  },
+  "routes": [
+    {
+      "title": "A1 · part 1 · bars 1–8",
+      "nodeIds": [
+        "section-1-node-1",
+        "section-1-node-2",
+        "section-1-node-3",
+        "section-1-node-4",
+        "section-1-node-5",
+        "section-1-node-6"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A1 · part 2 · bars 9–16",
+      "nodeIds": [
+        "section-2-node-7",
+        "section-2-node-8",
+        "section-2-node-9",
+        "section-2-node-10",
+        "section-2-node-11",
+        "section-2-node-12"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A2 · part 1 · bars 17–24",
+      "nodeIds": [
+        "section-3-node-13",
+        "section-3-node-14",
+        "section-3-node-15",
+        "section-3-node-16",
+        "section-3-node-17",
+        "section-3-node-18"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A2 · part 2 · bars 25–32",
+      "nodeIds": [
+        "section-4-node-19",
+        "section-4-node-20",
+        "section-4-node-21",
+        "section-4-node-22",
+        "section-4-node-23",
+        "section-4-node-24",
+        "section-4-node-25",
+        "section-4-node-26"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "B · part 1 · bars 33–40",
+      "nodeIds": [
+        "section-5-node-27",
+        "section-5-node-28",
+        "section-5-node-29",
+        "section-5-node-30",
+        "section-5-node-27",
+        "section-5-node-31",
+        "section-5-node-29",
+        "section-5-node-30"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "B · part 2 · bars 41–48",
+      "nodeIds": [
+        "section-6-node-32",
+        "section-6-node-33",
+        "section-6-node-34",
+        "section-6-node-35",
+        "section-6-node-36",
+        "section-6-node-37",
+        "section-6-node-35",
+        "section-6-node-38"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A3 · part 1 · bars 49–56",
+      "nodeIds": [
+        "section-7-node-39",
+        "section-7-node-40",
+        "section-7-node-41",
+        "section-7-node-42",
+        "section-7-node-43",
+        "section-7-node-44"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A3 · part 2 · bars 57–64",
+      "nodeIds": [
+        "section-8-node-45",
+        "section-8-node-46",
+        "section-8-node-47",
+        "section-8-node-48",
+        "section-8-node-49",
+        "section-8-node-50"
+      ],
+      "kind": "solid",
+      "note": "Follow the visit numbers, then continue to the next panel."
+    },
+    {
+      "title": "A3 · part 3 · bars 65–68",
+      "nodeIds": [
+        "section-9-node-51",
+        "section-9-node-52",
+        "section-9-node-53",
+        "section-9-node-54",
+        "section-9-node-53"
+      ],
+      "kind": "solid",
+      "note": "Playback loops from here."
+    }
+  ],
+  "tip": {
+    "title": "Follow the movement. ",
+    "text": "Major circles, minor triangles, dominant squares, diminished hexagons. Chord qualities share fret/string anchors. "
+  },
+  "footerNote": "Full source qualities and durations drive playback; optional alternatives are omitted.",
+  "playbackNote": "68 bars in 4/4. "
+}

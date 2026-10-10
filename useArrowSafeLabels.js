@@ -16,7 +16,7 @@ export default function useArrowSafeLabels() {
       return { x: end.x + dx / size * 7.5 - 19, y: end.y + dy / size * 7.5 - 19, width: 38, height: 38 };
     });
     const overlaps = (a, b) => a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
-    const nodes = [...svg.querySelectorAll('[data-node-id] circle, [data-node-id] rect')].filter(shape => !shape.closest('[data-chart-label]')).map(shape => shape.getBBox());
+    const nodes = [...svg.querySelectorAll('[data-node-shape]')].filter(shape => !shape.closest('[data-chart-label]')).map(shape => shape.getBBox());
     const labels = [...svg.querySelectorAll('[data-chart-label]')];
     labels.forEach(label => label.removeAttribute('transform'));
     const boxes = labels.map(label => label.getBBox());
