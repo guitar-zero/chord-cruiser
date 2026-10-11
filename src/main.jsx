@@ -365,6 +365,7 @@ function App() {
   return (
     <main>
       <PageNavigation current="chords" />
+      <div id="arcade-mode-dock" />
       <header>
         <div>
           <p className="eyebrow">CHORD PATHS</p>
@@ -508,7 +509,6 @@ function App() {
         <ChartSections
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
-          autoScrollEnabled={autoScrollEnabled}
           onIndicatorArrival={setIndicatorArrival}
           suppressIndicator={Boolean(flight)}
           hideGuidingLines={hideGuidingLines}
@@ -526,6 +526,7 @@ function App() {
           bridge={sectionBridge}
           sectionsRef={sectionsRef}
           playbackClockRef={playbackClockRef}
+          autoScrollEnabled={autoScrollEnabled}
           fullHighlight={Boolean(rapidPassage(song, currentChord?.visitIndex))}
         />
       )}

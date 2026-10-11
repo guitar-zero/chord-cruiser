@@ -1,12 +1,13 @@
 import { bassNote } from './songs.js';
 import { pianoHits } from './pianoVoicings.js';
 import { makeBrushBuffers, scheduleBrushes } from './brushes.js';
+import { scheduleRacingCountIn } from './racingCountIn.js';
 
 const soundCache = new Map();
 const yieldToUI = () => new Promise(resolve => setTimeout(resolve, 0));
 
 export class JazzPlayer {
-  constructor({ drums = true, bass = true } = {}) {
+  constructor({ drums = true, bass = true, countIn = 0, countInIntroBeats = 0, racingCountIn = false, beatSeconds = .5, pianoOnNodes = false } = {}) {
     const Context = window.AudioContext || window.webkitAudioContext;
     if (!Context) throw Error('Audio synthesis is unavailable in this browser.');
     this.context = new Context();
@@ -16,6 +17,11 @@ export class JazzPlayer {
     this.sources = new Set();
     this.drumsEnabled = drums;
     this.bassEnabled = bass;
+    this.countIn = countIn;
+    this.countInIntroBeats = countInIntroBeats;
+    this.racingCountIn = racingCountIn;
+    this.beatSeconds = beatSeconds;
+    this.pianoOnNodes = pianoOnNodes;
     this.bassBus = this.context.createGain();
     this.bassBus.gain.value = .38;
     this.drumBus = this.context.createGain();
@@ -59,7 +65,7 @@ export class JazzPlayer {
     await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
     if (this.stopped) return;
     this.timeline = timeline;
-    this.pianoHits = pianoHits(timeline);
+    this.pianoHits = pianoHits(timeline, { nodesOnly: this.pianoOnNodes });
     for (const event of this.pianoHits) {
       for (const note of event.notes) {
         if (this.stopped || this.context.state === 'closed') return;
@@ -74,18 +80,29 @@ export class JazzPlayer {
     }
     await beforePlayback?.();
     if (this.stopped || this.context.state === 'closed') return;
-    this.seek(offset);
+    this.seek(offset, this.countIn);
   }
   track(source) {
     this.sources.add(source);
     const ended = source.onended;
     source.onended = () => { this.sources.delete(source); ended?.(); };
   }
-  seek(offset) {
+  seek(offset, countIn = 0) {
     for (const source of this.sources) { try { source.stop(); } catch {} }
     this.sources.clear();
     this.offset = Math.max(0, Math.min(offset, this.timeline.duration));
-    this.startedAt = this.context.currentTime + .03 - this.offset;
+    this.startedAt = this.context.currentTime + .03 + countIn - this.offset;
+    this.countInEndsAt = countIn > 0 ? this.startedAt + this.offset : null;
+    if (countIn > 0 && this.racingCountIn) scheduleRacingCountIn(this.context, this.countInEndsAt, this.beatSeconds, source => this.track(source));
+    for (let beat = this.countInIntroBeats || 0; !this.racingCountIn && beat * this.beatSeconds < countIn; beat++) {
+      const at = this.context.currentTime + .03 + beat * this.beatSeconds;
+      const click = this.context.createOscillator(), gain = this.context.createGain();
+      click.frequency.value = beat === (this.countInIntroBeats || 0) ? 1100 : 800;
+      gain.gain.setValueAtTime(.18, at); gain.gain.exponentialRampToValueAtTime(.001, at + .08);
+      click.connect(gain); gain.connect(this.drumBus);
+      click.onended = () => { click.disconnect(); gain.disconnect(); };
+      this.track(click); click.start(at); click.stop(at + .09);
+    }
     const timeline = this.timeline;
     if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, this.startedAt, this.offset, source => this.track(source));
     for (const event of this.pianoHits) {

@@ -23,6 +23,14 @@ import { chordProgress } from "./audio/pipeProgress.js";
 import { outgoingVisitColors } from "./SongChart.jsx";
 import { songsById } from "./data/songs.js";
 import { sectionTimeline } from "./audio/sectionTimeline.js";
+import GameMode from './GameMode.jsx';
+import { playJudgmentCue } from './audio/gameCues.js';
+import { countInBeat, countInChords, countInSchedule, countInLabel } from './audio/countIn.js';
+import { shellTargets } from './audio/game.js';
+import GameCountIn from './GameCountIn.jsx';
+import GameBar from './GameBar.jsx';
+import GameAtmosphere from './GameAtmosphere.jsx';
+import ArcadeModeToggle from './ArcadeModeToggle.jsx';
 
 const ChordPlayer = forwardRef(function ChordPlayer(
   {
@@ -53,6 +61,14 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [hasPlayed, setHasPlayed] = useState(false);
   const [position, setPosition] = useState(0);
   const [error, setError] = useState("");
+  const [gameMode, setGameMode] = useState(false);
+  const [gameReady, setGameReady] = useState(false);
+  const [countInBeats, setCountInBeats] = useState(0);
+  const [countInGo, setCountInGo] = useState(false);
+  useEffect(() => {
+    document.body.dataset.gameMode = String(gameMode);
+    return () => { delete document.body.dataset.gameMode; };
+  }, [gameMode]);
   useEffect(() => {
     function handleChartShortcut(event) {
       if (shortcutKey(event) !== 'h') return;
@@ -77,6 +93,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     () => sectionTimeline(timeline, songData),
     [timeline, songData],
   );
+  const gameTargets = useMemo(() => shellTargets(timeline, songData.nodes), [timeline, songData]);
+  const [firstGameChord, nextGameChord] = countInChords(gameTargets, position, timeline.duration);
   useLayoutEffect(
     () => () => {
       cancelAnimationFrame(frame.current);
@@ -94,11 +112,16 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     setPosition(0);
     setHasPlayed(false);
     setLoopIteration(0);
+    setCountInBeats(0);
+    setCountInGo(false);
   }
   function tick() {
     const current = player.current;
     if (!current || current.context.state === "closed") return;
     const { position: elapsed, wrapped } = current.loopPosition();
+    const remaining = current.countInEndsAt === null || current.countInEndsAt === undefined ? -Infinity : current.countInEndsAt - current.context.currentTime;
+    setCountInBeats(countInBeat(remaining, 60 / bpm));
+    setCountInGo(remaining <= 0 && remaining > -.45);
     if (wrapped) {
       setSeekVersion((version) => version + 1);
       setLoopIteration((iteration) => iteration + 1);
@@ -107,6 +130,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     frame.current = requestAnimationFrame(tick);
   }
   async function toggle(event) {
+    if (gameMode && !gameReady) { setError('Choose and connect your audio interface before pressing Play.'); return; }
     const launchButton = event?.currentTarget || playButton.current;
     setError("");
     try {
@@ -122,9 +146,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         setState("starting");
         const startAt = position >= timeline.duration ? 0 : position;
         setPosition(startAt);
-        const current = new JazzPlayer();
+        const readySchedule = countInSchedule(60 / bpm);
+        const current = new JazzPlayer(gameMode ? { bass: false, pianoOnNodes: true, racingCountIn: true, countIn: readySchedule.totalBeats * 60 / bpm, countInIntroBeats: readySchedule.introBeats, beatSeconds: 60 / bpm } : {});
         player.current = current;
-        current.master.gain.value = volume / 100;
+        current.master.gain.value = gameMode ? .03 : volume / 100;
         current.drumBus.gain.value = drumVolume / 100;
         current.bassBus.gain.value = bassVolume / 100;
         const startEvent = timeline.events.find(
@@ -190,6 +215,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     return () => window.removeEventListener("keydown", handleSpace);
   }, []);
   function seek(value) {
+    setCountInBeats(0);
+    setCountInGo(false);
     setSeekVersion((version) => version + 1);
     const next = Math.max(0, Math.min(timeline.duration, Number(value)));
     cancelAnimationFrame(frame.current);
@@ -206,6 +233,19 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const running = state !== "stopped";
   const activeIndex = timeline.events.indexOf(active);
   const currentNode = songData.nodes.find(node => node.id === active?.nodeId);
+  useEffect(() => {
+    if (gameMode && !gameReady && state !== 'stopped') stop();
+  }, [gameMode, gameReady, state]);
+  function gamePosition() {
+    const current = player.current;
+    if (!current?.timeline || current.startedAt === undefined) return position;
+    const raw = current.context.currentTime - current.startedAt;
+    return raw < 0 ? raw : raw % timeline.duration;
+  }
+  function handleGameJudgment(result) {
+    const current = player.current;
+    if (current) playJudgmentCue(current.context, result, source => current.track(source));
+  }
   useLayoutEffect(() => {
     onPlaybackPosition?.({
       visitIndex: activeIndex,
@@ -250,19 +290,28 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     loopIteration,
     state,
   ]);
+  const TransportSettings = gameMode ? 'details' : 'div';
+  const gamePlayControls = <div className="game-start-controls"><span className="game-play-step">2 · Ready, set, strum!</span><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting' || !gameReady} onClick={toggle}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button><span>{gameReady ? 'Check the signal, then Play · Space to play / pause' : 'Connect your interface in step 1 first ♡'}</span><button className="game-stop-button" type="button" onClick={stop} disabled={!running && position === 0}>■ Stop run</button></div>;
   return (
     <section
-      className="player"
+      className={`player${gameMode ? ' is-game-mode' : ''}`}
       aria-label="Chord playback"
       aria-busy={state === "starting"}
     >
+      <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
+      {gameMode && <GameAtmosphere playing={state === 'playing'} />}
+      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} />}
+      {gameMode && <GameMode playControls={gamePlayControls} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} position={position} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <GameBar ref={progressRef} timeline={timeline} sectionSegments={sectionSegments} position={position} disabled={state === 'starting'} onSeek={seek} />}
+      <TransportSettings className="game-accompaniment-settings">
+      {gameMode && <summary>Tempo & backing sound</summary>}
       <div className="transport">
-        <button
+        {!gameMode && <button
           ref={playButton}
           className="play"
           type="button"
           onClick={toggle}
-          disabled={state === "starting"}
+          disabled={state === "starting" || (gameMode && !gameReady)}
         >
           {state === "starting" ? (
             <>
@@ -273,9 +322,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           ) : state === "paused" ? (
             "▶ Resume"
           ) : (
-            "▶ Play chords"
+            gameMode ? '▶ Play game' : "▶ Play chords"
           )}
-        </button>
+        </button>}
         <button
           type="button"
           onClick={stop}
@@ -304,7 +353,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             type="range"
             min="0"
             max="100"
-            value={volume}
+            value={gameMode ? 3 : volume}
+            disabled={gameMode}
             onChange={(e) => {
               const value = Number(e.target.value);
               setVolume(value);
@@ -345,6 +395,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             min="0"
             max="100"
             value={bassVolume}
+            disabled={gameMode}
             onChange={(e) => {
               const value = Number(e.target.value);
               setBassVolume(value);
@@ -358,7 +409,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           />
         </label>
       </div>
-      <div className="player-status">
+      </TransportSettings>
+      {!gameMode && <div className="player-status">
+        {gameMode && countInBeats > 0 && <strong className="game-count-in">{countInLabel(countInBeats, 60 / bpm)}</strong>}
         {running && active && (
           <span className="current-chord">
             {active.chord.replaceAll("b", "♭")}
@@ -369,8 +422,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             ? `${active.section ? active.section + " · " : ""}Bar ${Math.floor((position * bpm) / (60 * timeline.beatsPerBar)) + 1} of ${timeline.beats / timeline.beatsPerBar}`
             : `${timeline.beats / timeline.beatsPerBar} bars · ${Math.round(timeline.duration)} seconds`}
         </span>
-      </div>
-      <div className="main-chord-preview full-fretboard-preview">
+      </div>}
+      {!gameMode && <div className="main-chord-preview full-fretboard-preview">
         {songData.nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
         <ShellChordDiagram
           fullFretboard
@@ -391,16 +444,19 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           onSeek={seek}
           disabled={state === "starting"}
         />
-      </div>
-      <ProgressBar
+      </div>}
+      {!gameMode && <ProgressBar
         ref={progressRef}
         timeline={timeline}
         sectionSegments={sectionSegments}
         position={position}
         disabled={state === "starting"}
         onSeek={seek}
-      />
+      />}
       <MiniProgress
+        key={gameMode ? 'game' : 'practice'}
+        gameMode={gameMode}
+        gameReady={gameReady}
         chartOpen={chartOpen}
         onOpenChordChart={() => setChartOpen(open => !open)}
         nodeColorMode={songData.nodeColorMode}
@@ -432,7 +488,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       {chartOpen && <ChordChartModal title={songData.title} onClose={() => setChartOpen(false)}
         timeline={timeline} position={position} colors={routeColors} darkMode={darkMode}
         disabled={state === "starting"} onSeek={seek} />}
-      <ChordTimeline
+      {!gameMode && <ChordTimeline
         nodeLabels={Object.fromEntries(
           songData.nodes.map((node) => [node.id, node.chord]),
         )}
@@ -442,7 +498,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         activeIndex={running || position > 0 ? activeIndex : -1}
         onSeek={seek}
         disabled={state === "starting"}
-      />
+      />}
       {error && (
         <p role="alert" className="audio-error">
           {error}

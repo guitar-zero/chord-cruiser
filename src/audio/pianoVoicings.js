@@ -13,7 +13,7 @@ export function pianoVoicing(chord, repeat = 0) {
   return bass === null ? notes : [bass, ...notes];
 }
 
-export function pianoHits(timeline) {
+export function pianoHits(timeline, { nodesOnly = false } = {}) {
   const hits = [];
   const beatSeconds = timeline.duration / timeline.beats;
   const beatsPerBar = timeline.beatsPerBar || 4;
@@ -21,10 +21,12 @@ export function pianoHits(timeline) {
   let repeat = 0;
   for (const event of timeline.events) {
     if (event.chord === 'NC') { previousChord = undefined; continue; }
-    for (let beat = 0; beat < event.beats; beat += beatsPerBar) {
+    if (nodesOnly && !event.nodeId) continue;
+    const hitBeats = nodesOnly ? event.beats : beatsPerBar;
+    for (let beat = 0; beat < event.beats; beat += hitBeats) {
       repeat = previousChord === event.chord ? repeat + 1 : 0;
       hits.push({ chord: event.chord, start: event.start + beat * beatSeconds,
-        duration: Math.min(beatsPerBar, event.beats - beat) * beatSeconds,
+        duration: Math.min(hitBeats, event.beats - beat) * beatSeconds,
         notes: pianoVoicing(event.chord, repeat) });
       previousChord = event.chord;
     }

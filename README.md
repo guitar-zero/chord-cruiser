@@ -179,6 +179,69 @@ and timing stay unchanged, including during playback. Toggle back to restore
 the original three-string map. This display preference carries across songs
 and works with transposition.
 
+### Guitar game mode
+
+The centered **Guitar Arcade** button at the top enters game mode. Its prominent
+**Let's Play** action stays disabled until you explicitly choose an interface and
+connect it under audio settings. Allow audio access first if device names are
+unavailable. Connecting never starts playback: check the visible signal meter,
+then press Play. Tempo and backing settings are collapsed to keep the main
+action visible.
+Interface instructions and setup sit beside Play in a friendly two-step panel
+(stacked on small screens). Game mode removes the practice header and full
+fretboard overview so the game controls and chart take priority.
+The game song-run bar replaces the practice
+progress bar and timeline, with a seek control, stage jumps, previous/next stage,
+and a return-to-first-chord button. The mini menu uses the same game bar.
+Arcade buttons, glowing cards, and small laser accents decorate game mode;
+reduced-motion preferences disable decorative motion.
+
+Plug your guitar into an audio interface and select its device and input channel
+under audio settings if the default input is wrong. Audio capture requires HTTPS
+or localhost and browser input permission. Use clean guitar and headphones,
+with interface loopback disabled. **Hear guitar in browser** monitors the
+selected input channel with warm clean jazz EQ, gentle compression, and stereo
+room reverb. Guitar volume and reverb are adjustable during play; monitoring can
+be muted without affecting recognition. Turn off interface direct monitoring
+to avoid hearing the dry signal doubled. Recognition always uses the dry input.
+When chord correctness is **Good**, **Okay**, or **Nope**, a **You played**
+chord name pops up near the node using the notes captured for that attempt. Its
+chord estimate is independent of the chart target and identifies the played
+chord without a fretboard diagram. Total misses
+show only MISS!.
+Chord and timing judgments burst left and right from the node with small
+fireworks. Double Perfect earns a quiet ding; either Nope earns a soft buzzer.
+Piano backing plays at 3% volume, striking once per node visit without extra
+hits during held bars or source chords omitted from the diagram; bass is muted. Brushes and a one-bar
+count-in provide rhythm. Get ready lasts at least four seconds and Here we go
+at least two seconds before eight tempo-synchronized racing beeps: 8 through 1,
+with eight numbered balls lighting and bouncing on each beat,
+then a higher GO tone exactly on the first chord. Purple, amber, red, and green
+mark the four start phases; the GO overlay clears quickly to reveal the chart. The first
+chord is prominent, with the next chord below. A persistent badge and the mini
+menu mark game mode.
+
+Each playback visit with a displayed shell is one target, including held bars.
+Unsupported or omitted shells are skipped. Play the shell's root, third, and
+seventh together. Pitch-class comparison accepts inversions and octave changes.
+Chord and timing show separate **Perfect / Great / Good / Okay / Nope** judgments
+near the target node, with separate cumulative scores. Missing a target or
+earning Nope for both shows one MISS! with no individual grades or chord diagram.
+Judgment badges appear only at nodes; the mini menu has no duplicate popups.
+Timing uses strum onset, independently of the later chord sample:
+60 / 120 / 200 / 320 ms are the maximum errors for Perfect / Great / Good / Okay.
+The input-delay control subtracts interface capture delay from measured onset.
+Stop resets scores; seeking resets eligible targets; looping starts new targets
+and retains scores. Exiting game mode releases audio input.
+The bottom-left score panel records every judged chord with separate accuracy
+and timing grades. Results accumulate across loops and reset on Stop. Its list
+follows new results while at the bottom; scrolling up preserves your place.
+
+Detection is an experimental spectral-peak and overtone-suppression heuristic
+for clean electric guitar, not a trained polyphonic model. Synthetic spectrum,
+grading, count-in, and capture lifecycle tests pass; accuracy and latency still
+need validation with physical interfaces, guitar tones, and browsers.
+
 ### Tab navigator
 
 The **Tab navigator** page (`/tabs`) accepts six-string text guitar tabs by pasting text or importing a public Ultimate Guitar text-tab URL. An original demo is provided. It converts the input into the shared chart graph and uses `SongChart`, `ProgressBar`, `MiniChordStrip`, route coloring, reciprocal lanes, step badges, and the same theme and controls as the chord navigator.
