@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useMemo } from "react";
 import SongChart, { outgoingVisitColors } from "./SongChart.jsx";
 import SectionBeatDots from './SectionBeatDots.jsx';
+import { chordDisplayColors } from './data/chordQualityColors.js';
 
 const ChartSections = forwardRef(function ChartSections(
   {
@@ -17,7 +18,7 @@ const ChartSections = forwardRef(function ChartSections(
   forwardedRef,
 ) {
   const svgRefs = useRef({});
-  const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
+  const visitColors = useMemo(() => chordDisplayColors(song, outgoingVisitColors(song)), [song]);
   const activeSection = song.nodes.find(
     (node) => node.id === currentChord?.node,
   )?.section;

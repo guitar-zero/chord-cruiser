@@ -238,3 +238,40 @@ test('Playback selects correct graph nodes, including section-specific D7/Dm', a
   assert.notEqual(dominant.node, 'unmapped');
   assert.equal(chartTarget('solar', null), null);
 });
+
+import { shellVoicing, guitarTuning } from '../shellVoicing.js';
+
+test('Shell voicings retain chart roots and contain exactly root, third and seventh', () => {
+  for (const [chord, intervals] of [['Cmaj7', [0,4,11]], ['Cm7', [0,3,10]], ['C7b9', [0,4,10]], ['Cm7b5', [0,3,10]], ['Cdim7', [0,3,9]], ['CmMaj7', [0,3,11]]]) {
+    for (const [string, fret] of [['E',8], ['A',3], ['D',10]]) {
+      const shell = shellVoicing(chord, {string, fret});
+      assert.equal(shell.notes.length, 3);
+      assert.equal(shell.notes[0].fret, fret);
+      const root = guitarTuning[shell.notes[0].string] + fret;
+      assert.deepEqual(shell.notes.map(note => (guitarTuning[note.string] + note.fret - root) % 12).sort((a,b) => a-b), intervals);
+      assert.ok(Math.max(...shell.notes.map(note => note.fret)) - Math.min(...shell.notes.map(note => note.fret)) <= 3);
+    }
+  }
+});
+
+test('Shell voicings handle substitutions, open roots and unavailable source positions', () => {
+  assert.equal(shellVoicing('C6', {string:'A', fret:3}).substitution, true);
+  assert.equal(shellVoicing('Em7', {string:'E', fret:0}).notes[0].fret, 0);
+  assert.equal(shellVoicing('C7sus4', {string:'A', fret:3}), null);
+  assert.equal(shellVoicing('C7', null), null);
+  assert.equal(shellVoicing('NC', {string:'A', fret:3}), null);
+  assert.equal(shellVoicing('C7', {string:'A', fret:4}), null);
+});
+
+import { chordQuality, chordQualityColor, chordDisplayColors } from '../data/chordQualityColors.js';
+
+test('Quality colors preserve full source harmony and stay constant across roots and visits', () => {
+  const examples = { C:'major', C6:'major', Cm:'minor', Cm6:'minor', Cmaj7:'major7', 'Cmaj7#11':'major7', Cm7:'minor7', Cm9:'minor7', 'C7b9':'dominant', 'C13#11':'dominant', Cdim7:'diminished', Cm7b5:'halfDiminished', C7sus4:'suspended', CmMaj7:'minorMajor7', 'Dbm7/Ab':'minor7' };
+  for (const [chord, quality] of Object.entries(examples)) assert.equal(chordQuality(chord), quality, chord);
+  assert.equal(chordQualityColor('Cm7'), chordQualityColor('F#m7'));
+  const song = { nodeColorMode:'quality', playback:[{chord:'Cmaj7'}, {chord:'Cm7'}, {chord:'Cmaj7'}] };
+  const colors = chordDisplayColors(song, ['red','green','blue']);
+  assert.equal(colors[0], colors[2]);
+  assert.notEqual(colors[0], colors[1]);
+  assert.deepEqual(chordDisplayColors({...song, nodeColorMode:'rainbow'}, ['red','green','blue']), ['red','green','blue']);
+});

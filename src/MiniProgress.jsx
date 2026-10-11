@@ -1,17 +1,27 @@
 import React, { useEffect, useReducer, useState } from "react";
 import ProgressBar from "./ProgressBar.jsx";
+import AutoScrollToggle from "./AutoScrollToggle.jsx";
 import MiniChordStrip from "./MiniChordStrip.jsx";
+import ShellChordDiagram from "./ShellChordDiagram.jsx";
+import ChordQualityLegend from "./ChordQualityLegend.jsx";
+import { timelineColor } from "./data/timelinePresentation.js";
 import { miniProgressState } from "./miniProgressState.js";
 import { shortcutKey } from "./keyboardShortcuts.js";
 
 export default function MiniProgress({
   progressRef,
   chord,
+  currentEvent,
+  currentNode,
   activeIndex,
   colors,
   darkMode,
   nodeLabels,
   neverShow,
+  autoScrollEnabled,
+  onToggleAutoScroll,
+  nodeColorMode,
+  onToggleNodeColors,
   playbackState,
   onToggle,
   onStop,
@@ -113,7 +123,10 @@ export default function MiniProgress({
                 ×
               </button>
             </div>
+            {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
+            <ShellChordDiagram chord={currentEvent?.chord} node={currentNode} color={timelineColor(colors?.[activeIndex], darkMode)} darkMode={darkMode} />
             <div className="mini-progress-controls">
+              {neverShow && <AutoScrollToggle enabled={autoScrollEnabled} onToggle={onToggleAutoScroll} />}
               <button
                 type="button"
                 onClick={onToggle}
@@ -138,6 +151,9 @@ export default function MiniProgress({
               </button>
             </div>
             <div className="mini-view-controls">
+              <button type="button" aria-pressed={nodeColorMode === 'quality'} aria-keyshortcuts="c" title="Toggle node colors (C)" onClick={onToggleNodeColors}>
+                Node colors <strong>{nodeColorMode === 'quality' ? 'Chord quality' : 'Rainbow sequence'}</strong> <kbd>C</kbd>
+              </button>
               <button
                 type="button"
                 aria-pressed={showFullPath}
@@ -178,7 +194,7 @@ export default function MiniProgress({
               nodeLabels={nodeLabels}
             />
             <div className="mini-shortcut-reminders">
-              <kbd>Space</kbd> Play/pause · <kbd>M</kbd> Toggle mini menu ·{" "}
+              <kbd>Space</kbd> Play/pause · <kbd>M</kbd> Toggle mini menu · <kbd>C</kbd> Node colors
             </div>
           </section>
         </div>

@@ -12,6 +12,11 @@ import { JazzPlayer } from "./audio/ensemble.js";
 import ChordTimeline from "./ChordTimeline.jsx";
 import ProgressBar from "./ProgressBar.jsx";
 import MiniProgress from "./MiniProgress.jsx";
+import AutoScrollToggle from "./AutoScrollToggle.jsx";
+import ShellChordDiagram from "./ShellChordDiagram.jsx";
+import ChordQualityLegend from "./ChordQualityLegend.jsx";
+import { timelineColor } from "./data/timelinePresentation.js";
+import { chordDisplayColors } from "./data/chordQualityColors.js";
 import MiniChordStrip from "./MiniChordStrip.jsx";
 import { chordProgress } from "./audio/pipeProgress.js";
 import { outgoingVisitColors } from "./SongChart.jsx";
@@ -32,6 +37,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onPlaybackPosition,
     twoStrings,
     setTwoStrings,
+    autoScrollEnabled,
+    onToggleAutoScroll,
+    onToggleNodeColors,
   },
   controlRef,
 ) {
@@ -50,7 +58,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [seekVersion, setSeekVersion] = useState(0);
   const [loopIteration, setLoopIteration] = useState(0);
   const frame = useRef(null);
-  const routeColors = useMemo(() => outgoingVisitColors(songData), [songData]);
+  const routeColors = useMemo(() => chordDisplayColors(songData, outgoingVisitColors(songData)), [songData]);
   const timeline = useMemo(
     () => buildTimeline(songData.playback, bpm, songData.beatsPerBar || 4),
     [songData, bpm],
@@ -187,6 +195,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     ) || (position === timeline.duration ? timeline.events.at(-1) : undefined);
   const running = state !== "stopped";
   const activeIndex = timeline.events.indexOf(active);
+  const currentNode = songData.nodes.find(node => node.id === active?.nodeId);
   useLayoutEffect(() => {
     onPlaybackPosition?.({
       visitIndex: activeIndex,
@@ -360,6 +369,16 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         </span>
       </div>
       <div className="main-chord-preview">
+        {neverShowMiniProgress && <div className="mini-progress-controls main-auto-scroll-control">
+          <AutoScrollToggle enabled={autoScrollEnabled} onToggle={onToggleAutoScroll} />
+        </div>}
+        {songData.nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
+        <ShellChordDiagram
+          chord={active?.chord}
+          node={currentNode}
+          color={timelineColor(routeColors[activeIndex], darkMode)}
+          darkMode={darkMode}
+        />
         <MiniChordStrip
           timeline={timeline}
           position={position}
@@ -382,6 +401,12 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         onSeek={seek}
       />
       <MiniProgress
+        nodeColorMode={songData.nodeColorMode}
+        onToggleNodeColors={onToggleNodeColors}
+        autoScrollEnabled={autoScrollEnabled}
+        onToggleAutoScroll={onToggleAutoScroll}
+        currentEvent={active}
+        currentNode={currentNode}
         showFullPath={showFullPath}
         showGuideLines={showGuideLines}
         twoStrings={twoStrings}

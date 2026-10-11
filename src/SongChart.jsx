@@ -30,6 +30,7 @@ import CurrentChordIndicator from "../CurrentChordIndicator.jsx";
 import useArrowSafeLabels from "../useArrowSafeLabels.js";
 import { routePath } from "./data/stringLayout.js";
 import { chronologicalColors } from "./data/routePalette.js";
+import { chordDisplayColors, chordQualityColor } from "./data/chordQualityColors.js";
 import { pipeProgress, beatCountdown } from './audio/pipeProgress.js';
 import {
   timelineColor,
@@ -620,7 +621,11 @@ const SongChart = forwardRef(function SongChart(
     ),
   );
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
-  const nodeColors = nodeVisitColors(song, visitColors, playbackVisitIndex);
+  const displayColors = chordDisplayColors(song, visitColors);
+  const nodeColors = nodeVisitColors(song, displayColors, playbackVisitIndex);
+  if (song.nodeColorMode === 'quality') {
+    for (const node of song.nodes) nodeColors[node.id] ||= chordQualityColor(node.chord);
+  }
   const upcoming = upcomingMovement(song, playbackVisitIndex);
   const [arrivedTarget, setArrivedTarget] = useState(null);
   const handleArrival = useCallback(
@@ -946,12 +951,12 @@ const SongChart = forwardRef(function SongChart(
           color={nodeColors[node.id]}
           currentColor={
             current?.node === node.id
-              ? timelineColor(visitColors[playbackVisitIndex], darkMode)
+              ? timelineColor(displayColors[playbackVisitIndex], darkMode)
               : undefined
           }
           nextColor={
             upcoming?.nodeId === node.id
-              ? timelineColor(visitColors[upcoming.visitIndex], darkMode)
+              ? timelineColor(displayColors[upcoming.visitIndex], darkMode)
               : undefined
           }
         />

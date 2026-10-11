@@ -43,6 +43,15 @@ const songOptionLabel = (song) => {
 };
 
 function App() {
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+  const [nodeColorMode, setNodeColorMode] = useState(() => {
+    try {
+      return localStorage.getItem('chord-map-node-colors') === 'rainbow' ? 'rainbow' : 'quality';
+    } catch { return 'quality'; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem('chord-map-node-colors', nodeColorMode); } catch {}
+  }, [nodeColorMode]);
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem("chord-map-theme");
@@ -64,6 +73,10 @@ function App() {
   useEffect(() => {
     function handleShortcut(event) {
       const key = shortcutKey(event);
+      if (key === "c") {
+        event.preventDefault();
+        setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality');
+      }
       if (key === "x") {
         event.preventDefault();
         setShowFullPathDuringPlayback((value) => !value);
@@ -141,10 +154,10 @@ function App() {
     const positioned = twoStrings
       ? twoStringLayout(transposed)
       : threeStringLayout(transposed);
-    return redStartingColor(
+    return { ...redStartingColor(
       twoStrings ? positioned : stackSharedNodes(positioned),
-    );
-  }, [songId, targetKey, twoStrings]);
+    ), nodeColorMode };
+  }, [songId, targetKey, twoStrings, nodeColorMode]);
   const selectionKey = `${songId}:${song.key}`;
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
   const availableKeys = /minor|-$/.test(song.key) ? minorKeyRoots : keyRoots;
@@ -199,7 +212,7 @@ function App() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const sourceBounds = source?.getBoundingClientRect();
-    scrollChartSections(source?.closest(".chart-section"), panel);
+    if (autoScrollEnabled) scrollChartSections(source?.closest(".chart-section"), panel);
     if (!reducedMotion && sourceBounds && advancing) {
       const targetBounds = destination.getBoundingClientRect();
       setFlight({
@@ -221,6 +234,7 @@ function App() {
     currentChord?.visitIndex,
     currentChord?.seekVersion,
     currentChord?.loopIteration,
+    autoScrollEnabled,
   ]);
   useLayoutEffect(() => {
     // Retain the preview during the section flight, then remove it on landing.
@@ -300,7 +314,7 @@ function App() {
       shape?.closest(".chart-section") ||
       sectionSvg?.closest(".chart-section") ||
       sectionsRef.current.querySelector(".chart-section");
-    scrollChartSections(null, panel);
+    if (autoScrollEnabled) scrollChartSections(null, panel);
     if (
       !shape ||
       !rect ||
@@ -431,6 +445,9 @@ function App() {
           </select>
         </label>
         <div className="chart-display-controls">
+          <button className="theme-toggle" type="button" aria-keyshortcuts="c" title="Toggle node colors (C)" aria-pressed={nodeColorMode === 'quality'} onClick={() => setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality')}>
+            Node colors: {nodeColorMode === 'quality' ? 'Chord quality' : 'Rainbow sequence'} <kbd>C</kbd>
+          </button>
           <button
             className="string-toggle theme-toggle"
             type="button"
@@ -467,6 +484,9 @@ function App() {
         </div>
       </nav>
       <ChordPlayer
+        onToggleNodeColors={() => setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality')}
+        autoScrollEnabled={autoScrollEnabled}
+        onToggleAutoScroll={() => setAutoScrollEnabled(enabled => !enabled)}
         showFullPath={showFullPathDuringPlayback}
         showGuideLines={!hideGuidingLines}
         onToggleFullPath={() =>
