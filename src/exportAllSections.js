@@ -76,3 +76,20 @@ export function exportAllSections(song, sectionSvgs, darkMode) {
   svg.prepend(paper);
   return svg;
 }
+
+// A standalone SVG has no paged layout. Give printing separate, fixed-size
+// SVG pages so the browser cannot fragment a chart section across sheets.
+export function exportPrintPages(song, sectionSvgs) {
+  return Array.from(sectionSvgs, section => {
+    const page = exportAllSections(song, [section], false);
+    page.setAttribute('width', '100%');
+    page.setAttribute('height', '100%');
+    page.setAttribute('preserveAspectRatio', 'xMidYMin meet');
+    // Include the entire chart even when playback hides distant nodes.
+    page.querySelectorAll('[data-node-id]').forEach(node => {
+      node.removeAttribute('opacity');
+      node.removeAttribute('aria-hidden');
+    });
+    return page;
+  });
+}

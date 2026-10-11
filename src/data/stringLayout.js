@@ -13,7 +13,7 @@ export function routePath(source, target, nodes, section, orthogonal = false) {
     return nodes.every(node => {
       if (node.id===source.id || node.id===target.id) return true;
       const t=length ? Math.max(0,Math.min(1,((node.x-start.x)*dx+(node.y-start.y)*dy)/length)) : 0;
-      return Math.hypot(node.x-start.x-dx*t,node.y-start.y-dy*t)>=70;
+      return Math.hypot(node.x-start.x-dx*t,node.y-start.y-dy*t)>=70-1e-6;
     });
   });
   const direct=[clip(source,target),clip(target,source)];
@@ -39,7 +39,35 @@ export function routePath(source, target, nodes, section, orthogonal = false) {
       if(clear(points)) candidates.push(points);
     }
   }
-  if (!candidates.length) throw Error(`No clear two-string route: ${source.id} → ${target.id}`);
+  if (!candidates.length) {
+    // Dense six-string passages can require several turns. Search the clear
+    // lanes between note positions rather than limiting routes to two bends.
+    const xs=[...new Set(nodes.flatMap(node=>[node.x-70,node.x,node.x+70]))].sort((a,b)=>a-b);
+    const ys=[...new Set(nodes.flatMap(node=>[node.y-100,node.y,node.y+100]))].sort((a,b)=>a-b);
+    const key=(x,y)=>`${x},${y}`;
+    const start=key(source.x,source.y),finish=key(target.x,target.y);
+    const best=new Map([[start,0]]),previous=new Map(),pending=[{x:source.x,y:source.y,cost:0}];
+    while(pending.length) {
+      pending.sort((a,b)=>b.cost-a.cost);
+      const point=pending.pop(),id=key(point.x,point.y);
+      if(point.cost!==best.get(id)) continue;
+      if(id===finish) {
+        const points=[{x:target.x,y:target.y}];let cursor=id;
+        while(previous.has(cursor)) {const prior=previous.get(cursor);points.unshift(prior);cursor=key(prior.x,prior.y);}
+        const turns=points.filter((p,i)=>!i||i===points.length-1||(points[i-1].x!==points[i+1].x&&points[i-1].y!==points[i+1].y));
+        turns[0]=clip(source,turns[1]);turns[turns.length-1]=clip(target,turns[turns.length-2]);
+        candidates.push(turns);break;
+      }
+      const xi=xs.indexOf(point.x),yi=ys.indexOf(point.y);
+      for(const next of [{x:xs[xi-1],y:point.y},{x:xs[xi+1],y:point.y},{x:point.x,y:ys[yi-1]},{x:point.x,y:ys[yi+1]}]) {
+        if(next.x===undefined||next.y===undefined||!clear([point,next])) continue;
+        const cost=point.cost+distance(point,next),nextId=key(next.x,next.y);
+        if(cost>=(best.get(nextId)??Infinity)) continue;
+        best.set(nextId,cost);previous.set(nextId,{x:point.x,y:point.y});pending.push({...next,cost});
+      }
+    }
+  }
+  if (!candidates.length) throw Error(`No clear route: ${source.id} → ${target.id}`);
   candidates.sort((a,b)=>a.slice(1).reduce((sum,p,i)=>sum+distance(p,a[i]),0)-b.slice(1).reduce((sum,p,i)=>sum+distance(p,b[i]),0));
   return candidates[0].map((point,i)=>`${i?'L':'M'}${point.x} ${point.y}`).join(' ');
 }

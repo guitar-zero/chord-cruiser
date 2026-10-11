@@ -12,7 +12,8 @@ import { JazzPlayer } from "./audio/ensemble.js";
 import ChordTimeline from "./ChordTimeline.jsx";
 import ProgressBar from "./ProgressBar.jsx";
 import MiniProgress from "./MiniProgress.jsx";
-import AutoScrollToggle from "./AutoScrollToggle.jsx";
+import ChordChartModal from "./ChordChartModal.jsx";
+import { shortcutKey } from "./keyboardShortcuts.js";
 import ShellChordDiagram from "./ShellChordDiagram.jsx";
 import ChordQualityLegend from "./ChordQualityLegend.jsx";
 import { timelineColor } from "./data/timelinePresentation.js";
@@ -39,7 +40,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     setTwoStrings,
     autoScrollEnabled,
     onToggleAutoScroll,
-    onToggleNodeColors,
+    chartOpen,
+    setChartOpen,
   },
   controlRef,
 ) {
@@ -51,7 +53,15 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [hasPlayed, setHasPlayed] = useState(false);
   const [position, setPosition] = useState(0);
   const [error, setError] = useState("");
-  const [neverShowMiniProgress, setNeverShowMiniProgress] = useState(false);
+  useEffect(() => {
+    function handleChartShortcut(event) {
+      if (shortcutKey(event) !== 'h') return;
+      event.preventDefault();
+      setChartOpen(open => !open);
+    }
+    window.addEventListener('keydown', handleChartShortcut);
+    return () => window.removeEventListener('keydown', handleChartShortcut);
+  }, [setChartOpen]);
   const player = useRef(null);
   const playButton = useRef(null);
   const progressRef = useRef(null);
@@ -347,14 +357,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             }}
           />
         </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={neverShowMiniProgress}
-            onChange={(event) => setNeverShowMiniProgress(event.target.checked)}
-          />{" "}
-          Never show mini bar progress popup
-        </label>
       </div>
       <div className="player-status">
         {running && active && (
@@ -368,12 +370,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             : `${timeline.beats / timeline.beatsPerBar} bars · ${Math.round(timeline.duration)} seconds`}
         </span>
       </div>
-      <div className="main-chord-preview">
-        {neverShowMiniProgress && <div className="mini-progress-controls main-auto-scroll-control">
-          <AutoScrollToggle enabled={autoScrollEnabled} onToggle={onToggleAutoScroll} />
-        </div>}
+      <div className="main-chord-preview full-fretboard-preview">
         {songData.nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
         <ShellChordDiagram
+          fullFretboard
           chord={active?.chord}
           node={currentNode}
           color={timelineColor(routeColors[activeIndex], darkMode)}
@@ -401,10 +401,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         onSeek={seek}
       />
       <MiniProgress
+        chartOpen={chartOpen}
+        onOpenChordChart={() => setChartOpen(open => !open)}
         nodeColorMode={songData.nodeColorMode}
-        onToggleNodeColors={onToggleNodeColors}
-        autoScrollEnabled={autoScrollEnabled}
-        onToggleAutoScroll={onToggleAutoScroll}
         currentEvent={active}
         currentNode={currentNode}
         showFullPath={showFullPath}
@@ -416,7 +415,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         playbackState={state}
         onToggle={toggle}
         onStop={stop}
-        neverShow={neverShowMiniProgress}
         progressRef={progressRef}
         timeline={timeline}
         sectionSegments={sectionSegments}
@@ -431,6 +429,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           songData.nodes.map((node) => [node.id, node.chord]),
         )}
       />
+      {chartOpen && <ChordChartModal title={songData.title} onClose={() => setChartOpen(false)}
+        timeline={timeline} position={position} colors={routeColors} darkMode={darkMode}
+        disabled={state === "starting"} onSeek={seek} />}
       <ChordTimeline
         nodeLabels={Object.fromEntries(
           songData.nodes.map((node) => [node.id, node.chord]),

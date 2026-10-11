@@ -109,6 +109,7 @@ export default function RouteColors({ children, distinguishPasses = false, palet
     preferred: path.props.stroke || (distinguishPasses && path.props.strokeDasharray ? secondPassColor : preferredColor),
     palette,
   })));
+  const markerColors = [...new Set([...routePalette, ...colors])];
   let index = 0;
   function paint(items, parentWidth = inheritedWidth) {
     return React.Children.map(items, child => {
@@ -116,13 +117,13 @@ export default function RouteColors({ children, distinguishPasses = false, palet
       if (child.type === 'path' && child.props.stroke !== '#fbf8ed') {
         const color = colors[index++];
         const width = Math.min(Number(child.props.strokeWidth) || parentWidth, 6);
-        return React.cloneElement(child, { 'data-arrow-tip': true, d: insetArrowShaft(child.props.d), stroke: color, strokeWidth: width, strokeLinecap: 'butt', markerStart: 'none', markerMid: 'none', markerEnd: `url(#${id}-${routePalette.indexOf(color)})` });
+        return React.cloneElement(child, { 'data-arrow-tip': true, d: insetArrowShaft(child.props.d), stroke: color, strokeWidth: width, strokeLinecap: 'butt', markerStart: 'none', markerMid: 'none', markerEnd: `url(#${id}-${markerColors.indexOf(color)})` });
       }
       return child.props.children ? React.cloneElement(child, {}, paint(child.props.children, Number(child.props.strokeWidth) || parentWidth)) : child;
     });
   }
   return <g {...props}>
-    <defs>{routePalette.map((color, i) => <marker key={color} id={`${id}-${i}`} viewBox="0 0 12 12" refX="1" refY="6" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto" overflow="visible"><path d="M1 1 L11 6 L1 11 Z" fill={color} stroke="none" strokeWidth="0" markerStart="none" markerMid="none" markerEnd="none" /></marker>)}</defs>
+    <defs>{markerColors.map((color, i) => <marker key={color} id={`${id}-${i}`} viewBox="0 0 12 12" refX="1" refY="6" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto" overflow="visible"><path d="M1 1 L11 6 L1 11 Z" fill={color} stroke="none" strokeWidth="0" markerStart="none" markerMid="none" markerEnd="none" /></marker>)}</defs>
     {paint(children)}
   </g>;
 }

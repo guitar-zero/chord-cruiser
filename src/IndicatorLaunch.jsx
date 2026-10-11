@@ -59,6 +59,7 @@ export default function IndicatorLaunch({ flight, onComplete }) {
     }).join(" ") + " Z";
   return (
     <svg
+      data-playback-indicator="true"
       aria-hidden="true"
       viewBox="0 0 100 100"
       style={{

@@ -283,6 +283,11 @@ function Grid({ section: originalSection, darkMode, activeFret }) {
           </text>
         ))}
       </g>
+      {originalSection.frets.includes(0) && <text
+        x={originalSection.centers[originalSection.frets.indexOf(0)]}
+        y={section.fretY} textAnchor="middle" fontSize={section.fretFontSize || 35}
+        fill={activeFret === 0 ? '#e534ae' : ink} fontWeight="700"
+      >Open</text>}
     </g>
   );
 }
@@ -366,6 +371,7 @@ function ChordNode({
   return (
     <g
       data-node-id={node.id}
+      data-next-node={nextColor ? 'true' : undefined}
       data-root={node.root}
       data-fret={node.fret}
       data-string={node.string}
@@ -379,7 +385,7 @@ function ChordNode({
       {solidColor && (
         <g
           className="next-chord-cue"
-          aria-label={`${currentColor ? "Current" : "Next"} chord: ${node.chord}`}
+          aria-label={`${currentColor ? "Current" : "Next"} ${node.kind || 'chord'}: ${node.chord}`}
           style={{ color: solidColor }}
           pointerEvents="none"
         >
@@ -492,7 +498,7 @@ function chartPaths(song) {
               target,
               song.nodes.filter((node) => node.section === edge.section),
               section,
-              true,
+              song.kind !== 'notes',
             ) || directEdgePath(edge, song.nodes)
           : edge.path,
       ];
@@ -579,6 +585,7 @@ const SongChart = forwardRef(function SongChart(
     suppressIndicator = false,
     sectionId,
     showStartMarker = true,
+    visiblePlaybackSteps = 3,
   },
   forwardedRef,
 ) {
@@ -589,7 +596,7 @@ const SongChart = forwardRef(function SongChart(
   const sections = sectionId
     ? layout.sections.filter((section) => section.id === sectionId)
     : layout.sections;
-  const nearbyNodes = hideOtherNodes ? nearbyPlaybackNodes(song, playbackVisitIndex) : null;
+  const nearbyNodes = hideOtherNodes ? nearbyPlaybackNodes(song, playbackVisitIndex, visiblePlaybackSteps) : null;
   // Keep hidden node geometry mounted for the indicator and section pipes.
   const visibleNodes = song.nodes.filter(node => !sectionId || node.section === sectionId);
   const visibleIds = new Set(visibleNodes.map((node) => node.id));
@@ -599,16 +606,19 @@ const SongChart = forwardRef(function SongChart(
     showStartMarker && (!sectionId || visibleIds.has(song.startNodeId));
   const width = Number(layout.viewBox.split(" ")[2]);
   const byId = Object.fromEntries(song.nodes.map((node) => [node.id, node]));
+  const startNode = showStart ? byId[song.startNodeId] : null;
+  const startRadius = startNode ? (startNode.radius || Math.min(startNode.width, startNode.height) / 2 || 46) * (["triangle", "square"].includes(positionNodeShapes(song)[startNode.id]) ? 1.15 : 1) : 0;
+  const startMarkerY = startNode ? startNode.y + startRadius + 31 : 0;
   const visits = nodeVisits(song);
   const shapes = positionNodeShapes(song);
-  const branchColorById = Object.assign(
+  const branchColorById = useMemo(() => Object.assign(
     {},
     ...layout.sections.map((section) =>
       branchColors(song, section, section.palette || routePalette),
     ),
-  );
-  const paths = chartPaths(song);
-  const reciprocal = Object.assign(
+  ), [song]);
+  const paths = useMemo(() => chartPaths(song), [song]);
+  const reciprocal = useMemo(() => Object.assign(
     {},
     ...layout.sections.map((section) =>
       reciprocalRoutes(
@@ -619,12 +629,12 @@ const SongChart = forwardRef(function SongChart(
         branchColorById,
       ),
     ),
-  );
+  ), [song, paths, branchColorById]);
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
   const displayColors = chordDisplayColors(song, visitColors);
   const nodeColors = nodeVisitColors(song, displayColors, playbackVisitIndex);
   if (song.nodeColorMode === 'quality') {
-    for (const node of song.nodes) nodeColors[node.id] ||= chordQualityColor(node.chord);
+    for (const node of song.nodes) nodeColors[node.id] = timelineColor(nodeColors[node.id] || chordQualityColor(node.chord), darkMode);
   }
   const upcoming = upcomingMovement(song, playbackVisitIndex);
   const [arrivedTarget, setArrivedTarget] = useState(null);
@@ -663,7 +673,7 @@ const SongChart = forwardRef(function SongChart(
     const edge = song.edges.find(edge => edge.id === movement.edgeId && sections.some(section => section.id === edge.section));
     const original = edge && (reciprocal[edge.id]?.path || paths[edge.id]);
     if (!original || (nearbyNodes && (!nearbyNodes.has(edge.source) || !nearbyNodes.has(edge.target)))) return [];
-    return [{ edgeId: edge.id, path: insetArrowShaft(original, 21 + (["triangle", "square"].includes(shapes[edge.target]) ? 8 : 0)), color: timelineColor(visitColors[movement.sourceVisitIndex], darkMode) }];
+    return [{ edgeId: edge.id, path: insetArrowShaft(original, 21 + (["triangle", "square"].includes(shapes[edge.target]) ? 8 : 0)), color: song.nodeColorMode === 'quality' ? nodeColors[edge.target] : timelineColor(displayColors[movement.sourceVisitIndex], darkMode) }];
   });
   const highlightedEdge = song.edges.find(
     (edge) =>
@@ -682,8 +692,10 @@ const SongChart = forwardRef(function SongChart(
           ? 8
           : 0),
     );
-  const highlightedColor = timelineColor(
-    visitColors[highlightedVisitIndex],
+  const highlightedColor = song.nodeColorMode === 'quality' && highlightedEdge
+    ? nodeColors[highlightedEdge.target]
+    : timelineColor(
+    displayColors[highlightedVisitIndex],
     darkMode,
   );
   const edgeVisitColors = {};
@@ -698,7 +710,7 @@ const SongChart = forwardRef(function SongChart(
       edge &&
       (!edgeVisitColors[edge.id] || i <= (currentChord?.visitIndex ?? -1))
     )
-      edgeVisitColors[edge.id] = visitColors[i];
+      edgeVisitColors[edge.id] = song.nodeColorMode === 'quality' ? nodeColors[edge.target] : visitColors[i];
   });
   const followIndicator = useCallback(
     (position, progress, fromId, toId) => {
@@ -819,6 +831,7 @@ const SongChart = forwardRef(function SongChart(
         />
       ))}
       <CurrentChordIndicator
+        itemName={song.kind === 'notes' ? 'note' : 'chord'}
         onMotion={followIndicator}
         onArrival={handleArrival}
         directMotion={hideGuidingLines}
@@ -844,6 +857,7 @@ const SongChart = forwardRef(function SongChart(
             {song.edges
               .filter((edge) => edge.section === section.id && (!nearbyNodes || (nearbyNodes.has(edge.source) && nearbyNodes.has(edge.target))))
               .map((edge) => {
+                const qualityColor = song.nodeColorMode === 'quality' ? nodeColors[edge.target] : undefined;
                 const originalPath =
                   reciprocal[edge.id]?.path || paths[edge.id];
                 const largerTarget = ["triangle", "square"].includes(
@@ -870,12 +884,12 @@ const SongChart = forwardRef(function SongChart(
                             : edge.width || 6
                         }
                         data-fixed-color={
-                          edgeVisitColors[edge.id] ||
+                          qualityColor || edgeVisitColors[edge.id] ||
                           reciprocal[edge.id]?.color ||
                           branchColorById[edge.id]
                         }
                         stroke={
-                          edgeVisitColors[edge.id] ||
+                          qualityColor || edgeVisitColors[edge.id] ||
                           reciprocal[edge.id]?.color ||
                           branchColorById[edge.id] ||
                           edge.preferredColor
@@ -891,7 +905,7 @@ const SongChart = forwardRef(function SongChart(
           </RouteColors>
         ))}
         {rapidPipes.filter(pipe => !highlightedPath || pipe.edgeId !== highlightedEdgeId).map(pipe => (
-          <g key={`rapid:${rapid.start}:${pipe.edgeId}`} fill="none" stroke={pipe.color} pointerEvents="none" aria-hidden="true">
+          <g key={`rapid:${rapid.start}:${pipe.edgeId}`} data-highlight-target={song.edges.find(edge => edge.id === pipe.edgeId)?.target} fill="none" stroke={pipe.color} pointerEvents="none" aria-hidden="true">
             <path className="turnaround-pipe" d={pipe.path} strokeWidth="26" strokeOpacity=".65" strokeLinejoin="round" />
             <path className="turnaround-pipe" d={pipe.path} strokeWidth="6" strokeLinejoin="round" />
           </g>
@@ -899,6 +913,7 @@ const SongChart = forwardRef(function SongChart(
         {highlightedPath && (
           <g
             key={`${highlightedEdgeId}:${highlightedVisitIndex}`}
+            data-highlight-target={highlightedEdge?.target}
             fill="none"
             stroke={highlightedColor}
             style={{ color: highlightedColor }}
@@ -950,37 +965,39 @@ const SongChart = forwardRef(function SongChart(
           darkMode={darkMode}
           color={nodeColors[node.id]}
           currentColor={
-            current?.node === node.id
+            (current?.node === node.id || (current && song.playback[playbackVisitIndex]?.nodeIds?.includes(node.id)))
               ? timelineColor(displayColors[playbackVisitIndex], darkMode)
               : undefined
           }
           nextColor={
-            upcoming?.nodeId === node.id
-              ? timelineColor(displayColors[upcoming.visitIndex], darkMode)
+            (upcoming?.nodeId === node.id || song.playback[playbackVisitIndex + 1]?.nodeIds?.includes(node.id))
+              ? timelineColor(displayColors[playbackVisitIndex + 1], darkMode)
               : undefined
           }
         />
       ))}
-      {showStart && layout.startLabel && (
-        <g data-chart-label="true" aria-label="Starting chord label">
+      {startNode && (
+        <g data-chart-label="true" data-start-node={startNode.id} aria-label="Starting chord label">
           <rect
-            x={layout.startLabel.x - 48}
-            y={layout.startLabel.y - 23}
-            width="96"
-            height="32"
+            x={startNode.x - 68}
+            y={startMarkerY - 24}
+            width="136"
+            height="36"
             rx="9"
-            fill={orange}
+            fill={darkMode ? "#e9f2ef" : "#203b35"}
+            stroke={paper}
+            strokeWidth="3"
           />
           <text
-            x={layout.startLabel.x}
-            y={layout.startLabel.y}
+            x={startNode.x}
+            y={startMarkerY}
             textAnchor="middle"
-            fill={paper}
+            fill={darkMode ? "#203b35" : "#ffffff"}
             fontFamily="system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
             fontSize="23"
             fontWeight="700"
           >
-            START
+            ▶ START
           </text>
         </g>
       )}

@@ -1,13 +1,8 @@
 export const chordQualityPalette = [
-  { id: 'major', label: 'Major', color: '#29805d' },
-  { id: 'minor', label: 'Minor', color: '#267b99' },
-  { id: 'dominant', label: 'Dominant 7', color: '#cc480e' },
-  { id: 'major7', label: 'Major 7', color: '#576b24' },
-  { id: 'minor7', label: 'Minor 7', color: '#485aa3' },
-  { id: 'diminished', label: 'Diminished', color: '#c43b32' },
-  { id: 'halfDiminished', label: 'Half-dim', color: '#be3d6a' },
-  { id: 'suspended', label: 'Suspended', color: '#a06a16' },
-  { id: 'minorMajor7', label: 'Minor-major 7', color: '#8b4695' },
+  { id: 'major7', label: 'Major', color: '#267b99' },
+  { id: 'minor7', label: 'Minor', color: '#8054bd' },
+  { id: 'dominant', label: 'Dominant 7', color: '#d34b45' },
+  { id: 'other', label: 'Diminished', color: '#13856b' },
 ];
 
 export function chordQuality(chord = '') {
@@ -22,7 +17,9 @@ export function chordQuality(chord = '') {
 }
 
 export function chordQualityColor(chord) {
-  return chordQualityPalette.find(entry => entry.id === chordQuality(chord)).color;
+  const quality = chordQuality(chord);
+  const family = ['major', 'suspended'].includes(quality) ? 'major7' : ['minor', 'minor7', 'minorMajor7', 'halfDiminished'].includes(quality) ? 'minor7' : quality;
+  return (chordQualityPalette.find(entry => entry.id === family) || chordQualityPalette.find(entry => entry.id === 'other')).color;
 }
 
 export function chordDisplayColors(song, rainbowColors) {

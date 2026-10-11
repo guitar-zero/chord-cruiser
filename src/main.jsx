@@ -9,10 +9,15 @@ import React, {
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import ChordPlayer from "./ChordPlayer.jsx";
+import AutoScrollToggle from "./AutoScrollToggle.jsx";
+import TabNavigator from "./TabNavigator.jsx";
+import PageNavigation from "./PageNavigation.jsx";
+import useTheme from "./hooks/useTheme.js";
 import IndicatorLaunch from "./IndicatorLaunch.jsx";
 import ChartSections from "./ChartSections.jsx";
 import SectionPipe from "./SectionPipe.jsx";
 import { outgoingVisitColors } from "./SongChart.jsx";
+import { chordQualityColor } from "./data/chordQualityColors.js";
 import { timelineColor } from "./data/timelinePresentation.js";
 import {
   isPlaybackAdvance,
@@ -23,7 +28,9 @@ import { pipeProgress, beatCountdown } from "./audio/pipeProgress.js";
 import { rapidPassage } from "./data/graphPresentation.js";
 import { shortcutKey } from "./keyboardShortcuts.js";
 import { exportAllSections } from "./exportAllSections.js";
+import { printChart } from "./printChart.js";
 import { songs, songsById } from "./data/songs.js";
+import { popularSongIds, popularSongIdsSet } from "./data/popularSongs.js";
 import { chartTarget } from "./audio/chartTarget.js";
 import {
   keyRoots,
@@ -37,34 +44,19 @@ import { stackSharedNodes } from "./data/stackSharedNodes.js";
 import { threeStringLayout } from "./data/threeStringLayout.js";
 import { twoStringLayout } from "./data/stringLayout.js";
 
+const dropdownSongs = [
+  ...popularSongIds.map(id => songsById[id]),
+  ...songs.filter(song => !popularSongIdsSet.has(song.id)),
+];
 const songOptionLabel = (song) => {
   const bars = song.playback.reduce((total, event) => total + event.bars, 0);
-  return `${song.title} · ${bars} ${bars === 1 ? "bar" : "bars"}`;
+  return `${popularSongIdsSet.has(song.id) ? '★ ' : ''}${song.title} · ${bars} ${bars === 1 ? "bar" : "bars"}`;
 };
 
 function App() {
+  const [chartOpen, setChartOpen] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const [nodeColorMode, setNodeColorMode] = useState(() => {
-    try {
-      return localStorage.getItem('chord-map-node-colors') === 'rainbow' ? 'rainbow' : 'quality';
-    } catch { return 'quality'; }
-  });
-  useEffect(() => {
-    try { localStorage.setItem('chord-map-node-colors', nodeColorMode); } catch {}
-  }, [nodeColorMode]);
-  const [darkMode, setDarkMode] = useState(() => {
-    try {
-      const saved = localStorage.getItem("chord-map-theme");
-      if (saved) return saved === "dark";
-    } catch {}
-    return false;
-  });
-  useEffect(() => {
-    document.documentElement.dataset.theme = darkMode ? "dark" : "light";
-    try {
-      localStorage.setItem("chord-map-theme", darkMode ? "dark" : "light");
-    } catch {}
-  }, [darkMode]);
+  const [darkMode, setDarkMode] = useTheme();
   const [songId, setSongId] = useState("all-of-me");
   const [targetKey, setTargetKey] = useState("");
   const [hideGuidingLines, setHideGuidingLines] = useState(false);
@@ -73,9 +65,9 @@ function App() {
   useEffect(() => {
     function handleShortcut(event) {
       const key = shortcutKey(event);
-      if (key === "c") {
+      if (key === "a") {
         event.preventDefault();
-        setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality');
+        setAutoScrollEnabled(enabled => !enabled);
       }
       if (key === "x") {
         event.preventDefault();
@@ -99,7 +91,7 @@ function App() {
   }, []);
   const [twoStrings, setTwoStrings] = useState(true);
   const [search, setSearch] = useState("");
-  const filteredSongs = songs.filter((item) =>
+  const filteredSongs = dropdownSongs.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase()),
   );
   const [flight, setFlight] = useState(null);
@@ -156,9 +148,10 @@ function App() {
       : threeStringLayout(transposed);
     return { ...redStartingColor(
       twoStrings ? positioned : stackSharedNodes(positioned),
-    ), nodeColorMode };
-  }, [songId, targetKey, twoStrings, nodeColorMode]);
+    ), nodeColorMode: 'quality' };
+  }, [songId, targetKey, twoStrings]);
   const selectionKey = `${songId}:${song.key}`;
+  useEffect(() => setChartOpen(false), [selectionKey]);
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
   const availableKeys = /minor|-$/.test(song.key) ? minorKeyRoots : keyRoots;
   const handleChordChange = useCallback(
@@ -271,7 +264,10 @@ function App() {
       setSectionBridge(null);
       return;
     }
-    const color = timelineColor(visitColors[currentChord.visitIndex], darkMode);
+    const color = timelineColor(
+      song.nodeColorMode === 'quality' ? chordQualityColor(nextEvent.chord) : visitColors[currentChord.visitIndex],
+      darkMode,
+    );
     setSectionBridge((old) =>
       old?.sourceId === source.id &&
       old?.targetId === destination.id &&
@@ -286,7 +282,6 @@ function App() {
             seekVersion: currentChord.seekVersion,
             loopIteration: currentChord.loopIteration,
             color,
-            sourceColor: visitColors[currentChord.visitIndex],
           },
     );
   }, [
@@ -369,6 +364,7 @@ function App() {
   }
   return (
     <main>
+      <PageNavigation current="chords" />
       <header>
         <div>
           <p className="eyebrow">CHORD PATHS</p>
@@ -394,6 +390,11 @@ function App() {
           <button className="download" type="button" onClick={downloadSvg}>
             Download all sections <span aria-hidden="true">↗</span>
           </button>
+          <button className="download" type="button" onClick={() => {
+            if (!printChart(song, sectionsRef.current.querySelectorAll('svg[data-section-id]'))) {
+              window.alert('Allow popups for this site to open the chart print preview.');
+            }
+          }}>Print sections</button>
         </div>
       </header>
       <nav className="song-picker" aria-label="Choose a song">
@@ -445,20 +446,6 @@ function App() {
           </select>
         </label>
         <div className="chart-display-controls">
-          <button className="theme-toggle" type="button" aria-keyshortcuts="c" title="Toggle node colors (C)" aria-pressed={nodeColorMode === 'quality'} onClick={() => setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality')}>
-            Node colors: {nodeColorMode === 'quality' ? 'Chord quality' : 'Rainbow sequence'} <kbd>C</kbd>
-          </button>
-          <button
-            className="string-toggle theme-toggle"
-            type="button"
-            aria-keyshortcuts="s"
-            title="Toggle 2/3 strings (S)"
-            aria-pressed={twoStrings}
-            onClick={() => setTwoStrings((value) => !value)}
-          >
-            {twoStrings ? "Use 3 strings: E + A + D" : "Use 2 strings: E + A"}{" "}
-            <kbd>S</kbd>
-          </button>
           <button
             className="theme-toggle"
             type="button"
@@ -467,8 +454,20 @@ function App() {
             aria-pressed={!hideGuidingLines}
             onClick={() => setHideGuidingLines((value) => !value)}
           >
-            {hideGuidingLines ? "Show guiding lines" : "Hide guiding lines"}{" "}
+            Guiding lines{" "}
             <kbd>G</kbd>
+          </button>
+          <AutoScrollToggle enabled={autoScrollEnabled} onToggle={() => setAutoScrollEnabled(enabled => !enabled)} />
+          <button
+            className="string-toggle theme-toggle"
+            type="button"
+            aria-keyshortcuts="s"
+            title="Toggle 2/3 strings (S)"
+            aria-pressed={!twoStrings}
+            onClick={() => setTwoStrings((value) => !value)}
+          >
+            Show D string{" "}
+            <kbd>S</kbd>
           </button>
           <button
             className="theme-toggle"
@@ -478,13 +477,14 @@ function App() {
             aria-pressed={showFullPathDuringPlayback}
             onClick={() => setShowFullPathDuringPlayback((value) => !value)}
           >
-            {showFullPathDuringPlayback ? "Hide" : "Show"} full path during
-            playback <kbd>X</kbd>
+            Full path during playback <kbd>X</kbd>
           </button>
+          <button className="theme-toggle" type="button" aria-keyshortcuts="h" aria-haspopup="dialog" aria-pressed={chartOpen} onClick={() => setChartOpen(open => !open)} title="Toggle chord chart (H)">Chord chart <kbd>H</kbd></button>
         </div>
       </nav>
       <ChordPlayer
-        onToggleNodeColors={() => setNodeColorMode(mode => mode === 'quality' ? 'rainbow' : 'quality')}
+        chartOpen={chartOpen}
+        setChartOpen={setChartOpen}
         autoScrollEnabled={autoScrollEnabled}
         onToggleAutoScroll={() => setAutoScrollEnabled(enabled => !enabled)}
         showFullPath={showFullPathDuringPlayback}
@@ -508,6 +508,7 @@ function App() {
         <ChartSections
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
+          autoScrollEnabled={autoScrollEnabled}
           onIndicatorArrival={setIndicatorArrival}
           suppressIndicator={Boolean(flight)}
           hideGuidingLines={hideGuidingLines}
@@ -548,4 +549,4 @@ if (import.meta.hot) {
   import.meta.hot.data.root = root;
   import.meta.hot.accept();
 }
-root.render(<App />);
+root.render(window.location.pathname.replace(/\/$/, '') === '/tabs' ? <TabNavigator /> : <App />);

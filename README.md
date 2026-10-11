@@ -178,3 +178,11 @@ nodes. Routes are rebuilt around intervening nodes. Playback order, harmony,
 and timing stay unchanged, including during playback. Toggle back to restore
 the original three-string map. This display preference carries across songs
 and works with transposition.
+
+### Tab navigator
+
+The **Tab navigator** page (`/tabs`) accepts six-string text guitar tabs by pasting text or importing a public Ultimate Guitar text-tab URL. An original demo is provided. It converts the input into the shared chart graph and uses `SongChart`, `ProgressBar`, `MiniChordStrip`, route coloring, reciprocal lanes, step badges, and the same theme and controls as the chord navigator.
+
+Simultaneous notes share a practice step and light up together; repeated string/fret positions share a node with every visit number. Sections keep dense tabs readable. Tuning/capo controls update note pitches while retaining the tab's string/fret positions. Text tab spacing does not reliably encode rhythm, so playback uses adjustable practice steps; bends/slides are labeled but not synthesized and repeat symbols are not expanded automatically.
+
+The link importer runs in `npm run dev` and `npm run preview`. Static-only deployments need a server providing `/api/tab-import`; pasted tabs work without it. The source must be a public text tab, rather than Pro or interactive tablature.

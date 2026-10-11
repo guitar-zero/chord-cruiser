@@ -53,6 +53,7 @@ export function parallelOverlap(first, second, clearance = 20) {
 export function reciprocalRoutes(song, section, palette, paths, branchColors) {
   const edges = song.edges.filter(edge => edge.section === section.id);
   const firstVisit = edge => {
+    if (Number.isInteger(edge.firstVisit)) return edge.firstVisit;
     const i = song.playback.findIndex((event,index) => event.nodeId === edge.source && song.playback[index+1]?.nodeId === edge.target);
     return i < 0 ? Infinity : i;
   };

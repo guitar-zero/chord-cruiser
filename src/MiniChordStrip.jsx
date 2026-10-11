@@ -10,21 +10,25 @@ export default function MiniChordStrip({
   nodeLabels,
   onSeek,
   disabled,
+  itemName = 'chords',
+  visibleCount = 3,
+  interactive = true,
 }) {
+  const Note = interactive ? 'button' : 'div';
   const centeredIndex = Math.max(0, activeIndex);
-  const events = [...timeline.events, ...timeline.events.slice(0, 2)];
+  const events = [...timeline.events, ...timeline.events.slice(0, visibleCount - 1)];
   return (
     <div
       className="mini-chord-window"
-      aria-label="Current, next, and then chords"
+      aria-label={`${visibleCount === 2 ? "Current and next" : "Current, next, and then"} ${itemName}`}
     >
       <div
         className="mini-chord-strip"
-        style={{ transform: `translateX(${(-centeredIndex * 100) / 3}%)` }}
+        style={{ transform: `translateX(${(-centeredIndex * 100) / visibleCount}%)` }}
       >
         {events.map((event, index) => {
           const current = index === centeredIndex;
-          const nearby = index >= centeredIndex && index <= centeredIndex + 2;
+          const nearby = index >= centeredIndex && index < centeredIndex + visibleCount;
           const label = timelineLabel(event, nodeLabels);
           const color = timelineColor(colors[index % timeline.events.length], darkMode);
           const remaining = Math.max(0, Math.min(event.duration, event.start + event.duration - position));
@@ -34,26 +38,27 @@ export default function MiniChordStrip({
             <div
               key={index}
               className="mini-chord-slot"
+              style={{ flexBasis: `${100 / visibleCount}%` }}
               aria-hidden={!nearby || undefined}
               inert={!nearby}
             >
               <span className="mini-chord-role">
                 {index === centeredIndex ? "Current" : index === centeredIndex + 1 ? "Next" : "Then"}
-                {current && <span className="chord-countdown"> · {beatCount} {beatCount === 1 ? 'beat' : 'beats'}</span>}
+                {current && <span className="chord-countdown"> · {beatCount} {itemName === 'notes' ? (beatCount === 1 ? 'step' : 'steps') : (beatCount === 1 ? 'beat' : 'beats')}</span>}
               </span>
-              <button
-                type="button"
+              <Note
+                type={interactive ? "button" : undefined}
                 className={`mini-chord ${current ? "active" : ""}`}
                 style={{ "--chord-color": color || "var(--accent)" }}
-                disabled={disabled}
-                onClick={() => onSeek(event.start)}
+                disabled={interactive ? disabled : undefined}
+                onClick={interactive ? () => onSeek(event.start) : undefined}
                 aria-current={current ? "step" : undefined}
-                aria-label={`${label}${current ? `, ${beatCount} ${beatCount === 1 ? 'beat' : 'beats'} until next chord` : ''}, seek to ${event.start.toFixed(1)} seconds`}
+                aria-label={`${label}${current ? `, ${beatCount} ${beatCount === 1 ? 'beat' : 'beats'} until next chord` : ''}${interactive ? `, seek to ${event.start.toFixed(1)} seconds` : ''}`}
                 title={event.chord}
               >
                 {label}
                 {current && <span className="chord-time-remaining" aria-hidden="true" style={{transform:`scaleX(${event.duration > 0 ? remaining / event.duration : 0})`}} />}
-              </button>
+              </Note>
             </div>
           );
         })}

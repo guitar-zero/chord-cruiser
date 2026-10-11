@@ -14,6 +14,7 @@ export default function CurrentChordIndicator({
   directMotion = false,
   onMotion,
   onArrival,
+  itemName = 'chord',
 }) {
   const [box, setBox] = useState(initial);
   const previous = useRef(null);
@@ -165,7 +166,8 @@ export default function CurrentChordIndicator({
       }}
     >
       <g
-        aria-label={target ? "Current chord" : "Starting chord"}
+        data-playback-indicator={target ? 'true' : undefined}
+        aria-label={target ? `Current ${itemName}` : `Starting ${itemName}`}
         pointerEvents="none"
       >
         <style>{`

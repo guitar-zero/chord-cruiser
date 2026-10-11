@@ -264,6 +264,51 @@ test('Shell voicings handle substitutions, open roots and unavailable source pos
 });
 
 import { chordQuality, chordQualityColor, chordDisplayColors } from '../data/chordQualityColors.js';
+import { leadSheetSections } from '../data/leadSheet.js';
+import { popupShouldMoveLeft, popupPlacement } from '../data/popupPlacement.js';
+
+test('Popup checks both sides and moves vertically when the indicator overlaps both', () => {
+  const popup = { width: 360, height: 300 };
+  const obstacle = { left: 30, right: 410, top: 100, bottom: 160, width: 380, height: 60 };
+  assert.deepEqual(popupPlacement(popup, 440, 800, [obstacle]), { side: 'right', top: 184 });
+  const left = { side: 'left', top: 16 };
+  const rightObstacle = { left: 900, right: 960, top: 100, bottom: 160, width: 60, height: 60 };
+  assert.deepEqual(popupPlacement(popup, 1200, 800, [rightObstacle]), left);
+  assert.deepEqual(popupPlacement(popup, 1200, 800, [rightObstacle], left), left);
+  assert.deepEqual(popupPlacement(popup, 440, 800, [obstacle], left), { side: 'right', top: 184 });
+});
+
+test('Mini popup avoids indicators and next nodes using its preferred right footprint', () => {
+  const popup = { width: 360, top: 16, bottom: 480 };
+  const obstacle = (left, top, width = 60, height = 60) => ({ left, top, right: left + width, bottom: top + height, width, height });
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(950, 200)]), true);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(950, 200)], true), true);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(100, 200)], true), false);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(950, 550)]), false);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(950, 200, 0, 0)]), false);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(745, 200)], true), true);
+  assert.equal(popupShouldMoveLeft(popup, 1200, [obstacle(745, 200)]), false);
+});
+
+test('Mini lead sheet expands holds, preserves split bars, and resets repeat signs at sections', () => {
+  const timeline = buildTimeline([
+    { chord: 'Cm6', bars: 2, section: 'A' },
+    { chord: 'Dm7', bars: .5, section: 'A' },
+    { chord: 'G7b9', bars: .5, section: 'A' },
+    { chord: 'Dm7', bars: .5, section: 'A' },
+    { chord: 'G7b9', bars: .5, section: 'A' },
+    { chord: 'G7b9', bars: 1, section: 'B · second pass' },
+  ], 120);
+  const sections = leadSheetSections(timeline);
+  assert.equal(sections.length, 2);
+  assert.deepEqual(sections[0].measures.map(bar => bar.repeat), [false, true, false, true]);
+  assert.equal(sections[0].measures[1].parts[0].eventIndex, 0);
+  assert.equal(sections[0].measures[1].parts[0].start, 2);
+  assert.deepEqual(sections[0].measures[2].parts.map(part => [part.chord, part.bars, part.start, part.end]), [['Dm7', .5, 4, 5], ['G7b9', .5, 5, 6]]);
+  assert.equal(sections[1].label, 'B · second pass');
+  assert.equal(sections[1].measures[0].repeat, false);
+  assert.equal(sections[1].measures[0].number, 5);
+});
 
 test('Quality colors preserve full source harmony and stay constant across roots and visits', () => {
   const examples = { C:'major', C6:'major', Cm:'minor', Cm6:'minor', Cmaj7:'major7', 'Cmaj7#11':'major7', Cm7:'minor7', Cm9:'minor7', 'C7b9':'dominant', 'C13#11':'dominant', Cdim7:'diminished', Cm7b5:'halfDiminished', C7sus4:'suspended', CmMaj7:'minorMajor7', 'Dbm7/Ab':'minor7' };
@@ -274,4 +319,13 @@ test('Quality colors preserve full source harmony and stay constant across roots
   assert.equal(colors[0], colors[2]);
   assert.notEqual(colors[0], colors[1]);
   assert.deepEqual(chordDisplayColors({...song, nodeColorMode:'rainbow'}, ['red','green','blue']), ['red','green','blue']);
+});
+
+test('Quality mode groups major and minor chords by family and retains a shared Other color', () => {
+  for (const chord of ['Cm','Cm6','Cm7','Cm9','Cm11','Cm13','Cm7b5','Cø7','CmMaj7','CmΔ7','Dbm6/Ab']) assert.equal(chordQualityColor(chord),chordQualityColor('Cm7'),chord);
+  assert.notEqual(chordQualityColor('C'), chordQualityColor('Cm'));
+  for (const chord of ['C','C6','C6/9','Db6/Ab','Cmaj7','Csus2','Csus4','C7sus4']) assert.equal(chordQualityColor(chord),chordQualityColor('Cmaj7'),chord);
+  assert.notEqual(chordQualityColor('Cdim7'), chordQualityColor('C'));
+  const colors = ['Cmaj7','Cm7','C7','Cdim7'].map(chordQualityColor);
+  assert.equal(new Set(colors).size,4);
 });

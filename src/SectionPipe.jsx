@@ -3,9 +3,10 @@ import RouteColors from "../RouteColors.jsx";
 import { scrollChartSections } from "./data/sectionScroll.js";
 import { pipeProgress } from './audio/pipeProgress.js';
 
-export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, fullHighlight = false }) {
+export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, autoScrollEnabled, fullHighlight = false }) {
   const [geometry, setGeometry] = useState(null);
   useLayoutEffect(() => {
+    if (!autoScrollEnabled) return;
     const nodes = [...sectionsRef.current.querySelectorAll("[data-node-id]")];
     const source = nodes
       .find((node) => node.dataset.nodeId === bridge.sourceId)
@@ -14,7 +15,7 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, ful
       .find((node) => node.dataset.nodeId === bridge.targetId)
       ?.closest(".chart-section");
     scrollChartSections(source, destination);
-  }, [bridge, sectionsRef]);
+  }, [bridge, sectionsRef, autoScrollEnabled]);
   useEffect(() => {
     const findShape = (id) =>
       [...sectionsRef.current.querySelectorAll("[data-node-id]")]
@@ -60,6 +61,7 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, ful
   return (
     <svg
       className="section-pipe-layer"
+      data-highlight-target={bridge.targetId}
       aria-hidden="true"
       style={{
         position: "fixed",
@@ -72,8 +74,6 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, ful
       }}
     >
       <style>{`
-      .section-pipe-layer [stroke="${bridge.sourceColor}"] { stroke: ${bridge.color}; }
-      .section-pipe-layer [fill="${bridge.sourceColor}"] { fill: ${bridge.color}; }
       .section-pipe-fill { stroke-dasharray: 1; }
       .section-pipe-preview { stroke-dasharray: 1; animation: section-pipe-preview 200ms linear both; }
       @keyframes section-pipe-preview { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
@@ -83,7 +83,7 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, ful
         <path
           d={geometry.route}
           strokeWidth="1.5"
-          data-fixed-color={bridge.sourceColor}
+          data-fixed-color={bridge.color}
         />
       </RouteColors>
       <g fill="none" stroke={bridge.color} strokeLinecap="butt">

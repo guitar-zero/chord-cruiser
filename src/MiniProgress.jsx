@@ -1,12 +1,12 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar.jsx";
-import AutoScrollToggle from "./AutoScrollToggle.jsx";
+import ChordQualityLegend from "./ChordQualityLegend.jsx";
 import MiniChordStrip from "./MiniChordStrip.jsx";
 import ShellChordDiagram from "./ShellChordDiagram.jsx";
-import ChordQualityLegend from "./ChordQualityLegend.jsx";
 import { timelineColor } from "./data/timelinePresentation.js";
 import { miniProgressState } from "./miniProgressState.js";
 import { shortcutKey } from "./keyboardShortcuts.js";
+import { popupPlacement } from './data/popupPlacement.js';
 
 export default function MiniProgress({
   progressRef,
@@ -18,13 +18,12 @@ export default function MiniProgress({
   darkMode,
   nodeLabels,
   neverShow,
-  autoScrollEnabled,
-  onToggleAutoScroll,
   nodeColorMode,
-  onToggleNodeColors,
   playbackState,
   onToggle,
   onStop,
+  onOpenChordChart,
+  chartOpen,
   showFullPath,
   showGuideLines,
   onToggleFullPath,
@@ -38,10 +37,15 @@ export default function MiniProgress({
     dismissed: false,
   });
   const [manualOpen, setManualOpen] = useState(false);
-  const shouldShow = manualOpen || (!visible && !dismissed && !neverShow);
+  const [belowMainIndicator, setBelowMainIndicator] = useState(false);
+  const shouldShow = manualOpen || (belowMainIndicator && !visible && !dismissed && !neverShow);
   useEffect(() => {
-    if (visible) setManualOpen(false);
-  }, [visible]);
+    if (belowMainIndicator && manualOpen) {
+      setManualOpen(false);
+      dispatch({ type: 'visibility', visible: true });
+      dispatch({ type: 'visibility', visible: false });
+    }
+  }, [belowMainIndicator, manualOpen]);
   useEffect(() => {
     function handleShortcut(event) {
       if (shortcutKey(event) !== "m") return;
@@ -55,6 +59,32 @@ export default function MiniProgress({
     return () => window.removeEventListener("keydown", handleShortcut);
   }, [shouldShow]);
   const [mounted, setMounted] = useState(false);
+  const popupRef = useRef(null);
+  useEffect(() => {
+    if (!mounted) return;
+    let frame;
+    let placement;
+    function measure() {
+      const popup = popupRef.current;
+      if (popup) {
+        const obstacles = [...document.querySelectorAll('[data-playback-indicator]')];
+        const targetIds = new Set([...document.querySelectorAll('[data-highlight-target]')].map(element => element.dataset.highlightTarget));
+        for (const node of document.querySelectorAll('[data-node-id]')) {
+          if (node.getAttribute('aria-hidden') === 'true') continue;
+          if (node.dataset.nextNode || targetIds.has(node.dataset.nodeId)) {
+            const shape = node.querySelector('[data-node-shape]');
+            if (shape) obstacles.push(shape);
+          }
+        }
+        placement = popupPlacement(popup.parentElement.getBoundingClientRect(), document.documentElement.clientWidth, window.innerHeight, obstacles.map(element => element.getBoundingClientRect()), placement);
+        popup.parentElement.dataset.side = placement.side;
+        popup.parentElement.style.top = `${placement.top}px`;
+      }
+      frame = requestAnimationFrame(measure);
+    }
+    measure();
+    return () => cancelAnimationFrame(frame);
+  }, [mounted]);
   useEffect(() => {
     if (shouldShow) {
       setMounted(true);
@@ -70,6 +100,7 @@ export default function MiniProgress({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const inView = entry.isIntersecting && entry.intersectionRatio >= 1;
+        setBelowMainIndicator(entry.boundingClientRect.bottom <= (entry.rootBounds?.top ?? 0));
         // Closing applies only to this excursion outside the main bar's view.
         dispatch({ type: "visibility", visible: inView });
       },
@@ -82,120 +113,37 @@ export default function MiniProgress({
     <>
       {mounted && (
         <div
-          className={`mini-playback-toasts ${shouldShow ? "mini-progress-enter" : "mini-progress-exit"}`}
+          className="mini-playback-toasts"
           aria-hidden={!shouldShow || undefined}
           inert={!shouldShow}
         >
           <section
-            className="mini-progress-toast"
+            ref={popupRef}
+            className={`mini-progress-toast ${shouldShow ? "mini-progress-enter" : "mini-progress-exit"}`}
             aria-label="Mini playback progress"
             aria-hidden={!shouldShow || undefined}
             inert={!shouldShow}
           >
             <div className="mini-progress-heading">
               <strong>{chord}</strong>
-              <span>
-                Bar{" "}
-                {Math.min(
-                  Math.floor(
-                    ((progressProps.position /
-                      progressProps.timeline.duration) *
-                      progressProps.timeline.beats) /
-                      progressProps.timeline.beatsPerBar,
-                  ) + 1,
-                  Math.ceil(
-                    progressProps.timeline.beats /
-                      progressProps.timeline.beatsPerBar,
-                  ),
-                )}
-              </span>
-              <button
-                type="button"
-                className="mini-progress-close"
-                aria-label="Toggle mini menu"
-                aria-keyshortcuts="m"
-                title="Toggle mini menu (M)"
-                onClick={() => {
-                  setManualOpen(false);
-                  dispatch({ type: "dismiss" });
-                }}
-              >
-                ×
-              </button>
+              <span>Bar {Math.min(Math.floor(progressProps.position / progressProps.timeline.duration * progressProps.timeline.beats / progressProps.timeline.beatsPerBar) + 1, Math.ceil(progressProps.timeline.beats / progressProps.timeline.beatsPerBar))}</span>
+              <button type="button" className="mini-progress-close" aria-label="Toggle mini menu" aria-keyshortcuts="m" title="Toggle mini menu (M)" onClick={() => { setManualOpen(false); dispatch({ type: 'dismiss' }); }}>×</button>
             </div>
-            {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
+            {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} compact />}
             <ShellChordDiagram chord={currentEvent?.chord} node={currentNode} color={timelineColor(colors?.[activeIndex], darkMode)} darkMode={darkMode} />
-            <div className="mini-progress-controls">
-              {neverShow && <AutoScrollToggle enabled={autoScrollEnabled} onToggle={onToggleAutoScroll} />}
-              <button
-                type="button"
-                onClick={onToggle}
-                disabled={playbackState === "starting"}
-              >
-                {playbackState === "playing"
-                  ? "Ⅱ Pause"
-                  : playbackState === "paused"
-                    ? "▶ Resume"
-                    : playbackState === "starting"
-                      ? "Loading…"
-                      : "▶ Play"}
-              </button>
-              <button
-                type="button"
-                onClick={onStop}
-                disabled={
-                  playbackState === "stopped" && progressProps.position === 0
-                }
-              >
-                ■ Stop
-              </button>
+            <div className="mini-view-controls mini-compact-controls">
+              <button type="button" aria-label="Chord chart" aria-pressed={chartOpen} aria-keyshortcuts="h" aria-haspopup="dialog" onClick={onOpenChordChart} title="Toggle chord chart (H)">Chart <kbd>H</kbd></button>
+              <button type="button" aria-label="Guiding lines" title="Guiding lines (G)" aria-pressed={showGuideLines} aria-keyshortcuts="g" onClick={onToggleGuideLines}>Guides <kbd>G</kbd></button>
+              <button type="button" aria-label="Show D string" title="Show D string (S)" aria-pressed={!twoStrings} aria-keyshortcuts="s" onClick={() => setTwoStrings(value => !value)}>D string <kbd>S</kbd></button>
+              <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Path <kbd>X</kbd></button>
             </div>
-            <div className="mini-view-controls">
-              <button type="button" aria-pressed={nodeColorMode === 'quality'} aria-keyshortcuts="c" title="Toggle node colors (C)" onClick={onToggleNodeColors}>
-                Node colors <strong>{nodeColorMode === 'quality' ? 'Chord quality' : 'Rainbow sequence'}</strong> <kbd>C</kbd>
-              </button>
-              <button
-                type="button"
-                aria-pressed={showFullPath}
-                aria-keyshortcuts="x"
-                onClick={onToggleFullPath}
-              >
-                Full path <strong>{showFullPath ? "On" : "Off"}</strong>{" "}
-                <kbd>X</kbd>
-              </button>
-              <button
-                type="button"
-                aria-pressed={showGuideLines}
-                aria-keyshortcuts="g"
-                onClick={onToggleGuideLines}
-              >
-                Guide lines <strong>{showGuideLines ? "On" : "Off"}</strong>{" "}
-                <kbd>G</kbd>
-              </button>
-              <button
-                type="button"
-                aria-pressed={!twoStrings}
-                aria-keyshortcuts="g"
-                onClick={() => setTwoStrings((val) => !val)}
-              >
-                String mode
-                <strong>
-                  {twoStrings ? "Hide D String" : "Show D String"}
-                </strong>{" "}
-                <kbd>S</kbd>
-              </button>
+            <div className="mini-progress-controls mini-transport-controls" aria-label="Playback controls">
+              <button type="button" onClick={onToggle} disabled={playbackState === 'starting'}>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : '▶ Play'}</button>
+              <button type="button" onClick={onStop} disabled={playbackState === 'stopped' && progressProps.position === 0}>■ Stop</button>
             </div>
             <ProgressBar {...progressProps} mini />
-            <MiniChordStrip
-              {...progressProps}
-              activeIndex={activeIndex}
-              colors={colors}
-              darkMode={darkMode}
-              nodeLabels={nodeLabels}
-            />
-            <div className="mini-shortcut-reminders">
-              <kbd>Space</kbd> Play/pause · <kbd>M</kbd> Toggle mini menu · <kbd>C</kbd> Node colors
-            </div>
+            <MiniChordStrip {...progressProps} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
+            <div className="mini-shortcut-reminders"><kbd>Space</kbd> Play/pause · <kbd>M</kbd> Toggle mini menu</div>
           </section>
         </div>
       )}

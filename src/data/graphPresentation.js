@@ -34,15 +34,15 @@ export function quickChangeRanges(events) {
   return ranges;
 }
 
-export function nearbyPlaybackNodes(song, visitIndex = 0) {
+export function nearbyPlaybackNodes(song, visitIndex = 0, visibleSteps = 3) {
   const count = song.playback.length;
   const current = Number.isInteger(visitIndex) && visitIndex >= 0 ? visitIndex : 0;
-  const indices = [0, 1, 2].map(offset => (current + offset) % count);
+  const indices = Array.from({ length: visibleSteps }, (_, offset) => (current + offset) % count);
   const passage = rapidPassage(song, current);
   if (passage && current >= passage.start && current <= passage.end) {
     for (let index = passage.start; index <= passage.end + 1; index++) indices.push(index % count);
   }
-  return new Set(indices.map(index => song.playback[index]?.nodeId).filter(Boolean));
+  return new Set(indices.flatMap(index => song.playback[index]?.nodeIds || [song.playback[index]?.nodeId]).filter(Boolean));
 }
 
 export function upcomingMovement(song, visitIndex) {
@@ -57,8 +57,8 @@ export function upcomingMovement(song, visitIndex) {
 export function nodeVisitColors(song, colors, visitIndex = -1) {
   const result = {};
   song.playback.forEach((event, index) => {
-    if (event.nodeId && colors[index] && (!result[event.nodeId] || index <= visitIndex)) {
-      result[event.nodeId] = colors[index];
+    for (const nodeId of event.nodeIds || [event.nodeId]) {
+      if (nodeId && colors[index] && (!result[nodeId] || index <= visitIndex)) result[nodeId] = colors[index];
     }
   });
   return result;
@@ -68,7 +68,9 @@ export function nodeVisitColors(song, colors, visitIndex = -1) {
 export function nodeVisits(song) {
   const visits = Object.fromEntries(song.nodes.map(node => [node.id, []]));
   song.playback.forEach((event, index) => {
-    if (visits[event.nodeId]) visits[event.nodeId].push(index + 1);
+    for (const nodeId of event.nodeIds || [event.nodeId]) {
+      if (visits[nodeId]) visits[nodeId].push(index + 1);
+    }
   });
   return visits;
 }
@@ -76,6 +78,7 @@ export function nodeVisits(song) {
 export function branchColors(song, section, palette) {
   const edges = song.edges.filter(edge => edge.section === section.id);
   const firstVisit = edge => {
+    if (Number.isInteger(edge.firstVisit)) return edge.firstVisit;
     const index = song.playback.findIndex((event, i) => event.nodeId === edge.source && song.playback[i + 1]?.nodeId === edge.target);
     return index < 0 ? Infinity : index;
   };
