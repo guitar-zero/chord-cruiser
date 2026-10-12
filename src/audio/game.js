@@ -21,7 +21,7 @@ export function nextShellTarget(targets, activeIndex, hasStarted = true) {
 
 export function timingGrade(seconds) {
   const error = Math.abs(seconds);
-  return error <= .06 ? 'Perfect' : error <= .12 ? 'Great' : error <= .2 ? 'Good' : error <= .32 ? 'Okay' : 'Nope';
+  return error <= .1 ? 'Perfect' : error <= .2 ? 'Great' : error <= .3 ? 'Good' : error <= .45 ? 'Okay' : 'Nope';
 }
 
 // Sets deliberately discard octaves and note order: inversions score identically.

@@ -29,6 +29,8 @@ export default function MiniProgress({
   chartOpen,
   showFullPath,
   showGuideLines,
+  autoScrollEnabled,
+  onToggleAutoScroll,
   onToggleFullPath,
   onToggleGuideLines,
   twoStrings,
@@ -43,16 +45,29 @@ export default function MiniProgress({
     dismissed: false,
   });
   const [manualOpen, setManualOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 600px)').matches);
+  const dialogRef = useRef(null);
+  const launcherRef = useRef(null);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 600px)');
+    const update = () => { setIsMobile(media.matches); setManualOpen(false); };
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  function closeMenu() {
+    setManualOpen(false);
+    dispatch({ type: 'dismiss' });
+  }
   const [belowMainIndicator, setBelowMainIndicator] = useState(false);
-  const automatic = gameMode || (belowMainIndicator && !visible);
+  const automatic = !isMobile && (gameMode || (belowMainIndicator && !visible));
   const shouldShow = manualOpen || (automatic && !dismissed && !neverShow);
   useEffect(() => {
-    if (belowMainIndicator && manualOpen) {
+    if (!isMobile && belowMainIndicator && manualOpen) {
       setManualOpen(false);
       dispatch({ type: 'visibility', visible: true });
       dispatch({ type: 'visibility', visible: false });
     }
-  }, [belowMainIndicator, manualOpen]);
+  }, [belowMainIndicator, manualOpen, isMobile]);
   useEffect(() => {
     function handleShortcut(event) {
       if (shortcutKey(event) !== "m") return;
@@ -68,7 +83,7 @@ export default function MiniProgress({
   const [mounted, setMounted] = useState(false);
   const popupRef = useRef(null);
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isMobile) return;
     let frame;
     let placement;
     function measure() {
@@ -91,7 +106,7 @@ export default function MiniProgress({
     }
     measure();
     return () => cancelAnimationFrame(frame);
-  }, [mounted]);
+  }, [mounted, isMobile]);
   useEffect(() => {
     if (shouldShow) {
       setMounted(true);
@@ -116,11 +131,27 @@ export default function MiniProgress({
     if (progressRef.current) observer.observe(progressRef.current);
     return () => observer.disconnect();
   }, [progressRef]);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!isMobile || !dialog) return;
+    if (shouldShow && !dialog.open) dialog.showModal();
+    else if (!shouldShow && dialog.open) { dialog.close(); launcherRef.current?.focus(); }
+  }, [isMobile, mounted, shouldShow]);
+  const PopupContainer = isMobile ? 'dialog' : 'div';
   return (
     <>
+      {isMobile && <button ref={launcherRef} type="button" className="mobile-mini-menu-button" aria-label="Open playback menu" aria-haspopup="dialog" aria-expanded={shouldShow} onClick={() => setManualOpen(true)}>☰ <span>Menu</span></button>}
       {mounted && (
-        <div
-          className="mini-playback-toasts"
+        <PopupContainer
+          ref={isMobile ? dialogRef : undefined}
+          className={isMobile ? 'mobile-mini-menu-modal' : 'mini-playback-toasts'}
+          aria-label={isMobile ? 'Playback menu' : undefined}
+          onCancel={isMobile ? event => { event.preventDefault(); closeMenu(); } : undefined}
+          onClick={isMobile ? event => {
+            if (event.target !== event.currentTarget) return;
+            const bounds = event.currentTarget.getBoundingClientRect();
+            if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeMenu();
+          } : undefined}
           aria-hidden={!shouldShow || undefined}
           inert={!shouldShow}
         >
@@ -135,7 +166,7 @@ export default function MiniProgress({
             <div className="mini-progress-heading">
               <strong>{chord}</strong>
               <span>Bar {Math.min(Math.floor(progressProps.position / progressProps.timeline.duration * progressProps.timeline.beats / progressProps.timeline.beatsPerBar) + 1, Math.ceil(progressProps.timeline.beats / progressProps.timeline.beatsPerBar))}</span>
-              <button type="button" className="mini-progress-close" aria-label="Toggle mini menu" aria-keyshortcuts="m" title="Toggle mini menu (M)" onClick={() => { setManualOpen(false); dispatch({ type: 'dismiss' }); }}>×</button>
+              <button type="button" className="mini-progress-close" autoFocus={isMobile} aria-label="Toggle mini menu" aria-keyshortcuts="m" title="Toggle mini menu (M)" onClick={closeMenu}>×</button>
             </div>
             {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} compact />}
             {gameMode && <strong>{gameHasStarted ? 'Next' : 'First chord'}</strong>}
@@ -145,6 +176,7 @@ export default function MiniProgress({
               <button type="button" aria-label="Chord chart" aria-pressed={chartOpen} aria-keyshortcuts="h" aria-haspopup="dialog" onClick={onOpenChordChart} title="Toggle chord chart (H)">Chart <kbd>H</kbd></button>
               <button type="button" aria-label="Guiding lines" title="Guiding lines (G)" aria-pressed={showGuideLines} aria-keyshortcuts="g" onClick={onToggleGuideLines}>Guides <kbd>G</kbd></button>
               <button type="button" aria-label="Show D string" title="Show D string (S)" aria-pressed={!twoStrings} aria-keyshortcuts="s" onClick={() => setTwoStrings(value => !value)}>D string <kbd>S</kbd></button>
+              <button className="mini-auto-scroll-toggle" type="button" aria-label="Auto scroll" aria-pressed={autoScrollEnabled} aria-keyshortcuts="a" title="Toggle auto scroll (A)" onClick={onToggleAutoScroll}>Auto scroll · {autoScrollEnabled ? 'On' : 'Off'} <kbd>A</kbd></button>
             </div>
             <div className="mini-progress-controls mini-transport-controls" aria-label="Playback controls">
               <button type="button" onClick={onToggle} disabled={playbackState === 'starting'}>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</button>
@@ -154,7 +186,7 @@ export default function MiniProgress({
             <MiniChordStrip {...progressProps} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
             <div className="mini-shortcut-reminders"><kbd>Space</kbd> Play/pause · <kbd>M</kbd> Toggle mini menu</div>
           </section>
-        </div>
+        </PopupContainer>
       )}
     </>
   );

@@ -150,7 +150,7 @@ test('Piano schedules held-bar rearticulations and half-bar notes, pauses, resum
   globalThis.requestAnimationFrame = callback => setTimeout(callback, 0);
   const guitar = new JazzPlayer({ drums: false, bass: false });
   await guitar.start(buildTimeline([{ chord: 'F6', bars: 4 }, { chord: 'G7', bars: .5 }], 120));
-  assert.equal(scheduled.length, 20); // Four piano chords plus the half-bar chord, four strings each.
+  assert.equal(scheduled.length, 40); // Current and next pass are queued before the loop boundary.
   assert.deepEqual(scheduled.slice(4, 8).map(note => note.buffer), pianoVoicing('F6', 1).map(note => guitar.buffer(note)));
   assert.equal(scheduled[16].start, 8.03);
   assert.ok(scheduled[16].stop < 9.03);
@@ -159,18 +159,24 @@ test('Piano schedules held-bar rearticulations and half-bar notes, pauses, resum
   guitar.seek(8.5);
   assert.equal(guitar.context.state, 'suspended');
   assert.equal(guitar.elapsed, 8.5);
-  assert.equal(scheduled.length, 24); // Only the remaining half-bar chord is rescheduled.
-  assert.ok(scheduled.slice(-4).every(note => note.start >= .029 && note.stop < .55));
-  assert.ok(scheduled.slice(0, 20).every(note => note.stop === undefined)); // Old voices canceled.
+  assert.equal(scheduled.length, 64); // Remaining half-bar plus the complete next pass.
+  assert.ok(scheduled.slice(40, 44).every(note => note.start >= .029 && note.stop < .55));
+  assert.ok(scheduled.slice(0, 40).every(note => note.stop === undefined)); // Old voices canceled.
 
   await guitar.resume(); assert.equal(guitar.context.state, 'running');
   guitar.context.currentTime = guitar.startedAt + guitar.timeline.duration + .125;
   const beforeLoop = scheduled.length;
+  const boundary = guitar.startedAt + guitar.timeline.duration;
+  const queuedDownbeat = scheduled.find(note => Math.abs(note.start - boundary) < 1e-9);
+  assert.ok(queuedDownbeat); // First beat exists before a delayed UI frame observes the wrap.
+  const queuedStop = queuedDownbeat.stop;
   const loop = guitar.loopPosition();
   assert.equal(loop.wrapped, true);
   assert.ok(Math.abs(loop.position - .125) < 1e-9);
   assert.ok(scheduled.length > beforeLoop); // New first-chord voices are scheduled.
   assert.equal(guitar.context.state, 'running');
+  assert.equal(guitar.startedAt, boundary);
+  assert.equal(queuedDownbeat.stop, queuedStop); // Wrapping does not cancel the downbeat.
   assert.equal(guitar.loopPosition().wrapped, false);
   guitar.context.currentTime = guitar.startedAt + guitar.timeline.duration * 3;
   assert.equal(guitar.loopPosition().position, 0); // Exact boundary, even after a delayed frame.

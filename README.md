@@ -262,7 +262,7 @@ near the target node, with separate cumulative scores. Missing a target or
 earning Nope for both shows one MISS! with no individual grades or chord diagram.
 Judgment badges appear only at nodes; the mini menu has no duplicate popups.
 Timing uses strum onset, independently of the later chord sample:
-60 / 120 / 200 / 320 ms are the maximum errors for Perfect / Great / Good / Okay.
+100 / 200 / 300 / 450 ms are the maximum errors for Perfect / Great / Good / Okay.
 The input-delay control subtracts interface capture delay from measured onset.
 Stop resets scores; seeking resets eligible targets; looping starts new targets
 and retains scores. Exiting game mode releases audio input.

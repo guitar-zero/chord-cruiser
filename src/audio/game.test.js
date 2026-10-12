@@ -275,7 +275,7 @@ test('Shell correctness accepts inversions and octaves, but separates missing an
 });
 
 test('Timing grades use absolute onset error independently of chord recognition', () => {
-  for (const [offset, grade] of [[.06, 'Perfect'], [.12, 'Great'], [.2, 'Good'], [.32, 'Okay'], [.321, 'Nope']]) {
+  for (const [offset, grade] of [[.1, 'Perfect'], [.101, 'Great'], [.2, 'Great'], [.201, 'Good'], [.3, 'Good'], [.301, 'Okay'], [.45, 'Okay'], [.451, 'Nope']]) {
     assert.equal(timingGrade(offset), grade);
     assert.equal(timingGrade(-offset), grade);
   }
@@ -309,7 +309,7 @@ test('Attempts claim a visit once; wrong notes can still have Perfect timing', (
 test('Early/late attempts, misses, half-bar visits, and seek resets have separate targets', () => {
   const targets = [{ index: 0, start: 0 }, { index: 1, start: 1 }, { index: 2, start: 2 }];
   const round = new ShellGameRound(targets);
-  assert.equal(round.attack(-.15).timing, 'Good');
+  assert.equal(round.attack(-.15).timing, 'Great');
   assert.equal(round.attack(.95).target.index, 1);
   assert.deepEqual(round.misses(2.49), []);
   assert.deepEqual(round.misses(2.51), [targets[2]]);
@@ -381,6 +381,13 @@ test('Game drums cover all eight countdown beeps and continue without a duplicat
   for (const beatsBefore of [8, 7, 6, 5, 4, 3, 2, 1]) assert.ok(rideBeats.some(at => Math.abs(at - (onset - beatsBefore * .5)) < 1e-9));
   assert.ok(Math.abs(Math.min(...hits.map(hit => hit.at)) - (onset - 4)) < 1e-9);
   assert.equal(rideBeats.filter(at => Math.abs(at - onset) < 1e-9).length, 1);
+  const loopBoundary = player.startedAt + player.timeline.duration;
+  assert.equal(rideBeats.filter(at => Math.abs(at - loopBoundary) < 1e-9).length, 1);
+  assert.ok(rideBeats.some(at => Math.abs(at - (loopBoundary - .5)) < 1e-9));
+  context.currentTime = loopBoundary + .125;
+  assert.equal(player.loopPosition().wrapped, true);
+  assert.equal(player.startedAt, loopBoundary);
+  assert.equal(hits.filter(hit => hit.kind === 'ride' && Math.abs(hit.at - loopBoundary) < 1e-9).length, 1);
   hits.length = 0;
   player.seek(3);
   assert.ok(hits.every(hit => hit.at >= context.currentTime));

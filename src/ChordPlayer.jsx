@@ -363,7 +363,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     >
       <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
-      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
+      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
       {gameMode && gamePlayControls}
       {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
       {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
@@ -531,6 +531,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         nextNode={nextGameNode}
         showFullPath={showFullPath}
         showGuideLines={showGuideLines}
+        autoScrollEnabled={autoScrollEnabled}
+        onToggleAutoScroll={onToggleAutoScroll}
         twoStrings={twoStrings}
         setTwoStrings={setTwoStrings}
         onToggleFullPath={onToggleFullPath}

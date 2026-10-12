@@ -4,6 +4,7 @@ import { chordGrade, grades, shellTargets, ShellGameRound, normalizeJudgment } f
 import { openGuitarInput } from './audio/guitarInput.js';
 import { estimateHeardChord } from './audio/heardChord.js';
 import GameJudgment, { GameMiss } from './GameJudgment.jsx';
+import GameScoreSummary from './GameScoreSummary.jsx';
 
 function NodeJudgment({ result }) {
   const [anchor, setAnchor] = useState(null);
@@ -83,10 +84,11 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
   const attemptId = useRef(0);
   const [score, setScore] = useState({ chord: 0, timing: 0, judged: 0 });
   const [history, setHistory] = useState([]);
+  const [scoreCollapsed, setScoreCollapsed] = useState(true);
   const historyRef = useRef(null), followHistory = useRef(true);
   useEffect(() => {
     if (followHistory.current && historyRef.current) historyRef.current.scrollTop = historyRef.current.scrollHeight;
-  }, [history]);
+  }, [history, scoreCollapsed]);
   const input = useRef(null), generation = useRef(0), pending = useRef(null), round = useRef(null);
   const latest = useRef(null), lastMeter = useRef(0);
   latest.current = { playbackState, getPosition, latency, onReady, monitoring, onJudgment };
@@ -254,11 +256,11 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
       <small>Headphones on · interface direct monitoring off.</small>
     </dialog>
     <NodeJudgment result={result} />
-    <section className="game-mode-status" aria-label="Game score and chord results">
-      <div className="game-history-heading"><strong>GAME MODE</strong><button className="game-history-input" type="button" disabled={running} onClick={openWizard} title={running ? 'Stop the run to change input' : 'Choose audio input'}>{status === 'connected' ? '♫ Input' : 'Connect guitar'}</button></div>
-      <span>Chord <b>{score.chord.toLocaleString()}</b> · Timing <b>{score.timing.toLocaleString()}</b></span>
+    <section className={`game-mode-status${scoreCollapsed ? ' is-collapsed' : ''}`} aria-label="Game score and chord results">
+      <div className="game-history-heading"><strong>GAME MODE</strong><button className="game-score-collapse" type="button" aria-expanded={!scoreCollapsed} aria-controls="game-score-history" onClick={() => setScoreCollapsed(value => !value)}>{scoreCollapsed ? 'Expand ▴' : 'Collapse ▾'}</button><button className="game-history-input" type="button" disabled={running} onClick={openWizard} title={running ? 'Stop the run to change input' : 'Choose audio input'}>{status === 'connected' ? '♫ Input' : 'Connect guitar'}</button></div>
+      {scoreCollapsed ? <GameScoreSummary score={score} /> : <span>Chord <b>{score.chord.toLocaleString()}</b> · Timing <b>{score.timing.toLocaleString()}</b></span>}
       <div className="game-history-controls"><button type="button" onClick={onToggle} disabled={!running || playbackState === 'starting'}>{playbackState === 'paused' ? '▶ Resume' : 'Ⅱ Pause'}</button><button type="button" onClick={onStop} disabled={!running}>■ Stop</button></div>
-      <div className="game-history-scroll" ref={historyRef} tabIndex="0" role="region" aria-label="Chord result history" onScroll={event => {
+      <div id="game-score-history" hidden={scoreCollapsed} className="game-history-scroll" ref={historyRef} tabIndex="0" role="region" aria-label="Chord result history" onScroll={event => {
         const element = event.currentTarget;
         followHistory.current = element.scrollHeight - element.scrollTop - element.clientHeight < 12;
       }}>

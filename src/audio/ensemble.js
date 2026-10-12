@@ -115,16 +115,22 @@ export class JazzPlayer {
       scheduleBrushes(this.context, this.drumBus, this.brushes, leadIn,
         this.countInEndsAt - leadIn.duration, 0, source => this.track(source));
     }
-    if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, this.startedAt, this.offset, source => this.track(source));
+    this.scheduleCycle(this.startedAt, this.offset);
+    this.scheduleCycle(this.startedAt + timeline.duration, 0);
+    this.scheduledThrough = this.startedAt + timeline.duration * 2;
+  }
+  scheduleCycle(startedAt, offset = 0) {
+    const timeline = this.timeline;
+    if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, startedAt, offset, source => this.track(source));
     for (const event of this.pianoHits) {
         const notes = event.notes;
         const originalStart = event.start;
         const originalLength = event.duration;
-        if (originalStart + originalLength <= this.offset) continue;
-        const start = Math.max(originalStart, this.offset);
+        if (originalStart + originalLength <= offset) continue;
+        const start = Math.max(originalStart, offset);
         const length = originalStart + originalLength - start;
         if (this.bassEnabled) {
-          const at = this.startedAt + start;
+          const at = startedAt + start;
           const source = this.context.createBufferSource(); source.buffer = this.bassBuffer(bassNote(event.chord));
           const gain = this.context.createGain();
           const end = at + Math.min(3.9, length * .94);
@@ -136,7 +142,7 @@ export class JazzPlayer {
           this.track(source); source.start(at); source.stop(end + .01);
         }
         notes.forEach((note, index) => {
-          const at = this.startedAt + start + index * .002;
+          const at = startedAt + start + index * .002;
           const source = this.context.createBufferSource(); source.buffer = this.buffer(note);
           const gain = this.context.createGain();
           const end = at + Math.min(3.9, length * .94);
@@ -168,7 +174,18 @@ export class JazzPlayer {
     const elapsed = this.elapsed;
     const wrapped = elapsed >= this.timeline.duration;
     const position = wrapped ? elapsed % this.timeline.duration : elapsed;
-    if (wrapped) this.seek(position);
+    if (wrapped) {
+      this.startedAt += Math.floor(elapsed / this.timeline.duration) * this.timeline.duration;
+      this.offset = 0;
+      this.countInEndsAt = null;
+      // The next pass is already queued on the audio clock; never seek here.
+      if (this.scheduledThrough <= this.startedAt) this.scheduleCycle(this.startedAt, position);
+      const nextStart = this.startedAt + this.timeline.duration;
+      if (this.scheduledThrough <= nextStart) {
+        this.scheduleCycle(nextStart, 0);
+        this.scheduledThrough = nextStart + this.timeline.duration;
+      }
+    }
     return { position, wrapped };
   }
   pause() { return this.context.suspend(); }
