@@ -180,7 +180,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         current.seekVersion = seekVersion;
         current.loopIteration = loopIteration;
         renderGate.current = new PlaybackRenderGate();
-        current.master.gain.value = gameMode ? .03 : volume / 100;
+        current.master.gain.value = gameMode ? .3 : volume / 100;
         current.drumBus.gain.value = drumVolume / 100;
         current.bassBus.gain.value = bassVolume / 100;
         const startEvent = timeline.events.find(
@@ -414,7 +414,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             type="range"
             min="0"
             max="100"
-            value={gameMode ? 3 : volume}
+            value={gameMode ? 30 : volume}
             disabled={gameMode}
             onChange={(e) => {
               const value = Number(e.target.value);

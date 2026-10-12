@@ -951,6 +951,10 @@ const SongChart = forwardRef(function SongChart(
           </g>
         )}
       </g>
+      {startNode && <g className="starting-chord-beacon" pointerEvents="none" aria-hidden="true" style={{ transformOrigin: `${startNode.x}px ${startNode.y}px` }}>
+        <circle cx={startNode.x} cy={startNode.y} r={startRadius + 14} fill="none" stroke="#ffd45c" strokeWidth="8" />
+        <circle cx={startNode.x} cy={startNode.y} r={startRadius + 25} fill="none" stroke="#ffd45c" strokeWidth="3" strokeDasharray="8 8" />
+      </g>}
       {visibleNodes.map((node) => (
         <ChordNode
           key={node.id}
@@ -979,23 +983,23 @@ const SongChart = forwardRef(function SongChart(
       {startNode && (
         <g data-chart-label="true" data-start-node={startNode.id} aria-label="Starting chord label">
           <rect
-            x={startNode.x - 68}
+            x={startNode.x - 100}
             y={startMarkerY - 24}
-            width="136"
-            height="36"
+            width="200"
+            height="44"
             rx="9"
-            fill={darkMode ? "#e9f2ef" : "#203b35"}
+            fill="#ffd45c"
             stroke={paper}
             strokeWidth="3"
           />
           <text
             x={startNode.x}
-            y={startMarkerY}
+            y={startMarkerY + 5}
             textAnchor="middle"
-            fill={darkMode ? "#203b35" : "#ffffff"}
+            fill="#28200c"
             fontFamily="system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-            fontSize="23"
-            fontWeight="700"
+            fontSize="25"
+            fontWeight="900"
           >
             ▶ START
           </text>

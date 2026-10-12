@@ -239,7 +239,7 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
         <option value="" disabled>♫ Choose your audio interface</option>
         {devices.filter(device => device.deviceId).map((device, index) => <option key={device.deviceId} value={device.deviceId}>{device.label || `Audio input ${index + 1}`}</option>)}
       </select></span></label>
-      {microphoneSelected && <p className="game-microphone-warning" role="alert">🎧 Microphone selected — headphones required to avoid feedback. Put them on before connecting.</p>}
+      {microphoneSelected && <div className="game-microphone-warning" role="alert"><p>🎧 Microphone mode requires headphones to avoid feedback.</p><p>Without headphones, your mic may hear the backing piano and give you Perfect for every chord—even when you aren’t playing.</p><strong>AUDIO INTERFACE IS STRONGLY RECOMMENDED</strong></div>}
       {status === 'connected' && <div className="game-wizard-signal"><meter min="0" max="1" value={level} /><span>{level > .02 ? '♫ We hear you!' : 'Strum to check your signal'}</span></div>}
       {error && <p role="alert" className="audio-error">{error}</p>}
       <button className={`game-play-button ${status === 'connected' ? 'game-countdown-button' : 'game-connect-button'}`} type="button" disabled={running || requestingAccess || status === 'connecting' || !deviceId || !targets.length} onClick={status === 'connected' ? () => { setWizardOpen(false); onStart?.(); } : connect}>{status === 'connecting' ? 'CONNECTING…' : status === 'connected' ? 'START COUNTDOWN ▶' : 'CONNECT GUITAR ♫'}</button>

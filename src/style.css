@@ -247,7 +247,9 @@ footer { font-size: 12px; color: var(--muted); margin-top: 20px; }
 .game-wizard-step { color: #986be0; font-size: 11px; font-weight: 900; letter-spacing: .14em; }
 .game-setup-wizard h2 { font: 1000 28px/1.2 ui-rounded, system-ui; margin: 12px 0; }
 .game-setup-wizard > p { color: var(--muted); font-size: 13px; line-height: 1.5; }
-.game-setup-wizard > .game-microphone-warning { padding: 12px; border: 2px solid #d9a538; border-radius: 14px; background: #f3c35420; color: var(--ink); font-weight: 750; text-align: left; }
+.game-setup-wizard > .game-microphone-warning { padding: 12px; border: 2px solid #d9a538; border-radius: 14px; background: #f3c35420; color: var(--ink); font-size: 13px; line-height: 1.5; text-align: left; }
+.game-microphone-warning p { margin: 0 0 8px; }
+.game-microphone-warning strong { display: block; font-weight: 900; }
 .game-wizard-close { position: absolute; top: 10px; right: 12px; border: 0; background: none; color: var(--muted); font-size: 24px; cursor: pointer; }
 .game-wizard-picker { display: flex; flex-direction: column; gap: 8px; margin: 20px 0; text-align: left; font: 800 13px/1.4 ui-rounded, system-ui; }
 .game-wizard-picker > span { position: relative; }
@@ -394,6 +396,9 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .main-chord-preview { max-width: 480px; margin: 0 auto 8px; }
 .main-chord-preview .shell-chord { justify-content: center; margin-bottom: 12px; }
 .section-beat-gap { min-height: 56px; padding: 10px 0; display: flex; align-items: center; justify-content: center; }
+.starting-chord-beacon { animation: starting-chord-beacon 1.2s ease-in-out infinite; }
+@keyframes starting-chord-beacon { 0%, 100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.07); } }
+@media (prefers-reduced-motion: reduce) { .starting-chord-beacon { animation: none; } }
 .main-chord-preview .mini-chord { font-size: 24px; }
 .main-chord-preview .mini-chord-role { font-size: 11px; }
 .mini-chord-strip { display: flex; transition: transform 280ms ease-out; }
