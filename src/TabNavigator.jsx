@@ -33,7 +33,7 @@ export default function TabNavigator() {
   const sectionId=active.section;
   const sectionIndex=song.layout.sections.findIndex(section=>section.id===sectionId);
   const current=useMemo(()=>active.nodeId ? {node:active.nodeId,visitIndex:activeIndex,seekVersion,loopIteration,isPlaying:playing} : null,[active.nodeId,activeIndex,seekVersion,loopIteration,playing]);
-  useEffect(()=>{document.title='Tab navigator · Chord map';return()=>{request.current?.abort();audio.current?.close();};},[]);
+  useEffect(()=>{document.title='Chord Paths';return()=>{request.current?.abort();audio.current?.close();};},[]);
   useEffect(()=>{if(linkImportEnabled)importTab(defaultTabUrl);},[]);
   const shortcuts=useRef(null);shortcuts.current={toggle,stop};
   useEffect(()=>{
