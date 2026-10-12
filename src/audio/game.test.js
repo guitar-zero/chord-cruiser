@@ -47,8 +47,8 @@ test('Ready overlay previews the starting playable chord and the next, including
 });
 
 test('Visual count-in says Get ready, Here we go, then eight numbered beats before onset', () => {
-  assert.deepEqual([10, 6, 4, 3.5, 3, 2.5, 2, 1.5, 1, .5, 0].map(seconds => countInLabel(countInBeat(seconds, .5))), ['Get ready', 'Here we go', '8', '7', '6', '5', '4', '3', '2', '1', null]);
-  assert.equal(countInBeat(10.03, .5), 20);
+  assert.deepEqual([7, 5, 4, 3.5, 3, 2.5, 2, 1.5, 1, .5, 0].map(seconds => countInLabel(countInBeat(seconds, .5))), ['Get ready', 'Here we go', '8', '7', '6', '5', '4', '3', '2', '1', null]);
+  assert.equal(countInBeat(7.03, .5), 14);
   assert.equal(countInBeat(-.02, .5), 0);
   assert.equal(countInLabel(countInBeat(1.2, .4), .4), '3');
 });
@@ -57,8 +57,8 @@ test('Ready phrases give preparation time at every tempo before eight beat-align
   for (const bpm of [40, 120, 240]) {
     const beatSeconds = 60 / bpm;
     const schedule = countInSchedule(beatSeconds);
-    assert.ok((schedule.introBeats - schedule.hereWeGoBeats) * beatSeconds >= 4);
-    assert.ok(schedule.hereWeGoBeats * beatSeconds >= 2);
+    assert.ok((schedule.introBeats - schedule.hereWeGoBeats) * beatSeconds >= 2);
+    assert.ok(schedule.hereWeGoBeats * beatSeconds >= 1);
     assert.equal(schedule.totalBeats - schedule.introBeats, 8);
     assert.equal(countInLabel(8, beatSeconds), '8');
   }

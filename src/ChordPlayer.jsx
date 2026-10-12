@@ -28,7 +28,6 @@ import { playJudgmentCue } from './audio/gameCues.js';
 import { countInBeat, countInChords, countInSchedule, countInLabel } from './audio/countIn.js';
 import { shellTargets } from './audio/game.js';
 import GameCountIn from './GameCountIn.jsx';
-import GameBar from './GameBar.jsx';
 import GameAtmosphere from './GameAtmosphere.jsx';
 import ArcadeModeToggle from './ArcadeModeToggle.jsx';
 
@@ -63,6 +62,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [error, setError] = useState("");
   const [gameMode, setGameMode] = useState(false);
   const [gameReady, setGameReady] = useState(false);
+  const gameRef = useRef(null);
   const [countInBeats, setCountInBeats] = useState(0);
   const [countInGo, setCountInGo] = useState(false);
   useEffect(() => {
@@ -178,7 +178,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   }
   const keyboardPlayback = useRef(null);
   useLayoutEffect(() => {
-    keyboardPlayback.current = { toggle, state };
+    keyboardPlayback.current = { toggle: gameMode ? requestGamePlay : toggle, state };
   });
   useEffect(() => {
     let pending = false;
@@ -246,6 +246,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     const current = player.current;
     if (current) playJudgmentCue(current.context, result, source => current.track(source));
   }
+  function requestGamePlay(event) {
+    if (gameReady) return toggle(event);
+    gameRef.current?.openSetup();
+  }
   useLayoutEffect(() => {
     onPlaybackPosition?.({
       visitIndex: activeIndex,
@@ -291,7 +295,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     state,
   ]);
   const TransportSettings = gameMode ? 'details' : 'div';
-  const gamePlayControls = <div className="game-start-controls"><span className="game-play-step">2 · Ready, set, strum!</span><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting' || !gameReady} onClick={toggle}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button><span>{gameReady ? 'Check the signal, then Play · Space to play / pause' : 'Connect your interface in step 1 first ♡'}</span><button className="game-stop-button" type="button" onClick={stop} disabled={!running && position === 0}>■ Stop run</button></div>;
+  const gamePlayControls = <div className="game-start-controls game-simple-start"><p>Plug in and play <span aria-hidden="true">♫</span></p><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting'} onClick={requestGamePlay}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button></div>;
   return (
     <section
       className={`player${gameMode ? ' is-game-mode' : ''}`}
@@ -301,9 +305,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
       {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} />}
-      {gameMode && <GameMode playControls={gamePlayControls} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} position={position} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
-      {gameMode && <GameBar ref={progressRef} timeline={timeline} sectionSegments={sectionSegments} position={position} disabled={state === 'starting'} onSeek={seek} />}
-      <TransportSettings className="game-accompaniment-settings">
+      {gameMode && gamePlayControls}
+      {gameMode && <GameMode ref={gameRef} onStart={() => toggle()} onToggle={() => toggle()} onStop={stop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} position={position} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
+      {!gameMode && <TransportSettings className="game-accompaniment-settings">
       {gameMode && <summary>Tempo & backing sound</summary>}
       <div className="transport">
         {!gameMode && <button
@@ -409,7 +414,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           />
         </label>
       </div>
-      </TransportSettings>
+      </TransportSettings>}
       {!gameMode && <div className="player-status">
         {gameMode && countInBeats > 0 && <strong className="game-count-in">{countInLabel(countInBeats, 60 / bpm)}</strong>}
         {running && active && (

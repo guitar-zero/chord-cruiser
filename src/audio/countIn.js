@@ -1,6 +1,6 @@
 export function countInSchedule(beatSeconds) {
-  const readyBeats = Math.ceil(4 / beatSeconds);
-  const hereWeGoBeats = Math.ceil(2 / beatSeconds);
+  const readyBeats = Math.ceil(2 / beatSeconds);
+  const hereWeGoBeats = Math.ceil(1 / beatSeconds);
   return { introBeats: readyBeats + hereWeGoBeats, totalBeats: readyBeats + hereWeGoBeats + 8, hereWeGoBeats };
 }
 

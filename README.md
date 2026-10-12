@@ -182,17 +182,15 @@ and works with transposition.
 ### Guitar game mode
 
 The centered **Guitar Arcade** button at the top enters game mode. Its prominent
-**Let's Play** action stays disabled until you explicitly choose an interface and
-connect it under audio settings. Allow audio access first if device names are
-unavailable. Connecting never starts playback: check the visible signal meter,
-then press Play. Tempo and backing settings are collapsed to keep the main
-action visible.
-Interface instructions and setup sit beside Play in a friendly two-step panel
-(stacked on small screens). Game mode removes the practice header and full
-fretboard overview so the game controls and chart take priority.
-The game song-run bar replaces the practice
-progress bar and timeline, with a seek control, stage jumps, previous/next stage,
-and a return-to-first-chord button. The mini menu uses the same game bar.
+**Let's Play** action opens step 2 of a small interface wizard. The header shows
+only the arcade control, "Plug in and play," and the Play button. Choose and
+connect your interface in the wizard, check your signal, then start the countdown.
+Allow audio access first if device names are unavailable. Sound and input options
+are tucked into the wizard. Connecting alone never starts playback.
+Game mode removes the practice header, full fretboard overview, and duplicate
+score/setup cards. Scores, pause, stop, and input setup stay in the bottom-left
+panel while playing. The mini menu provides the game song-run bar with seeking,
+stage navigation, and return-to-first-chord controls.
 Arcade buttons, glowing cards, and small laser accents decorate game mode;
 reduced-motion preferences disable decorative motion.
 
@@ -213,8 +211,8 @@ Chord and timing judgments burst left and right from the node with small
 fireworks. Double Perfect earns a quiet ding; either Nope earns a soft buzzer.
 Piano backing plays at 3% volume, striking once per node visit without extra
 hits during held bars or source chords omitted from the diagram; bass is muted. Brushes and a one-bar
-count-in provide rhythm. Get ready lasts at least four seconds and Here we go
-at least two seconds before eight tempo-synchronized racing beeps: 8 through 1,
+count-in provide rhythm. Get ready lasts about two seconds and Here we go
+about one second, rounded to whole beats, before eight tempo-synchronized racing beeps: 8 through 1,
 with eight numbered balls lighting and bouncing on each beat,
 then a higher GO tone exactly on the first chord. Purple, amber, red, and green
 mark the four start phases; the GO overlay clears quickly to reveal the chart. The first

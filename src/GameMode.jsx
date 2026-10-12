@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { chordGrade, grades, shellTargets, ShellGameRound, normalizeJudgment } from './audio/game.js';
 import { openGuitarInput } from './audio/guitarInput.js';
@@ -50,7 +50,7 @@ function showYouPlayed(result) {
   return result && ['Good', 'Okay', 'Nope'].includes(result.chord) && result.playedPitches?.length > 0;
 }
 
-export default function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, position, getPosition, onReady, onJudgment, playControls }) {
+export default forwardRef(function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, position, getPosition, onReady, onJudgment, onStart, onToggle, onStop }, controlRef) {
   const targets = useMemo(() => shellTargets(timeline, songData.nodes), [timeline, songData]);
   const [devices, setDevices] = useState([]);
   const [requestingAccess, setRequestingAccess] = useState(false);
@@ -59,6 +59,19 @@ export default function GameMode({ timeline, songData, darkMode, playbackState, 
   const [latency, setLatency] = useState(0);
   const [monitoring, setMonitoring] = useState({ enabled: true, volume: .65, reverb: .22 });
   const [status, setStatus] = useState('disconnected');
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const wizardRef = useRef(null);
+  useImperativeHandle(controlRef, () => ({ openSetup: () => setWizardOpen(true) }));
+  useEffect(() => {
+    if (!wizardOpen) return;
+    const trigger = document.activeElement;
+    const dialog = wizardRef.current;
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+    };
+  }, [wizardOpen]);
   const [error, setError] = useState('');
   const [level, setLevel] = useState(0);
   const [result, setResult] = useState(null);
@@ -114,6 +127,7 @@ export default function GameMode({ timeline, songData, darkMode, playbackState, 
     input.current = null;
     pending.current = null;
     setStatus('disconnected'); setLevel(0); setError(message);
+    if (message) setWizardOpen(true);
     latest.current.onReady(false);
   }
   function finish(value) {
@@ -193,47 +207,42 @@ export default function GameMode({ timeline, songData, darkMode, playbackState, 
     }
   }
   const running = playbackState !== 'stopped';
+  function closeWizard() {
+    if (status === 'connecting' || requestingAccess) {
+      generation.current++;
+      setStatus('disconnected'); setRequestingAccess(false);
+    }
+    setWizardOpen(false);
+  }
   return <>
-    <section className="game-panel" aria-label="Guitar game mode">
-      <div className="game-banner"><strong><span aria-hidden="true">✦ </span>GUITAR GAME MODE</strong><span>{status === 'connected' ? '♫ LIVE INPUT' : 'CONNECT YOUR GUITAR'}</span></div>
-      <p className="game-track-title">{songData.title} · {songData.key}</p>
-      <div className="game-entry-layout"><div className="game-connection-card">
-      <div className="game-connection-guide"><span aria-hidden="true">♫ → ▣ → ♡</span><strong>1 · Plug in your guitar buddy!</strong><p>Guitar → audio interface → computer.<br />Choose your interface, connect, and give us a little strum!</p></div>
-      <details className="game-setup" open={status !== 'connected'}>
-      <summary>{status === 'connected' ? 'Audio & sound settings' : '1 · Choose your audio interface, then connect'}</summary>
-      <div className="game-input-controls">
-        {!devices.some(device => device.deviceId && device.label) && <button type="button" disabled={requestingAccess || running} onClick={allowAudioAccess}>{requestingAccess ? 'Requesting access…' : 'Allow audio access to list interfaces'}</button>}
-        <label>Audio interface <select value={deviceId} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setDeviceId(event.target.value); }}>
-          <option value="" disabled>Choose your audio interface…</option>
-          {devices.filter(device => device.deviceId).map((device, index) => <option key={device.deviceId} value={device.deviceId}>{device.label || `Audio input ${index + 1}`}</option>)}
-        </select></label>
-        <label>Guitar channel <select value={channel} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setChannel(Number(event.target.value)); }}><option value={0}>1 / Left</option><option value={1}>2 / Right</option></select></label>
-        <button type="button" disabled={running || status === 'connecting' || requestingAccess || !deviceId} onClick={status === 'connected' ? () => disconnect() : connect}>{status === 'connecting' ? 'Connecting…' : status === 'connected' ? 'Disconnect input' : 'Connect audio interface'}</button>
-        <label>Input delay <input type="number" min="0" max="500" step="10" value={latency} disabled={running} onChange={event => setLatency(Math.max(0, Math.min(500, Number(event.target.value) || 0)))} /> ms</label>
-      </div>
-      <div className="game-monitor-controls" aria-label="Guitar sound">
-        <label><input type="checkbox" checked={monitoring.enabled} onChange={event => setMonitoring(previous => ({ ...previous, enabled: event.target.checked }))} /> Hear guitar in browser</label>
-        <strong>Clean jazz · Warm tone + room reverb</strong>
-        <label>Guitar volume <input type="range" min="0" max="100" value={Math.round(monitoring.volume * 100)} onChange={event => setMonitoring(previous => ({ ...previous, volume: Number(event.target.value) / 100 }))} /><output>{Math.round(monitoring.volume * 100)}%</output></label>
-        <label>Reverb <input type="range" min="0" max="60" value={Math.round(monitoring.reverb * 100)} onChange={event => setMonitoring(previous => ({ ...previous, reverb: Number(event.target.value) / 100 }))} /><output>{Math.round(monitoring.reverb * 100)}%</output></label>
-      </div>
-      <p className="game-monitor-hint">Listen through headphones. Turn off your interface’s direct monitoring to hear only the browser’s jazz tone.</p>
-      </details>
-      <div className="game-input-level"><span>Guitar signal</span><meter min="0" max="1" value={level} />{status === 'connected' && <span>{level > .02 ? 'Signal received · ready to play' : 'Strum a chord to check input before Play'}</span>}</div>
-      </div>{playControls}</div>
-      <div className="game-scoreboard"><span>♫ Chord score <b>{score.chord.toLocaleString()}</b></span><span>★ Timing score <b>{score.timing.toLocaleString()}</b></span><span>Judged <b>{score.judged}</b></span></div>
+    <dialog ref={wizardRef} className="game-setup-wizard" aria-labelledby="game-wizard-title" onCancel={event => { event.preventDefault(); closeWizard(); }}>
+      <button className="game-wizard-close" type="button" onClick={closeWizard} aria-label="Close audio setup">×</button>
+      <span className="game-wizard-step">✦ STEP 2 OF 2 ✦</span>
+      <h2 id="game-wizard-title">Meet your guitar ♡</h2>
+      <p>Plug in your interface. Pick it below, then give us a little strum.</p>
+      {!devices.some(device => device.deviceId && device.label) && <button className="game-wizard-access" type="button" disabled={requestingAccess || running} onClick={allowAudioAccess}>{requestingAccess ? 'Finding your interfaces…' : 'Allow audio access ♫'}</button>}
+      <label className="game-wizard-picker">Audio interface <span><select value={deviceId} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setDeviceId(event.target.value); }}>
+        <option value="" disabled>♫ Choose your audio interface</option>
+        {devices.filter(device => device.deviceId).map((device, index) => <option key={device.deviceId} value={device.deviceId}>{device.label || `Audio input ${index + 1}`}</option>)}
+      </select></span></label>
+      {status === 'connected' && <div className="game-wizard-signal"><meter min="0" max="1" value={level} /><span>{level > .02 ? '♫ We hear you!' : 'Strum to check your signal'}</span></div>}
       {error && <p role="alert" className="audio-error">{error}</p>}
-      {!targets.length && <p>No playable shell chords in this chart.</p>}
-      {targets.length < timeline.events.length && <p>{timeline.events.length - targets.length} chart visits without a displayed shell are skipped.</p>}
-      <div className="game-feedback" role="status" aria-live="polite" aria-atomic="true">
-        {result ? <span>{result.label}: {result.missed ? 'MISS!' : `Chord ${result.chord} · Timing ${result.timing}`}</span> : <span>{status !== 'connected' ? 'Connect your interface to begin.' : playbackState === 'playing' ? 'Follow the count-in, then strum on each chord change.' : playbackState === 'paused' ? 'Game paused — resume when ready.' : 'Ready — press Play game for a one-bar count-in.'}</span>}
-      </div>
-      <small>Clean-input detection is experimental. Timing: Perfect ≤60 ms · Great ≤120 ms · Good ≤200 ms · Okay ≤320 ms · Nope beyond. Adjust input delay if every strum reads late.</small>
-    </section>
+      <button className="game-play-button" type="button" disabled={running || requestingAccess || status === 'connecting' || !deviceId || !targets.length} onClick={status === 'connected' ? () => { setWizardOpen(false); onStart?.(); } : connect}>{status === 'connecting' ? 'CONNECTING…' : status === 'connected' ? 'START COUNTDOWN ▶' : 'CONNECT GUITAR ♫'}</button>
+      <details className="game-wizard-options"><summary>Sound & input options</summary><div className="game-input-controls">
+        <label>Guitar channel <select value={channel} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setChannel(Number(event.target.value)); }}><option value={0}>1 / Left</option><option value={1}>2 / Right</option></select></label>
+        <label>Input delay <input type="number" min="0" max="500" step="10" value={latency} disabled={running} onChange={event => setLatency(Math.max(0, Math.min(500, Number(event.target.value) || 0)))} /> ms</label>
+      </div><div className="game-monitor-controls">
+        <label><input type="checkbox" checked={monitoring.enabled} onChange={event => setMonitoring(previous => ({ ...previous, enabled: event.target.checked }))} /> Hear guitar in browser</label>
+        <label>Volume <input type="range" min="0" max="100" value={Math.round(monitoring.volume * 100)} onChange={event => setMonitoring(previous => ({ ...previous, volume: Number(event.target.value) / 100 }))} /></label>
+        <label>Reverb <input type="range" min="0" max="60" value={Math.round(monitoring.reverb * 100)} onChange={event => setMonitoring(previous => ({ ...previous, reverb: Number(event.target.value) / 100 }))} /></label>
+      </div></details>
+      <small>Headphones on · interface direct monitoring off.</small>
+    </dialog>
     <NodeJudgment result={result} />
     <section className="game-mode-status" aria-label="Game score and chord results">
-      <div className="game-history-heading"><strong>GAME MODE</strong><span>{status === 'connected' ? '♫ Live' : 'Connect guitar'}</span></div>
+      <div className="game-history-heading"><strong>GAME MODE</strong><button className="game-history-input" type="button" disabled={running} onClick={() => setWizardOpen(true)} title={running ? 'Stop the run to change input' : 'Choose audio input'}>{status === 'connected' ? '♫ Input' : 'Connect guitar'}</button></div>
       <span>Chord <b>{score.chord.toLocaleString()}</b> · Timing <b>{score.timing.toLocaleString()}</b></span>
+      <div className="game-history-controls"><button type="button" onClick={onToggle} disabled={!running || playbackState === 'starting'}>{playbackState === 'paused' ? '▶ Resume' : 'Ⅱ Pause'}</button><button type="button" onClick={onStop} disabled={!running}>■ Stop</button></div>
       <div className="game-history-scroll" ref={historyRef} tabIndex="0" role="region" aria-label="Chord result history" onScroll={event => {
         const element = event.currentTarget;
         followHistory.current = element.scrollHeight - element.scrollTop - element.clientHeight < 12;
@@ -249,4 +258,4 @@ export default function GameMode({ timeline, songData, darkMode, playbackState, 
       </div>
     </section>
   </>;
-}
+});
