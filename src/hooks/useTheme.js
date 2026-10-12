@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export default function useTheme() {
   const [darkMode,setDarkMode]=useState(()=>{
-    try { return localStorage.getItem('chord-map-theme')==='dark'; } catch { return false; }
+    try { return localStorage.getItem('chord-map-theme')!=='light'; } catch { return true; }
   });
   useEffect(()=>{
     document.documentElement.dataset.theme=darkMode?'dark':'light';
