@@ -1,3 +1,4 @@
+import { nextShellTarget } from './game.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chordGrade, timingGrade, shellTargets, spectralPitches, ShellGameRound, normalizeJudgment } from './game.js';
@@ -427,4 +428,15 @@ test('Interface capture selects the channel, disables speech processing, and rel
       else delete globalThis[key];
     }
   }
+});
+
+test('Game chord preview advances by visit, skips omitted chords, and wraps at song end', () => {
+  const targets = [{ index: 0, nodeId: 'a' }, { index: 3, nodeId: 'b' }, { index: 4, nodeId: 'a' }];
+  assert.equal(nextShellTarget(targets, 0, false), targets[0]);
+  assert.equal(nextShellTarget(targets, 3, false), targets[0]);
+  assert.equal(nextShellTarget(targets, 0), targets[1]);
+  assert.equal(nextShellTarget(targets, 2), targets[1]);
+  assert.equal(nextShellTarget(targets, 3), targets[2]);
+  assert.equal(nextShellTarget(targets, 4), targets[0]);
+  assert.equal(nextShellTarget([], 0), undefined);
 });

@@ -27,7 +27,7 @@ import { sectionTimeline } from "./audio/sectionTimeline.js";
 import GameMode from './GameMode.jsx';
 import { playJudgmentCue } from './audio/gameCues.js';
 import { countInBeat, countInChords, countInSchedule, countInLabel, shouldLaunchCountInIndicator } from './audio/countIn.js';
-import { shellTargets } from './audio/game.js';
+import { nextShellTarget, shellTargets } from './audio/game.js';
 import GameCountIn from './GameCountIn.jsx';
 import GameAtmosphere from './GameAtmosphere.jsx';
 import ArcadeModeToggle from './ArcadeModeToggle.jsx';
@@ -283,6 +283,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const running = state !== "stopped";
   const activeIndex = timeline.events.indexOf(active);
   const currentNode = songData.nodes.find(node => node.id === active?.nodeId);
+  const gameHasStarted = hasPlayed && !countInActive;
+  const nextGameTarget = nextShellTarget(gameTargets, activeIndex, gameHasStarted);
+  const nextGameNode = songData.nodes.find(node => node.id === nextGameTarget?.nodeId);
   useEffect(() => {
     if (gameMode && !gameReady && state !== 'stopped') stop();
   }, [gameMode, gameReady, state]);
@@ -523,6 +526,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         nodeColorMode={songData.nodeColorMode}
         currentEvent={active}
         currentNode={currentNode}
+        gameHasStarted={gameHasStarted}
+        nextEvent={nextGameTarget}
+        nextNode={nextGameNode}
         showFullPath={showFullPath}
         showGuideLines={showGuideLines}
         twoStrings={twoStrings}

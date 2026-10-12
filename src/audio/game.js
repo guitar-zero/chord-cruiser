@@ -14,6 +14,11 @@ export function shellTargets(timeline, nodes) {
   });
 }
 
+export function nextShellTarget(targets, activeIndex, hasStarted = true) {
+  if (!hasStarted) return targets[0];
+  return targets.find(target => target.index > activeIndex) || targets[0];
+}
+
 export function timingGrade(seconds) {
   const error = Math.abs(seconds);
   return error <= .06 ? 'Perfect' : error <= .12 ? 'Great' : error <= .2 ? 'Good' : error <= .32 ? 'Okay' : 'Nope';

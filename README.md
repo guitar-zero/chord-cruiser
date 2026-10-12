@@ -2,7 +2,7 @@
 
 A React app displaying all 201 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
 
-Full path is shown by default in chord, game, and tab modes; toggle it with **X**.
+Full path is shown by default in chord and game modes; toggle it with **X**.
 
 ## Run
 
@@ -25,20 +25,18 @@ Open the local URL printed by Vite. Run `npm run build` to create a production b
 
 For this repository, the site URL is `https://guitar-zero.github.io/shell-chord-app/`.
 The workflow reads the Pages base path automatically, so repository renames,
-user sites, and custom domains do not need hardcoded path changes. Page navigation
-uses `#/tabs` so direct links and refreshes work on static hosting.
+user sites, and custom domains do not need hardcoded path changes.
 
 To check the same build locally:
 
 ```sh
-VITE_GITHUB_PAGES=true npm run build -- --base /shell-chord-app/
+npm run build -- --base /shell-chord-app/
 npm run preview
 ```
 
 Open `http://127.0.0.1:4173/shell-chord-app/`. GitHub Pages serves static files;
-chord playback, game mode, audio-interface input, and pasted/demo tabs work there.
-The server-backed Ultimate Guitar link importer is hidden in the Pages build;
-it remains available locally. Enable HTTPS on the Pages site for audio capture.
+chord playback, game mode, and audio-interface input work there. No application
+server or API is required. Enable HTTPS on the Pages site for audio capture.
 
 See [GitHub's Pages workflow guide](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 and [Vite's deployment guide](https://vite.dev/guide/static-deploy.html#github-pages).
@@ -276,11 +274,3 @@ Detection is an experimental spectral-peak and overtone-suppression heuristic
 for clean electric guitar, not a trained polyphonic model. Synthetic spectrum,
 grading, count-in, and capture lifecycle tests pass; accuracy and latency still
 need validation with physical interfaces, guitar tones, and browsers.
-
-### Tab navigator
-
-The **Tab navigator** page (`/tabs`) accepts six-string text guitar tabs by pasting text or importing a public Ultimate Guitar text-tab URL. An original demo is provided. It converts the input into the shared chart graph and uses `SongChart`, `ProgressBar`, `MiniChordStrip`, route coloring, reciprocal lanes, step badges, and the same theme and controls as the chord navigator.
-
-Simultaneous notes share a practice step and light up together; repeated string/fret positions share a node with every visit number. Sections keep dense tabs readable. Tuning/capo controls update note pitches while retaining the tab's string/fret positions. Text tab spacing does not reliably encode rhythm, so playback uses adjustable practice steps; bends/slides are labeled but not synthesized and repeat symbols are not expanded automatically.
-
-The link importer runs in `npm run dev` and `npm run preview`. Static-only deployments need a server providing `/api/tab-import`; pasted tabs work without it. The source must be a public text tab, rather than Pro or interactive tablature.

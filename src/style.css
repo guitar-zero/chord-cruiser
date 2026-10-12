@@ -515,20 +515,8 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .chord-quality-legend .chord-quality-primary i { width: 16px; height: 16px; }
 .mini-progress-toast .chord-quality-legend .chord-quality-primary { font-size: 14px; }
 
-.page-navigation { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
-.page-navigation a { padding: 12px 18px; border-bottom: 3px solid transparent; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
-.page-navigation a:hover { color: var(--ink); background: var(--hover); }
-.page-navigation a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
-.page-navigation a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.tab-input-row { display: flex; gap: 10px; margin: 8px 0; }
-.tab-input-row input { flex: 1; min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--input); color: var(--ink); font: inherit; }
-.tab-input details, .player details { margin-top: 14px; }
-.tab-input summary, .player summary { cursor: pointer; font-size: 14px; font-weight: 600; }
-.tab-input textarea { display: block; width: 100%; min-height: 230px; margin: 12px 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--ink); background: var(--input); font: 13px/1.7 monospace; white-space: pre; overflow: auto; }
-.tab-input pre { overflow-x: auto; font: 13px/1.8 monospace; }
-.tab-input .theme-toggle + .theme-toggle { margin-left: 8px; }
-.player .transport input.tab-tuning-input { width: 210px; }
-@media (max-width: 600px) { .tab-input-row { flex-wrap: wrap; } .tab-input-row input { flex-basis: 100%; } }
+.player details { margin-top: 14px; }
+.player summary { cursor: pointer; font-size: 14px; font-weight: 600; }
 .full-fretboard-preview { max-width: 1100px; }
 .full-fretboard-preview .mini-chord-window { max-width: 480px; margin-left: auto; margin-right: auto; }
 .shell-chord.shell-chord-full { flex-direction: column; gap: 4px; }

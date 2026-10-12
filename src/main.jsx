@@ -10,9 +10,6 @@ import { createRoot } from "react-dom/client";
 import "./style.css";
 import ChordPlayer from "./ChordPlayer.jsx";
 import AutoScrollToggle from "./AutoScrollToggle.jsx";
-import TabNavigator from "./TabNavigator.jsx";
-import { currentPage } from './data/pageRouting.js';
-import PageNavigation from "./PageNavigation.jsx";
 import useTheme from "./hooks/useTheme.js";
 import IndicatorLaunch from "./IndicatorLaunch.jsx";
 import ChartSections from "./ChartSections.jsx";
@@ -368,7 +365,6 @@ function App() {
   }
   return (
     <main>
-      <PageNavigation current="chords" />
       <div id="arcade-mode-dock" />
       <header>
         <div>
@@ -547,9 +543,4 @@ if (import.meta.hot) {
   import.meta.hot.data.root = root;
   import.meta.hot.accept();
 }
-function renderPage() {
-  root.render(currentPage(window.location, import.meta.env.BASE_URL) === 'tabs' ? <TabNavigator /> : <App />);
-}
-window.addEventListener('hashchange', renderPage);
-if (import.meta.hot) import.meta.hot.dispose(() => window.removeEventListener('hashchange', renderPage));
-renderPage();
+root.render(<App />);

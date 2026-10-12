@@ -498,7 +498,7 @@ function chartPaths(song) {
               target,
               song.nodes.filter((node) => node.section === edge.section),
               section,
-              song.kind !== 'notes',
+              true,
             ) || directEdgePath(edge, song.nodes)
           : edge.path,
       ];
@@ -831,7 +831,7 @@ const SongChart = forwardRef(function SongChart(
         />
       ))}
       <CurrentChordIndicator
-        itemName={song.kind === 'notes' ? 'note' : 'chord'}
+        itemName="chord"
         onMotion={followIndicator}
         onArrival={handleArrival}
         directMotion={hideGuidingLines}

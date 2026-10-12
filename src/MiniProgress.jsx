@@ -14,6 +14,8 @@ export default function MiniProgress({
   chord,
   currentEvent,
   currentNode,
+  nextEvent,
+  nextNode,
   activeIndex,
   colors,
   darkMode,
@@ -32,6 +34,7 @@ export default function MiniProgress({
   twoStrings,
   setTwoStrings,
   gameMode,
+  gameHasStarted,
   gameReady,
   ...progressProps
 }) {
@@ -135,7 +138,8 @@ export default function MiniProgress({
               <button type="button" className="mini-progress-close" aria-label="Toggle mini menu" aria-keyshortcuts="m" title="Toggle mini menu (M)" onClick={() => { setManualOpen(false); dispatch({ type: 'dismiss' }); }}>×</button>
             </div>
             {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} compact />}
-            <ShellChordDiagram chord={currentEvent?.chord} node={currentNode} color={timelineColor(colors?.[activeIndex], darkMode)} darkMode={darkMode} />
+            {gameMode && <strong>{gameHasStarted ? 'Next' : 'First chord'}</strong>}
+            <ShellChordDiagram chord={(gameMode ? nextEvent : currentEvent)?.chord} node={gameMode ? nextNode : currentNode} color={timelineColor(colors?.[gameMode ? nextEvent?.index : activeIndex], darkMode)} darkMode={darkMode} />
             <div className="mini-view-controls mini-compact-controls">
               <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Path <kbd>X</kbd></button>
               <button type="button" aria-label="Chord chart" aria-pressed={chartOpen} aria-keyshortcuts="h" aria-haspopup="dialog" onClick={onOpenChordChart} title="Toggle chord chart (H)">Chart <kbd>H</kbd></button>
