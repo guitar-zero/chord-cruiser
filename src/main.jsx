@@ -434,7 +434,7 @@ function App() {
             value={targetKey}
             onChange={(event) => changeKey(event.target.value)}
           >
-            <option value="">Original: {songsById[songId].key}</option>
+            <option value="">{songsById[songId].key}</option>
             {availableKeys
               .filter(
                 (root) => notePitch(root) !== notePitch(songsById[songId].key),
@@ -493,7 +493,7 @@ function App() {
         selectionControls={<div className="game-song-selection">
           <label>Song<select value={songId} onChange={event => changeSong(event.target.value)}>{dropdownSongs.map(item => <option key={item.id} value={item.id}>{songOptionLabel(item)}</option>)}</select></label>
           <label>Key<select value={targetKey} onChange={event => changeKey(event.target.value)}>
-            <option value="">Original: {songsById[songId].key}</option>
+            <option value="">{songsById[songId].key}</option>
             {availableKeys.filter(root => notePitch(root) !== notePitch(songsById[songId].key)).map(root => <option key={root} value={root}>{displayNote(root)}{/minor|-$/.test(song.key) ? ' minor' : ''}</option>)}
           </select></label>
         </div>}

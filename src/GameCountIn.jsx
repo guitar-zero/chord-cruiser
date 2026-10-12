@@ -15,6 +15,7 @@ export default function GameCountIn({ beat, beatSeconds, starting, paused, first
       {firstChord && <div className="game-count-in-chords">
         <p>{go ? 'Play now' : 'First chord is'}</p>
         <CountInChordNode chord={firstChord} shape={firstShape} color={firstColor} darkMode={darkMode} />
+        {firstNode && <span className="count-in-root-position">Root: <b>{firstNode.fret === 0 ? 'Open string' : `Fret ${firstNode.fret}`}</b> · {firstNode.string === 'E' ? 'Low E' : firstNode.string} string</span>}
         {nextChord && <span>then <b>{nextChord.replaceAll('b', '♭').replaceAll('#', '♯')}</b></span>}
       </div>}
       {firstNode && <div className="count-in-fretboard"><ShellChordDiagram fullFretboard chord={firstChord} node={firstNode} color={firstColor} darkMode={darkMode} showOrientationToggle={false} showDetails={false} /></div>}

@@ -602,3 +602,5 @@ svg.fretboard-overview { display: block; width: 100%; height: auto; max-height: 
 .game-song-selection select { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--input); color: var(--ink); font: inherit; }
 .game-song-selection select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 600px) { .game-song-selection { grid-template-columns: 1fr; } }
+
+.game-count-in-chords > .count-in-root-position { margin: 6px 0; color: var(--ink); font-size: clamp(16px, 3vw, 22px); }
