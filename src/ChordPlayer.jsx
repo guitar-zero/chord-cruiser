@@ -25,8 +25,9 @@ import { outgoingVisitColors } from "./SongChart.jsx";
 import { songsById } from "./data/songs.js";
 import { sectionTimeline } from "./audio/sectionTimeline.js";
 import GameMode from './GameMode.jsx';
+import GameTempoOptions from './GameTempoOptions.jsx';
 import { playJudgmentCue } from './audio/gameCues.js';
-import { countInBeat, countInChords, countInSchedule, countInLabel, shouldLaunchCountInIndicator } from './audio/countIn.js';
+import { countInComplete, countInBeat, countInChords, countInSchedule, countInLabel, shouldLaunchCountInIndicator } from './audio/countIn.js';
 import { nextShellTarget, shellTargets } from './audio/game.js';
 import GameCountIn from './GameCountIn.jsx';
 import GameAtmosphere from './GameAtmosphere.jsx';
@@ -53,6 +54,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onToggleAutoScroll,
     chartOpen,
     setChartOpen,
+    gameMode,
+    setGameMode,
+    selectionControls,
   },
   controlRef,
 ) {
@@ -66,7 +70,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const positionRef = useRef(0);
   positionRef.current = position;
   const [error, setError] = useState("");
-  const [gameMode, setGameMode] = useState(false);
   const [gameReady, setGameReady] = useState(false);
   const gameRef = useRef(null);
   const [countInBeats, setCountInBeats] = useState(0);
@@ -128,6 +131,11 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     setCountInGo(false);
     countInTargets.current = null;
   }
+  useLayoutEffect(() => {
+    stop();
+    setError('');
+    setSeekVersion(0);
+  }, [song, songData.key]);
   function tick(time = performance.now()) {
     const current = player.current;
     if (!current || current.context.state === "closed") return;
@@ -295,6 +303,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     const raw = current.context.currentTime - current.startedAt;
     return raw < 0 ? raw : raw % timeline.duration;
   }, [timeline.duration]);
+  const canJudgeGame = useCallback(() => {
+    const current = player.current;
+    return Boolean(current?.timeline && countInComplete(current.context.currentTime, current.countInEndsAt));
+  }, []);
   const handleGameJudgment = useCallback(result => {
     const current = player.current;
     if (current) playJudgmentCue(current.context, result, source => current.track(source));
@@ -364,20 +376,22 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
       {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
+      {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={setBpm} />}
       {gameMode && gamePlayControls}
-      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} selectionControls={selectionControls} bpm={bpm} onTempoChange={setBpm} getPosition={gamePosition} canJudge={canJudgeGame} onReady={setGameReady} onJudgment={handleGameJudgment} />}
       {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
       {!gameMode && <TransportSettings className="game-accompaniment-settings">
       {gameMode && <summary>Tempo & backing sound</summary>}
-      <div className="transport">
+      <div className="practice-play-launch">
         {!gameMode && <button
           ref={playButton}
-          className="play"
+          className="practice-play-button"
           type="button"
           onClick={toggle}
           disabled={state === "starting" || (gameMode && !gameReady)}
         >
-          {state === "starting" ? (
+          <span className="practice-play-sparkle" aria-hidden="true">♫</span>
+          <strong>{state === "starting" ? (
             <>
               <span className="spinner" aria-hidden="true" /> Loading sounds…
             </>
@@ -386,9 +400,12 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           ) : state === "paused" ? (
             "▶ Resume"
           ) : (
-            gameMode ? '▶ Play game' : "▶ Play chords"
-          )}
+            "▶ Play chords"
+          )}</strong>
+          <span className="practice-play-sparkle" aria-hidden="true">✦</span>
         </button>}
+      </div>
+      <div className="transport">
         <button
           type="button"
           onClick={stop}

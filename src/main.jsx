@@ -53,6 +53,7 @@ const songOptionLabel = (song) => {
 
 function App() {
   const [chartOpen, setChartOpen] = useState(false);
+  const [gameMode, setGameMode] = useState(false);
   const [countInActive, setCountInActive] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
@@ -475,6 +476,8 @@ function App() {
         </div>
       </nav>
       <ChordPlayer
+        gameMode={gameMode}
+        setGameMode={setGameMode}
         chartOpen={chartOpen}
         setChartOpen={setChartOpen}
         autoScrollEnabled={autoScrollEnabled}
@@ -487,7 +490,13 @@ function App() {
         twoStrings={twoStrings}
         setTwoStrings={setTwoStrings}
         onToggleGuideLines={() => setHideGuidingLines((value) => !value)}
-        key={selectionKey}
+        selectionControls={<div className="game-song-selection">
+          <label>Song<select value={songId} onChange={event => changeSong(event.target.value)}>{dropdownSongs.map(item => <option key={item.id} value={item.id}>{songOptionLabel(item)}</option>)}</select></label>
+          <label>Key<select value={targetKey} onChange={event => changeKey(event.target.value)}>
+            <option value="">Original: {songsById[songId].key}</option>
+            {availableKeys.filter(root => notePitch(root) !== notePitch(songsById[songId].key)).map(root => <option key={root} value={root}>{displayNote(root)}{/minor|-$/.test(song.key) ? ' minor' : ''}</option>)}
+          </select></label>
+        </div>}
         ref={playerRef}
         song={songId}
         songData={song}

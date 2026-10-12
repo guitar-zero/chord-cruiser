@@ -27,7 +27,6 @@ but-beautiful|A:Gmaj7 Bm7b5,E7b9 Am7 C#m7b5,F#7b9 Gmaj7 Bm7b5,E7b9 A7 %|B:D7,D7/
 but-not-for-me|A:F7 Bb7 Ebmaj7,Ab7 Gm7,C7 F7 Bb7 Ebmaj7 Bbm7,Eb7|B:Abmaj7 Db7 Ebmaj7 C7 Fm7 % F7 Bb7|@A|C:Abmaj7 Db7 Ebmaj7,Ab7 Gm7,C7 Fm7 Bb7 Eb6 %
 bye-bye-blackbird|A:Fmaj7 Gm7,C7 Fmaj7 % Fmaj7 Am7b5,D7b9 Gm7 C7 Gm7 D7 Gm7 C7 Gm7 C7 F6 %|B:Fm7 Em7,Eb7 Dm7 D7b9 Gm7 % Db7 C7 Fmaj7 Gm7,C7 Fmaj7 Am7b5,D7b9 Gm7 C7 Fmaj7 Gm7,C7
 cantaloupe-island|Form:Fm11 % % % Db7#11 % % % Dm11 % % % Fm11 % % %
-caravan|A:C7b9 % % % % % % % % % % % Fm % % %|@A|B:F7 % % % Bb7 % % % Eb7 % % % Ab6 % G7 Db7|@A
 ceora|A:Abmaj7 Bbm7,Eb7 Abmaj7 Ebm7,Ab7 Dbmaj7 Dm7,G7 Cm7 F7 Bbm7 Eb7 Cm7 F7 Dm7 G7 Cm7,F7 Bbm7,Eb7|B:Abmaj7 Bbm7,Eb7 Abmaj7 Ebm7,Ab7 Dbmaj7 Dm7,G7 Cm7 F7alt Bbm7 Eb7 Cm7b5 F7alt Bbm7 Eb7 Abmaj7 Bbm7,Eb7
 cherokee|A1:Bb6 % Fm7 Bb7 Ebmaj7 % Ab7 % Bb6 % C7 % Cm7 G7b9 Cm7 F7#5|A2:Bb6 % Fm7 Bb7 Ebmaj7 % Ab7 % Bb6 % C7 % Cm7 F7 Bb6 %|B:C#m7 F#7 Bmaj7 % Bm7 E7 Amaj7 % Am7 D7 Gmaj7 % Gm7 C7 Cm7 F7#5|@A2
 come-rain-or-come-shine|A:Fmaj7 Em7b5,A7b9 Dm % G7 C7 Fmaj7 Cm7,F7 Bbm7 Fm7 Bbm7 Gm7,C7 Bm7b5,E7b9 Am7b5,D7b9 Am7b5,D7b9 Gm7,C7|B:Fmaj7 Em7b5,A7b9 Dm % Bm7 E7 A7 % D7 % G7 Bb7,A7b9 Dm,Bm7b5 Em7b5,A7b9 Dm Gm7,C7

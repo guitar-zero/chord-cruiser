@@ -2,13 +2,12 @@ import React, { memo, forwardRef, useImperativeHandle, useEffect, useMemo, useRe
 import { createPortal } from 'react-dom';
 import { chordGrade, grades, shellTargets, ShellGameRound, normalizeJudgment } from './audio/game.js';
 import { openGuitarInput } from './audio/guitarInput.js';
-import { estimateHeardChord } from './audio/heardChord.js';
 import GameJudgment, { GameMiss } from './GameJudgment.jsx';
 import GameScoreSummary from './GameScoreSummary.jsx';
+import GameTempoOptions from './GameTempoOptions.jsx';
 
 function NodeJudgment({ result }) {
   const [anchor, setAnchor] = useState(null);
-  const playedRef = useRef(null);
   useEffect(() => {
     if (!result) return;
     let frame;
@@ -19,15 +18,12 @@ function NodeJudgment({ result }) {
       if (bounds && bounds.bottom > 0 && bounds.top < window.innerHeight) {
         const x = Math.round((bounds.left + bounds.width / 2) * 10) / 10, y = Math.round((bounds.top + bounds.height / 2) * 10) / 10;
         const width = Math.min(160, (window.innerWidth - 40) / 2);
-        const margin = showYouPlayed(result) ? 112 : width / 2 + 12;
+        const margin = width / 2 + 12;
         const clampX = value => Math.max(margin, Math.min(window.innerWidth - margin, value));
-        const playedHeight = playedRef.current?.getBoundingClientRect().height || 65;
-        const badgeY = Math.max(showYouPlayed(result) ? playedHeight + 56 : 48, Math.min(window.innerHeight - 80, y - 85));
+        const badgeY = Math.max(48, Math.min(window.innerHeight - 80, y - 85));
         const nextAnchor = { left: x, top: y, '--badge-width': `${width}px`,
           '--left-flight': `${clampX(x - 140) - x}px`, '--right-flight': `${clampX(x + 140) - x}px`,
           '--flight-y': `${badgeY - y}px`,
-          '--heard-left': `${clampX(x - 140)}px`,
-          '--heard-top': `${badgeY - 44}px`,
           '--miss-left': `${bounds.right + width + 36 <= window.innerWidth ? bounds.right + 24 - x : bounds.left - width - 24 - x}px` };
         setAnchor(previous => previous && Object.keys(nextAnchor).every(key => previous[key] === nextAnchor[key]) ? previous : nextAnchor);
       } else setAnchor(null);
@@ -42,7 +38,6 @@ function NodeJudgment({ result }) {
   return createPortal(<div className="game-node-judgment" style={anchor} aria-hidden="true">
     <div key={`${result.id}:chord:${result.chord}`} className="game-judgment-wing is-left" data-grade={result.chord} data-game-judgment="true"><GameJudgment kind="Chord" grade={result.chord} attempt={result.id} />{result.chord && <Firework />}</div>
     <div key={`${result.id}:timing`} className="game-judgment-wing is-right" data-grade={result.timing} data-game-judgment="true"><GameJudgment kind="Timing" grade={result.timing} attempt={result.id} /><Firework /></div>
-    {showYouPlayed(result) && <div key={result.id} ref={playedRef} className="game-you-played" data-game-judgment="true"><span>You played</span><strong>{estimateHeardChord(result.playedPitches)?.label || 'Uncertain chord'}</strong></div>}
   </div>, document.body);
 }
 
@@ -50,11 +45,7 @@ function Firework() {
   return <div className="game-firework" aria-hidden="true">{Array.from({ length: 8 }, (_, index) => <i key={index} style={{ '--ray-angle': `${index * 45}deg` }} />)}</div>;
 }
 
-function showYouPlayed(result) {
-  return result && ['Good', 'Okay', 'Nope'].includes(result.chord) && result.playedPitches?.length > 0;
-}
-
-export default memo(forwardRef(function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, getPosition, onReady, onJudgment, onStart, onToggle, onStop }, controlRef) {
+export default memo(forwardRef(function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, selectionControls, bpm, onTempoChange, getPosition, canJudge, onReady, onJudgment, onStart, onToggle, onStop }, controlRef) {
   const targets = useMemo(() => shellTargets(timeline, songData.nodes), [timeline, songData]);
   const [devices, setDevices] = useState([]);
   const [requestingAccess, setRequestingAccess] = useState(false);
@@ -91,7 +82,7 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
   }, [history, scoreCollapsed]);
   const input = useRef(null), generation = useRef(0), pending = useRef(null), round = useRef(null);
   const latest = useRef(null), lastMeter = useRef(0);
-  latest.current = { playbackState, getPosition, latency, onReady, monitoring, onJudgment };
+  latest.current = { playbackState, getPosition, canJudge, latency, onReady, monitoring, onJudgment };
   useEffect(() => { input.current?.setMonitoring(monitoring); }, [monitoring]);
   useEffect(() => {
     round.current = new ShellGameRound(targets, playbackState === 'stopped' ? 0 : latest.current.getPosition());
@@ -104,7 +95,7 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
       setHistory([]);
       followHistory.current = true;
     }
-  }, [playbackState]);
+  }, [playbackState, songData.id, songData.key]);
   useEffect(() => {
     return () => {
       generation.current++;
@@ -152,7 +143,11 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
   function analyse({ rms, attack, pitches, now }) {
     if (now - lastMeter.current > 80) { setLevel(Math.min(1, rms * 12)); lastMeter.current = now; }
     const live = latest.current;
-    if (live.playbackState !== 'playing') return;
+    if (live.playbackState !== 'playing' || !live.canJudge()) {
+      if (pending.current) round.current?.releaseAttack(pending.current.visitIndex);
+      pending.current = null;
+      return;
+    }
     const time = live.getPosition() - live.latency / 1000;
     // Collect the best stable chord sample after the attack; timing is already fixed.
     if (pending.current && now >= pending.current.until) {
@@ -234,7 +229,8 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
     <dialog ref={wizardRef} className="game-setup-wizard" aria-labelledby="game-wizard-title" onCancel={event => { event.preventDefault(); closeWizard(); }}>
       <button className="game-wizard-close" type="button" onClick={closeWizard} aria-label="Close audio setup">×</button>
       <span className="game-wizard-step">✦ STEP 2 OF 2 ✦</span>
-      <h2 id="game-wizard-title">Meet your guitar ♡</h2>
+      <h2 id="game-wizard-title">Plug and play ♫</h2>
+      {selectionControls}
       <p>Plug in your interface. Pick it below, then give us a little strum.</p>
       {(!devices.some(device => device.deviceId && device.label) || (error && status !== 'connected')) && <div className="game-wizard-access-prompt"><button className="game-wizard-access" type="button" disabled={requestingAccess || running} onClick={allowAudioAccess}>{requestingAccess ? 'WAITING FOR AUDIO ACCESS…' : '♫ ALLOW AUDIO ACCESS'}</button><p>{requestingAccess ? 'Choose Allow in your browser’s permission popup.' : 'Tap here if the browser permission popup did not appear.'}</p></div>}
       <label className="game-wizard-picker">Audio interface <span><select value={deviceId} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setDeviceId(event.target.value); }}>
@@ -244,6 +240,7 @@ export default memo(forwardRef(function GameMode({ timeline, songData, darkMode,
       {microphoneSelected && <div className="game-microphone-warning" role="alert"><p>🎧 Microphone mode requires headphones to avoid feedback.</p><p>Without headphones, your mic may hear the backing piano and give you Perfect for every chord—even when you aren’t playing.</p><strong>AUDIO INTERFACE IS STRONGLY RECOMMENDED</strong></div>}
       {status === 'connected' && <div className="game-wizard-signal"><meter min="0" max="1" value={level} /><span>{level > .02 ? '♫ We hear you!' : 'Strum to check your signal'}</span></div>}
       {error && <p role="alert" className="audio-error">{error}</p>}
+      <GameTempoOptions bpm={bpm} onChange={onTempoChange} disabled={running} />
       <button className={`game-play-button ${status === 'connected' ? 'game-countdown-button' : 'game-connect-button'}`} type="button" disabled={running || requestingAccess || status === 'connecting' || !deviceId || !targets.length} onClick={status === 'connected' ? () => { setWizardOpen(false); onStart?.(); } : connect}>{status === 'connecting' ? 'CONNECTING…' : status === 'connected' ? 'START COUNTDOWN ▶' : 'CONNECT GUITAR ♫'}</button>
       <details className="game-wizard-options"><summary>Sound & input options</summary><div className="game-input-controls">
         <label>Guitar channel <select value={channel} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setChannel(Number(event.target.value)); }}><option value={0}>1 / Left</option><option value={1}>2 / Right</option></select></label>

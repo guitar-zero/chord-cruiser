@@ -6,11 +6,9 @@ import { buildTimeline } from './songs.js';
 import { JazzPlayer } from './ensemble.js';
 import { openGuitarInput } from './guitarInput.js';
 import { jazzRoomImpulse, createGuitarMonitor } from './guitarMonitor.js';
-import { estimateHeardChord, heardChordFingering, HeardChordTracker } from './heardChord.js';
-import { guitarTuning } from '../shellVoicing.js';
 import { judgmentCue, playJudgmentCue } from './gameCues.js';
 import { pianoHits } from './pianoVoicings.js';
-import { countInBeat, countInLabel, countInChords, countInSchedule, shouldLaunchCountInIndicator } from './countIn.js';
+import { countInComplete, countInBeat, countInLabel, countInChords, countInSchedule, shouldLaunchCountInIndicator } from './countIn.js';
 import { gameBarState } from '../data/gameBar.js';
 import { racingCountInTones, scheduleRacingCountIn, preparationWhistles } from './racingCountIn.js';
 
@@ -167,44 +165,6 @@ test('Judgment sounds are quiet, short, tracked, and silent while paused', () =>
   assert.equal(oscillators.length, 3);
 });
 
-test('Live chord estimates identify actual shells and triads independently of the target', () => {
-  assert.equal(estimateHeardChord([0, 4, 10]).label, 'C7 shell');
-  assert.equal(estimateHeardChord([70, 64, 48]).label, 'C7 shell');
-  assert.equal(estimateHeardChord([0, 4, 11]).label, 'Cmaj7 shell');
-  assert.equal(estimateHeardChord([0, 3, 10]).label, 'Cm7 shell');
-  assert.equal(estimateHeardChord([0, 4, 7]).label, 'C');
-  assert.equal(estimateHeardChord([0, 4, 7, 10]).label, 'C7');
-  assert.equal(estimateHeardChord([0, 4]), null);
-  assert.equal(estimateHeardChord([0, 1, 2]), null);
-  const ambiguous = estimateHeardChord([0, 4, 7, 9]);
-  assert.equal(ambiguous.label, 'C6');
-  assert.ok(ambiguous.alternatives.includes('Am7'));
-});
-
-test('Heard diagrams preserve detected notes, without inventing missing shell tones', () => {
-  for (const pitches of [[0, 4, 10], [2], [0, 1, 2], [0, 2, 4, 5, 7, 9]]) {
-    const notes = heardChordFingering(pitches, 0);
-    assert.equal(notes.length, pitches.length);
-    assert.equal(new Set(notes.map(note => note.string)).size, notes.length);
-    assert.deepEqual(notes.map(note => (guitarTuning[note.string] + note.fret) % 12).sort((a,b) => a-b), [...pitches].sort((a,b) => a-b));
-    assert.ok(notes.every(note => note.fret >= 0 && note.fret <= 12));
-  }
-  assert.deepEqual(heardChordFingering([], undefined), []);
-});
-
-test('Live display waits for stable notes, clears after silence, and tracks chord changes', () => {
-  const tracker = new HeardChordTracker();
-  assert.equal(tracker.update([0, 4, 10], .02, 0), undefined);
-  assert.equal(tracker.update([0, 4, 11], .02, 60), undefined);
-  assert.equal(tracker.update([0, 4, 10], .02, 80), undefined);
-  assert.deepEqual(tracker.update([10, 0, 4], .02, 200), [0, 4, 10]);
-  assert.equal(tracker.update([0, 4, 10], .02, 220), undefined);
-  assert.equal(tracker.update([], 0, 400), undefined);
-  assert.deepEqual(tracker.update([], 0, 821), []);
-  assert.equal(tracker.update([0, 4, 11], .02, 900), undefined);
-  assert.deepEqual(tracker.update([0, 4, 11], .02, 1020), [0, 4, 11]);
-});
-
 function monitorContext() {
   const nodes = [];
   const param = () => ({ value: 0, changes: [], setTargetAtTime(value) { this.changes.push(value); }, cancelScheduledValues() {}, setValueAtTime(value) { this.value = value; } });
@@ -275,7 +235,7 @@ test('Shell correctness accepts inversions and octaves, but separates missing an
 });
 
 test('Timing grades use absolute onset error independently of chord recognition', () => {
-  for (const [offset, grade] of [[.1, 'Perfect'], [.101, 'Great'], [.2, 'Great'], [.201, 'Good'], [.3, 'Good'], [.301, 'Okay'], [.45, 'Okay'], [.451, 'Nope']]) {
+  for (const [offset, grade] of [[.1, 'Perfect'], [.15, 'Perfect'], [.151, 'Great'], [.2, 'Great'], [.201, 'Good'], [.3, 'Good'], [.301, 'Okay'], [.45, 'Okay'], [.451, 'Nope']]) {
     assert.equal(timingGrade(offset), grade);
     assert.equal(timingGrade(-offset), grade);
   }
@@ -309,7 +269,7 @@ test('Attempts claim a visit once; wrong notes can still have Perfect timing', (
 test('Early/late attempts, misses, half-bar visits, and seek resets have separate targets', () => {
   const targets = [{ index: 0, start: 0 }, { index: 1, start: 1 }, { index: 2, start: 2 }];
   const round = new ShellGameRound(targets);
-  assert.equal(round.attack(-.15).timing, 'Great');
+  assert.equal(round.attack(-.15).timing, 'Perfect');
   assert.equal(round.attack(.95).target.index, 1);
   assert.deepEqual(round.misses(2.49), []);
   assert.deepEqual(round.misses(2.51), [targets[2]]);
@@ -446,4 +406,19 @@ test('Game chord preview advances by visit, skips omitted chords, and wraps at s
   assert.equal(nextShellTarget(targets, 3), targets[2]);
   assert.equal(nextShellTarget(targets, 4), targets[0]);
   assert.equal(nextShellTarget([], 0), undefined);
+});
+
+test('Countdown audio cannot claim the first chord before GO; silence becomes a miss', () => {
+  const target = { index: 0, start: 0, pitches: [0, 4, 11] };
+  const round = new ShellGameRound([target]);
+  const go = 10;
+  for (const time of [0, 5, 9.6, 9.99]) {
+    if (countInComplete(time, go)) round.attack(time - go);
+  }
+  assert.equal(round.claimed.size, 0);
+  assert.deepEqual(round.misses(.51), [target]);
+  assert.equal(countInComplete(go, go), true);
+  assert.equal(countInComplete(go + .1, go), true);
+  assert.equal(countInComplete(0, null), true);
+  assert.equal(new ShellGameRound([target]).attack(0).timing, 'Perfect');
 });

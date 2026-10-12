@@ -24,3 +24,7 @@ export function countInChords(targets, position, duration) {
   if (index < 0) index = 0;
   return [targets[index], targets[(index + 1) % targets.length]];
 }
+
+export function countInComplete(currentTime, endsAt) {
+  return endsAt == null || currentTime >= endsAt;
+}

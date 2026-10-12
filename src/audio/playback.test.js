@@ -328,9 +328,10 @@ test('Quality colors preserve full source harmony and stay constant across roots
 });
 
 test('Quality mode groups major and minor chords by family and retains a shared Other color', () => {
-  for (const chord of ['Cm','Cm6','Cm7','Cm9','Cm11','Cm13','Cm7b5','Cø7','CmMaj7','CmΔ7','Dbm6/Ab']) assert.equal(chordQualityColor(chord),chordQualityColor('Cm7'),chord);
+  for (const chord of ['Cm','Cm6','Cm7','Cm9','Cm11','Cm13','CmMaj7','CmΔ7','Dbm6/Ab']) assert.equal(chordQualityColor(chord),chordQualityColor('Cm7'),chord);
   assert.notEqual(chordQualityColor('C'), chordQualityColor('Cm'));
   for (const chord of ['C','C6','C6/9','Db6/Ab','Cmaj7','Csus2','Csus4','C7sus4']) assert.equal(chordQualityColor(chord),chordQualityColor('Cmaj7'),chord);
+  for (const chord of ['Cm7b5', 'Cø7', 'Am7♭5']) assert.equal(chordQualityColor(chord), chordQualityColor('Cdim7'), chord);
   assert.notEqual(chordQualityColor('Cdim7'), chordQualityColor('C'));
   const colors = ['Cmaj7','Cm7','C7','Cdim7'].map(chordQualityColor);
   assert.equal(new Set(colors).size,4);

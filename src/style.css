@@ -103,14 +103,6 @@ footer { font-size: 12px; color: var(--muted); margin-top: 20px; }
 .game-monitor-controls input[type="range"] { width: 120px; }
 .game-monitor-controls output { min-width: 3ch; font-variant-numeric: tabular-nums; }
 .game-monitor-hint { font-size: 13px; color: var(--muted); }
-.game-heard-chord { border: 2px solid color-mix(in srgb, #85cddb 55%, var(--border)); border-radius: 16px; padding: 14px; margin: 16px 0; background: var(--surface); box-shadow: 0 4px 0 #85cddb18; }
-.game-heard-heading { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.game-heard-heading span { font-weight: 700; }
-.game-heard-chord .fretboard-overview { display: block; width: 100%; max-height: 240px; }
-.game-heard-chord p { margin: 0 0 6px; }
-.game-heard-chord.is-compact { padding: 8px; margin: 10px 0; font-size: 11px; }
-.game-heard-chord.is-compact .game-heard-heading { gap: 4px; }
-.game-heard-chord.is-compact .fretboard-overview { max-height: 110px; }
 .game-scoreboard > span { flex: 1; padding: 12px 16px; border: 1px solid color-mix(in srgb, #a68ae9 40%, var(--border)); border-radius: 14px; background: color-mix(in srgb, #a68ae9 8%, var(--surface)); font-size: 12px; }
 .game-scoreboard b { display: block; font-size: 28px; font-variant-numeric: tabular-nums; }
 .game-feedback { min-height: 80px; display: flex; gap: 8px; flex-direction: column; margin-bottom: 12px; }
@@ -125,15 +117,9 @@ footer { font-size: 12px; color: var(--muted); margin-top: 20px; }
 .game-firework i { position: absolute; left: 50%; top: 50%; width: 5px; height: 12px; border-radius: 4px; background: #ed9fd0; animation: game-firework-ray .8s ease-out both; transform: rotate(var(--ray-angle)); }
 .is-right .game-firework i { background: #8cdce8; }
 .game-firework i:nth-child(even) { background: #eac76d; }
-.game-you-played { position: fixed; left: var(--heard-left); top: var(--heard-top); width: min(200px, calc(100vw - 24px)); transform: translate(-50%, -100%); animation: game-played-appear .25s ease-out both; padding: 10px 12px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 4px 16px #0003; text-align: center; }
-.game-you-played > span { display: block; font-size: 11px; color: var(--muted); }
-.game-you-played > strong { display: block; margin-top: 4px; font: 900 22px/1.2 ui-rounded, system-ui; }
-.game-you-played .mini-fretboard-diagram { display: block; width: 100%; height: auto; max-height: 110px; margin: 6px 0; }
-.game-you-played .game-heard-chord { margin: 0; box-shadow: 0 4px 16px #0003; }
 @keyframes game-wing-launch { from { opacity: 0; transform: translate(0, 0) scale(.25); } 30% { opacity: 1; } to { opacity: 1; transform: translate(var(--flight-x), var(--flight-y)) scale(1); } }
 @keyframes game-firework-ray { from { opacity: 0; transform: rotate(var(--ray-angle)) translateY(0) scale(.4); } 25% { opacity: 1; } to { opacity: 0; transform: rotate(var(--ray-angle)) translateY(-90px) scale(.3); } }
-@keyframes game-played-appear { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
-@media (prefers-reduced-motion: reduce) { .game-judgment-wing { animation: none; transform: translate(var(--flight-x), var(--flight-y)); } .game-firework { display: none; } .game-you-played { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .game-judgment-wing { animation: none; transform: translate(var(--flight-x), var(--flight-y)); } .game-firework { display: none; } }
 .game-judgment-pair { display: flex; gap: 12px; flex-wrap: wrap; }
 .game-judgment { --stamp: #aa70be; --stamp-light: #f5eafa; position: relative; min-width: 130px; padding: 7px 14px 10px; border: 2px solid var(--stamp); border-radius: 16px; background: linear-gradient(145deg, white, var(--stamp-light)); box-shadow: 0 4px 0 var(--stamp), 0 8px 15px #0002; text-align: center; }
 .game-judgment[data-grade="Perfect"] { --stamp: #14834b; --stamp-light: #c5ffdb; border-color: #26b86b; box-shadow: 0 4px 0 #14834b, 0 0 22px #4aee9970; animation: game-perfect-glow .65s ease-out 2; }
@@ -583,9 +569,36 @@ svg.fretboard-overview { display: block; width: 100%; height: auto; max-height: 
 .count-in-fretboard { width: 100%; margin: 8px 0; }
 .count-in-fretboard .fretboard-overview { display: block; width: 100%; height: auto; }
 
-.game-bar-sections { display: flex; margin: 0 10px; overflow: hidden; border: 1px solid var(--border); border-radius: 6px; }
-.game-bar-sections button { min-width: 0; padding: 7px 4px; border: 0; border-radius: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
-.game-bar-sections button + button { border-left: 2px solid var(--border); }
-.game-bar-sections button[aria-current="step"] { background: var(--active); color: var(--accent); font-weight: 800; }
 .game-bar-boundaries { position: absolute; inset: 0; pointer-events: none; }
 .game-bar-boundaries span { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .65; transform: translateX(-1px); }
+
+.practice-play-launch { display: flex; justify-content: center; margin: 4px 0 22px; }
+.practice-play-button { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 64px; width: min(360px, 100%); padding: 16px 24px; border: 2px solid #e47725; border-radius: 22px; background: linear-gradient(135deg, #ffd77a, #ffa263); color: #392618; box-shadow: 0 6px 0 #b65b27, 0 10px 24px #cc480e25; font: 800 20px ui-rounded, system-ui, sans-serif; cursor: pointer; transition: transform 150ms ease, box-shadow 150ms ease; }
+.practice-play-sparkle { font-size: 25px; }
+.practice-play-button:not(:disabled):hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 9px 0 #b65b27, 0 14px 28px #cc480e30; }
+.practice-play-button:not(:disabled):active { transform: translateY(4px); box-shadow: 0 2px 0 #b65b27; }
+.practice-play-button:disabled { opacity: .6; cursor: wait; }
+.practice-play-button:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
+@media (prefers-reduced-motion: reduce) { .practice-play-button { transition: none; } .practice-play-button:not(:disabled):hover { transform: none; } }
+
+.game-tempo-options { border: 0; padding: 0; margin: 12px auto 20px; width: min(420px, 100%); text-align: center; }
+.game-tempo-options legend { width: 100%; margin-bottom: 10px; color: var(--muted); font: 700 14px system-ui, sans-serif; }
+.game-tempo-options > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.game-tempo-options label { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 12px 8px; border: 2px solid var(--border); border-radius: 16px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.game-tempo-options label.is-selected { border-color: var(--accent); background: var(--active); box-shadow: 0 3px 0 color-mix(in srgb, var(--accent) 40%, transparent); }
+.game-tempo-options input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.game-tempo-options label:focus-within { outline: 3px solid var(--accent); outline-offset: 3px; }
+.game-tempo-options label > span { font-size: 24px; color: var(--accent); }
+.game-tempo-options small { color: var(--muted); font-size: 11px; }
+.game-tempo-options:disabled { opacity: .5; }
+.game-tempo-options:disabled label { cursor: default; }
+
+.game-mode-toggle button.arcade-invitation { animation: arcade-invitation-wobble 4s ease-in-out infinite; transform-origin: 50% 75%; }
+@keyframes arcade-invitation-wobble { 0%, 25%, 100% { transform: rotate(0); } 4% { transform: rotate(-2deg); } 8% { transform: rotate(2deg); } 12% { transform: rotate(-1.5deg); } 16% { transform: rotate(1deg); } 20% { transform: rotate(0); } }
+@media (prefers-reduced-motion: reduce) { .game-mode-toggle button.arcade-invitation { animation: none; } }
+
+.game-song-selection { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; width: 100%; margin: 12px 0; text-align: left; }
+.game-song-selection label { display: grid; gap: 6px; min-width: 0; color: var(--muted); font-size: 13px; }
+.game-song-selection select { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--input); color: var(--ink); font: inherit; }
+.game-song-selection select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 600px) { .game-song-selection { grid-template-columns: 1fr; } }

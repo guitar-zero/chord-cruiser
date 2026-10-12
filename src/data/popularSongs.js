@@ -6,7 +6,6 @@ export const popularSongIds = [
   'black-orpheus',
   'blue-bossa',
   'blue-monk',
-  'caravan',
   'cherokee',
   'corcovado',
   'four',

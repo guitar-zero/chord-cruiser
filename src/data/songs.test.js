@@ -86,11 +86,11 @@ test('Section rendering crops both legacy side-by-side and stacked layouts witho
   assert.notEqual(first[0],second[0]);
 });
 
-test('Complete repertoire has 201 songs with playable qualities and meter-aware timing', async () => {
+test('Complete repertoire has 200 songs with playable qualities and meter-aware timing', async () => {
   const { buildTimeline, chordNotes, bassNote } = await import('../audio/songs.js');
-  assert.equal(songs.length, 201);
+  assert.equal(songs.length, 200);
   assert.deepEqual(songs.map(song => song.id), catalogue.map(song => song.id));
-  assert.equal(new Set(songs.map(song => song.id)).size, 201);
+  assert.equal(new Set(songs.map(song => song.id)).size, 200);
   for (const song of songs) {
     const meter = song.beatsPerBar || 4;
     const timeline = buildTimeline(song.playback, 120, meter);

@@ -1,6 +1,6 @@
 # Chord map
 
-A React app displaying all 201 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
+A React app displaying 200 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
 
 Full path is shown by default in chord and game modes; toggle it with **X**.
 
@@ -148,7 +148,7 @@ in `sourceNote`, shown in the app. No unmarked repeat is inserted.
 
 ## Rebuilding the complete catalogue
 
-All 201 songs are searchable in the song picker. The additional source-chart
+All 200 songs are searchable in the song picker. The additional source-chart
 transcriptions live in `scripts/data/catalogue.txt`; `catalogue-index.json`
 records the expected repertoire. Each line contains a song ID followed by named
 sections. Commas split bars equally; `Chord@.25` specifies an explicit fraction
@@ -235,11 +235,7 @@ selected input channel with warm clean jazz EQ, gentle compression, and stereo
 room reverb. Guitar volume and reverb are adjustable during play; monitoring can
 be muted without affecting recognition. Turn off interface direct monitoring
 to avoid hearing the dry signal doubled. Recognition always uses the dry input.
-When chord correctness is **Good**, **Okay**, or **Nope**, a **You played**
-chord name pops up near the node using the notes captured for that attempt. Its
-chord estimate is independent of the chart target and identifies the played
-chord without a fretboard diagram. Total misses
-show only MISS!.
+Total misses show only MISS!.
 Chord and timing judgments burst left and right from the node with small
 fireworks. Double Perfect earns a quiet ding; either Nope earns a soft buzzer.
 Piano backing plays at 3% volume, striking once per node visit without extra
@@ -262,7 +258,7 @@ near the target node, with separate cumulative scores. Missing a target or
 earning Nope for both shows one MISS! with no individual grades or chord diagram.
 Judgment badges appear only at nodes; the mini menu has no duplicate popups.
 Timing uses strum onset, independently of the later chord sample:
-100 / 200 / 300 / 450 ms are the maximum errors for Perfect / Great / Good / Okay.
+150 / 200 / 300 / 450 ms are the maximum errors for Perfect / Great / Good / Okay.
 The input-delay control subtracts interface capture delay from measured onset.
 Stop resets scores; seeking resets eligible targets; looping starts new targets
 and retains scores. Exiting game mode releases audio input.

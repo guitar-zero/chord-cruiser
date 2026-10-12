@@ -18,7 +18,7 @@ export function chordQuality(chord = '') {
 
 export function chordQualityColor(chord) {
   const quality = chordQuality(chord);
-  const family = ['major', 'suspended'].includes(quality) ? 'major7' : ['minor', 'minor7', 'minorMajor7', 'halfDiminished'].includes(quality) ? 'minor7' : quality;
+  const family = ['major', 'suspended'].includes(quality) ? 'major7' : ['minor', 'minor7', 'minorMajor7'].includes(quality) ? 'minor7' : quality;
   return (chordQualityPalette.find(entry => entry.id === family) || chordQualityPalette.find(entry => entry.id === 'other')).color;
 }
 
