@@ -2,6 +2,7 @@ import { bassNote } from './songs.js';
 import { pianoHits } from './pianoVoicings.js';
 import { makeBrushBuffers, scheduleBrushes } from './brushes.js';
 import { scheduleRacingCountIn } from './racingCountIn.js';
+import { countInSchedule } from './countIn.js';
 
 const soundCache = new Map();
 const yieldToUI = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -93,7 +94,12 @@ export class JazzPlayer {
     this.offset = Math.max(0, Math.min(offset, this.timeline.duration));
     this.startedAt = this.context.currentTime + .03 + countIn - this.offset;
     this.countInEndsAt = countIn > 0 ? this.startedAt + this.offset : null;
-    if (countIn > 0 && this.racingCountIn) scheduleRacingCountIn(this.context, this.countInEndsAt, this.beatSeconds, source => this.track(source));
+    if (countIn > 0 && this.racingCountIn) {
+      const start = this.context.currentTime + .03;
+      const schedule = countInSchedule(this.beatSeconds);
+      const hereWeGo = start + (schedule.introBeats - schedule.hereWeGoBeats) * this.beatSeconds;
+      scheduleRacingCountIn(this.context, this.countInEndsAt, this.beatSeconds, source => this.track(source), { start, hereWeGo });
+    }
     for (let beat = this.countInIntroBeats || 0; !this.racingCountIn && beat * this.beatSeconds < countIn; beat++) {
       const at = this.context.currentTime + .03 + beat * this.beatSeconds;
       const click = this.context.createOscillator(), gain = this.context.createGain();
@@ -104,6 +110,11 @@ export class JazzPlayer {
       this.track(click); click.start(at); click.stop(at + .09);
     }
     const timeline = this.timeline;
+    if (this.brushes && countIn > 0 && this.racingCountIn) {
+      const leadIn = { beats: 8, beatsPerBar: 4, duration: 8 * this.beatSeconds };
+      scheduleBrushes(this.context, this.drumBus, this.brushes, leadIn,
+        this.countInEndsAt - leadIn.duration, 0, source => this.track(source));
+    }
     if (this.brushes) scheduleBrushes(this.context, this.drumBus, this.brushes, timeline, this.startedAt, this.offset, source => this.track(source));
     for (const event of this.pianoHits) {
         const notes = event.notes;

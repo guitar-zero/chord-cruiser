@@ -41,7 +41,8 @@ export default function MiniProgress({
   });
   const [manualOpen, setManualOpen] = useState(false);
   const [belowMainIndicator, setBelowMainIndicator] = useState(false);
-  const shouldShow = manualOpen || (belowMainIndicator && !visible && !dismissed && !neverShow);
+  const automatic = gameMode || (belowMainIndicator && !visible);
+  const shouldShow = manualOpen || (automatic && !dismissed && !neverShow);
   useEffect(() => {
     if (belowMainIndicator && manualOpen) {
       setManualOpen(false);
@@ -70,7 +71,7 @@ export default function MiniProgress({
     function measure() {
       const popup = popupRef.current;
       if (popup) {
-        const obstacles = [...document.querySelectorAll('[data-playback-indicator], [data-game-judgment]')];
+        const obstacles = [...document.querySelectorAll('[data-playback-indicator], [data-game-judgment], .game-count-in-card')];
         const targetIds = new Set([...document.querySelectorAll('[data-highlight-target]')].map(element => element.dataset.highlightTarget));
         for (const node of document.querySelectorAll('[data-node-id]')) {
           if (node.getAttribute('aria-hidden') === 'true') continue;
@@ -136,13 +137,13 @@ export default function MiniProgress({
             {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} compact />}
             <ShellChordDiagram chord={currentEvent?.chord} node={currentNode} color={timelineColor(colors?.[activeIndex], darkMode)} darkMode={darkMode} />
             <div className="mini-view-controls mini-compact-controls">
+              <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Path <kbd>X</kbd></button>
               <button type="button" aria-label="Chord chart" aria-pressed={chartOpen} aria-keyshortcuts="h" aria-haspopup="dialog" onClick={onOpenChordChart} title="Toggle chord chart (H)">Chart <kbd>H</kbd></button>
               <button type="button" aria-label="Guiding lines" title="Guiding lines (G)" aria-pressed={showGuideLines} aria-keyshortcuts="g" onClick={onToggleGuideLines}>Guides <kbd>G</kbd></button>
               <button type="button" aria-label="Show D string" title="Show D string (S)" aria-pressed={!twoStrings} aria-keyshortcuts="s" onClick={() => setTwoStrings(value => !value)}>D string <kbd>S</kbd></button>
-              <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Path <kbd>X</kbd></button>
             </div>
             <div className="mini-progress-controls mini-transport-controls" aria-label="Playback controls">
-              <button type="button" onClick={onToggle} disabled={playbackState === 'starting' || (gameMode && !gameReady)}>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</button>
+              <button type="button" onClick={onToggle} disabled={playbackState === 'starting'}>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</button>
               <button type="button" onClick={onStop} disabled={playbackState === 'stopped' && progressProps.position === 0}>■ Stop</button>
             </div>
             {gameMode ? <GameBar {...progressProps} mini /> : <ProgressBar {...progressProps} mini />}

@@ -11,6 +11,7 @@ import "./style.css";
 import ChordPlayer from "./ChordPlayer.jsx";
 import AutoScrollToggle from "./AutoScrollToggle.jsx";
 import TabNavigator from "./TabNavigator.jsx";
+import { currentPage } from './data/pageRouting.js';
 import PageNavigation from "./PageNavigation.jsx";
 import useTheme from "./hooks/useTheme.js";
 import IndicatorLaunch from "./IndicatorLaunch.jsx";
@@ -55,13 +56,14 @@ const songOptionLabel = (song) => {
 
 function App() {
   const [chartOpen, setChartOpen] = useState(false);
+  const [countInActive, setCountInActive] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
   const [songId, setSongId] = useState("all-of-me");
   const [targetKey, setTargetKey] = useState("");
   const [hideGuidingLines, setHideGuidingLines] = useState(false);
   const [showFullPathDuringPlayback, setShowFullPathDuringPlayback] =
-    useState(false);
+    useState(true);
   useEffect(() => {
     function handleShortcut(event) {
       const key = shortcutKey(event);
@@ -296,7 +298,7 @@ function App() {
     visitColors,
     darkMode,
   ]);
-  function launchIndicator(nodeId, rect, event) {
+  function launchIndicator(nodeId, rect, event, timing) {
     const shape = [...sectionsRef.current.querySelectorAll("[data-node-id]")]
       .find((node) => node.dataset.nodeId === nodeId)
       ?.querySelector("[data-node-shape]");
@@ -326,6 +328,8 @@ function App() {
         },
         documentCoordinates: true,
         destination: shape,
+        progress: timing?.progress,
+        emergeFraction: timing?.emergeFraction,
         size: Math.max(bounds.width, bounds.height) + 32,
       });
     });
@@ -447,6 +451,7 @@ function App() {
           </select>
         </label>
         <div className="chart-display-controls">
+          <button className="theme-toggle" type="button" aria-keyshortcuts="x" title="Toggle full path (X)" aria-pressed={showFullPathDuringPlayback} onClick={() => setShowFullPathDuringPlayback(value => !value)}>Full path <kbd>X</kbd></button>
           <button
             className="theme-toggle"
             type="button"
@@ -469,16 +474,6 @@ function App() {
           >
             Show D string{" "}
             <kbd>S</kbd>
-          </button>
-          <button
-            className="theme-toggle"
-            type="button"
-            aria-keyshortcuts="x"
-            title="Toggle full path (X)"
-            aria-pressed={showFullPathDuringPlayback}
-            onClick={() => setShowFullPathDuringPlayback((value) => !value)}
-          >
-            Full path during playback <kbd>X</kbd>
           </button>
           <button className="theme-toggle" type="button" aria-keyshortcuts="h" aria-haspopup="dialog" aria-pressed={chartOpen} onClick={() => setChartOpen(open => !open)} title="Toggle chord chart (H)">Chord chart <kbd>H</kbd></button>
         </div>
@@ -503,6 +498,7 @@ function App() {
         darkMode={darkMode}
         onPlaybackLaunch={launchIndicator}
         onChordChange={handleChordChange}
+        onCountInChange={setCountInActive}
         onPlaybackPosition={handlePlaybackPosition}
       />
       <div ref={sectionsRef}>
@@ -510,6 +506,7 @@ function App() {
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
           onIndicatorArrival={setIndicatorArrival}
+          suppressBeatDots={countInActive}
           suppressIndicator={Boolean(flight)}
           hideGuidingLines={hideGuidingLines}
           columns={1}
@@ -550,4 +547,9 @@ if (import.meta.hot) {
   import.meta.hot.data.root = root;
   import.meta.hot.accept();
 }
-root.render(window.location.pathname.replace(/\/$/, '') === '/tabs' ? <TabNavigator /> : <App />);
+function renderPage() {
+  root.render(currentPage(window.location, import.meta.env.BASE_URL) === 'tabs' ? <TabNavigator /> : <App />);
+}
+window.addEventListener('hashchange', renderPage);
+if (import.meta.hot) import.meta.hot.dispose(() => window.removeEventListener('hashchange', renderPage));
+renderPage();

@@ -13,6 +13,7 @@ import { shortcutKey } from './keyboardShortcuts.js';
 
 const SharedChart = memo(SongChart);
 const defaultTabUrl = 'https://tabs.ultimate-guitar.com/tab/led-zeppelin/stairway-to-heaven-tabs-9488';
+const linkImportEnabled = import.meta.env.VITE_GITHUB_PAGES !== 'true';
 
 const techniques={h:'hammer-on',p:'pull-off',b:'bend',r:'release','/':'slide up','\\':'slide down','~':'vibrato','<':'harmonic','>':'harmonic','(':'ghost note',')':'ghost note'};
 export default function TabNavigator() {
@@ -22,7 +23,7 @@ export default function TabNavigator() {
   const [url,setUrl]=useState(defaultTabUrl),[sourceUrl,setSourceUrl]=useState('');
   const [loading,setLoading]=useState(false),[error,setError]=useState('');
   const [pace,setPace]=useState(40),[loop,setLoop]=useState(false),[sound,setSound]=useState(true);
-  const [showFullPath,setShowFullPath]=useState(false),[hideGuides,setHideGuides]=useState(false);
+  const [showFullPath,setShowFullPath]=useState(true),[hideGuides,setHideGuides]=useState(false);
   const [tuningText,setTuningText]=useState('E2 A2 D3 G3 B3 E4'),[tuning,setTuning]=useState(standardTuning),[capo,setCapo]=useState(0);
   const request=useRef(null),audio=useRef(null),svgRef=useRef(null);
   const song=useMemo(()=>buildTabGraph(parsed,{title,tuning,capo}),[parsed,title,tuning,capo]);
@@ -33,7 +34,7 @@ export default function TabNavigator() {
   const sectionIndex=song.layout.sections.findIndex(section=>section.id===sectionId);
   const current=useMemo(()=>active.nodeId ? {node:active.nodeId,visitIndex:activeIndex,seekVersion,loopIteration,isPlaying:playing} : null,[active.nodeId,activeIndex,seekVersion,loopIteration,playing]);
   useEffect(()=>{document.title='Tab navigator · Chord map';return()=>{request.current?.abort();audio.current?.close();};},[]);
-  useEffect(()=>{importTab(defaultTabUrl);},[]);
+  useEffect(()=>{if(linkImportEnabled)importTab(defaultTabUrl);},[]);
   const shortcuts=useRef(null);shortcuts.current={toggle,stop};
   useEffect(()=>{
     const handler=event=>{
@@ -74,12 +75,12 @@ export default function TabNavigator() {
     <PageNavigation current="tabs" />
     <header><div><p className="eyebrow">NOTES ON THE FRETBOARD</p><h1>{song.title}</h1><p className="subtitle">Six strings · Guitar tab · {song.playback.length} practice steps</p></div><div className="header-actions"><button className="theme-toggle" type="button" aria-keyshortcuts="d" onClick={()=>setDarkMode(value=>!value)}>{darkMode?'☀ Light mode':'☾ Dark mode'} <kbd>D</kbd></button></div></header>
     <section className="player tab-input" aria-label="Guitar tab input">
-      <form onSubmit={importLink}><label htmlFor="tab-link">Ultimate Guitar text-tab link</label><div className="tab-input-row"><input id="tab-link" type="url" required value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://tabs.ultimate-guitar.com/tab/…"/><button className="theme-toggle" disabled={loading}>{loading?'Importing…':'Import tab'}</button></div></form>
-      <details><summary>Paste or edit guitar tab</summary><p className="note">Use six aligned string rows, high E first and low E last.</p><textarea aria-label="Guitar tab text" spellCheck="false" value={text} onChange={e=>setText(e.target.value)}/><button className="theme-toggle" type="button" onClick={()=>load(text,'Pasted guitar tab')}>Use this tab</button><button className="theme-toggle" type="button" onClick={()=>{setText(demoTab);load(demoTab,'Original practice phrase');}}>Load demo</button></details>
-      <p className="note">Public text tabs supported. If a link cannot be imported, open the source and paste its text. Pro and interactive formats need a text version.</p>
+      {linkImportEnabled && <form onSubmit={importLink}><label htmlFor="tab-link">Ultimate Guitar text-tab link</label><div className="tab-input-row"><input id="tab-link" type="url" required value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://tabs.ultimate-guitar.com/tab/…"/><button className="theme-toggle" disabled={loading}>{loading?'Importing…':'Import tab'}</button></div></form>}
+      <details open={!linkImportEnabled}><summary>Paste or edit guitar tab</summary><p className="note">Use six aligned string rows, high E first and low E last.</p><textarea aria-label="Guitar tab text" spellCheck="false" value={text} onChange={e=>setText(e.target.value)}/><button className="theme-toggle" type="button" onClick={()=>load(text,'Pasted guitar tab')}>Use this tab</button><button className="theme-toggle" type="button" onClick={()=>{setText(demoTab);load(demoTab,'Original practice phrase');}}>Load demo</button></details>
+      <p className="note">{linkImportEnabled ? 'Public text tabs supported. If a link cannot be imported, open the source and paste its text. Pro and interactive formats need a text version.' : 'Paste a guitar tab above or try the demo to begin.'}</p>
       {error&&<p className="audio-error" role="alert">{error}</p>}
     </section>
-    <nav className="song-picker" aria-label="Tab display controls"><label>Section <select value={sectionId} onChange={e=>chooseSection(e.target.value)}>{song.layout.sections.map(section=><option key={section.id} value={section.id}>{section.title}</option>)}</select></label><div className="chart-display-controls"><button className="theme-toggle" type="button" aria-keyshortcuts="g" aria-pressed={!hideGuides} onClick={()=>setHideGuides(value=>!value)}>{hideGuides?'Show':'Hide'} guiding lines <kbd>G</kbd></button><button className="theme-toggle" type="button" aria-keyshortcuts="x" aria-pressed={showFullPath} onClick={()=>setShowFullPath(value=>!value)}>{showFullPath?'Hide':'Show'} full path during playback <kbd>X</kbd></button></div></nav>
+    <nav className="song-picker" aria-label="Tab display controls"><label>Section <select value={sectionId} onChange={e=>chooseSection(e.target.value)}>{song.layout.sections.map(section=><option key={section.id} value={section.id}>{section.title}</option>)}</select></label><div className="chart-display-controls"><button className="theme-toggle" type="button" aria-keyshortcuts="x" aria-pressed={showFullPath} onClick={()=>setShowFullPath(value=>!value)}>{showFullPath?'Hide':'Show'} full path during playback <kbd>X</kbd></button><button className="theme-toggle" type="button" aria-keyshortcuts="g" aria-pressed={!hideGuides} onClick={()=>setHideGuides(value=>!value)}>{hideGuides?'Show':'Hide'} guiding lines <kbd>G</kbd></button></div></nav>
     <section className="player" aria-label="Note playback">
       <div className="transport"><button className="play" type="button" onClick={toggle} aria-keyshortcuts="Space">{playing?'Ⅱ Pause':'▶ Play notes'}</button><button type="button" onClick={stop}>■ Stop</button><button type="button" disabled={activeIndex===0} onClick={()=>seek(timeline.events[activeIndex-1].start)}>← Previous</button><button type="button" disabled={activeIndex===timeline.events.length-1} onClick={()=>seek(timeline.events[activeIndex+1].start)}>Next →</button><label>Practice pace <input type="number" min="30" max="240" value={pace} disabled={playing} onChange={e=>setPace(Math.min(240,Math.max(30,Number(e.target.value)||30)))}/> steps/min</label><label><input type="checkbox" checked={sound} onChange={e=>setSound(e.target.checked)}/> Sound</label><label><input type="checkbox" checked={loop} onChange={e=>setLoop(e.target.checked)}/> Loop</label></div>
       <div className="player-status"><span className="current-chord">{active.label}</span><span>Step {activeIndex+1} of {song.playback.length} · Section {sectionIndex+1} of {song.layout.sections.length}</span></div>

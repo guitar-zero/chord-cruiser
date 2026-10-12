@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, forwardRef, useImperativeHandle, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { chordGrade, grades, shellTargets, ShellGameRound, normalizeJudgment } from './audio/game.js';
 import { openGuitarInput } from './audio/guitarInput.js';
@@ -16,24 +16,27 @@ function NodeJudgment({ result }) {
         element.dataset.nodeId === result.nodeId && element.getAttribute('aria-hidden') !== 'true');
       const bounds = node?.querySelector('[data-node-shape]')?.getBoundingClientRect();
       if (bounds && bounds.bottom > 0 && bounds.top < window.innerHeight) {
-        const x = bounds.left + bounds.width / 2, y = bounds.top + bounds.height / 2;
+        const x = Math.round((bounds.left + bounds.width / 2) * 10) / 10, y = Math.round((bounds.top + bounds.height / 2) * 10) / 10;
         const width = Math.min(160, (window.innerWidth - 40) / 2);
         const margin = showYouPlayed(result) ? 112 : width / 2 + 12;
         const clampX = value => Math.max(margin, Math.min(window.innerWidth - margin, value));
         const playedHeight = playedRef.current?.getBoundingClientRect().height || 65;
         const badgeY = Math.max(showYouPlayed(result) ? playedHeight + 56 : 48, Math.min(window.innerHeight - 80, y - 85));
-        setAnchor({ left: x, top: y, '--badge-width': `${width}px`,
+        const nextAnchor = { left: x, top: y, '--badge-width': `${width}px`,
           '--left-flight': `${clampX(x - 140) - x}px`, '--right-flight': `${clampX(x + 140) - x}px`,
           '--flight-y': `${badgeY - y}px`,
           '--heard-left': `${clampX(x - 140)}px`,
-          '--heard-top': `${badgeY - 44}px`, '--miss-top': `${Math.max(12, y - 110) - y}px` });
+          '--heard-top': `${badgeY - 44}px`,
+          '--miss-left': `${bounds.right + width + 36 <= window.innerWidth ? bounds.right + 24 - x : bounds.left - width - 24 - x}px` };
+        setAnchor(previous => previous && Object.keys(nextAnchor).every(key => previous[key] === nextAnchor[key]) ? previous : nextAnchor);
       } else setAnchor(null);
       frame = requestAnimationFrame(measure);
     }
     measure();
     return () => cancelAnimationFrame(frame);
   }, [result]);
-  if (!result || !anchor) return null;
+  if (!result) return null;
+  if (!anchor) return null;
   if (result.missed) return createPortal(<div className="game-node-judgment" style={anchor} aria-hidden="true"><div className="game-miss-popup" data-game-judgment="true"><GameMiss attempt={result.id} /></div></div>, document.body);
   return createPortal(<div className="game-node-judgment" style={anchor} aria-hidden="true">
     <div key={`${result.id}:chord:${result.chord}`} className="game-judgment-wing is-left" data-grade={result.chord} data-game-judgment="true"><GameJudgment kind="Chord" grade={result.chord} attempt={result.id} />{result.chord && <Firework />}</div>
@@ -50,18 +53,20 @@ function showYouPlayed(result) {
   return result && ['Good', 'Okay', 'Nope'].includes(result.chord) && result.playedPitches?.length > 0;
 }
 
-export default forwardRef(function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, position, getPosition, onReady, onJudgment, onStart, onToggle, onStop }, controlRef) {
+export default memo(forwardRef(function GameMode({ timeline, songData, darkMode, playbackState, seekVersion, loopIteration, getPosition, onReady, onJudgment, onStart, onToggle, onStop }, controlRef) {
   const targets = useMemo(() => shellTargets(timeline, songData.nodes), [timeline, songData]);
   const [devices, setDevices] = useState([]);
   const [requestingAccess, setRequestingAccess] = useState(false);
+  const accessRequestPending = useRef(false);
   const [deviceId, setDeviceId] = useState('');
+  const microphoneSelected = /microphone|\bmic\b/i.test(devices.find(device => device.deviceId === deviceId)?.label || '');
   const [channel, setChannel] = useState(0);
   const [latency, setLatency] = useState(0);
   const [monitoring, setMonitoring] = useState({ enabled: true, volume: .65, reverb: .22 });
   const [status, setStatus] = useState('disconnected');
   const [wizardOpen, setWizardOpen] = useState(false);
   const wizardRef = useRef(null);
-  useImperativeHandle(controlRef, () => ({ openSetup: () => setWizardOpen(true) }));
+  useImperativeHandle(controlRef, () => ({ openSetup: openWizard }));
   useEffect(() => {
     if (!wizardOpen) return;
     const trigger = document.activeElement;
@@ -87,7 +92,7 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
   latest.current = { playbackState, getPosition, latency, onReady, monitoring, onJudgment };
   useEffect(() => { input.current?.setMonitoring(monitoring); }, [monitoring]);
   useEffect(() => {
-    round.current = new ShellGameRound(targets, playbackState === 'stopped' ? 0 : position);
+    round.current = new ShellGameRound(targets, playbackState === 'stopped' ? 0 : latest.current.getPosition());
     pending.current = null;
     setResult(null);
   }, [targets, seekVersion, loopIteration, playbackState === 'stopped']);
@@ -192,6 +197,8 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
     }
   }
   async function allowAudioAccess() {
+    if (accessRequestPending.current) return;
+    accessRequestPending.current = true;
     const token = generation.current;
     setRequestingAccess(true); setError('');
     let permissionStream;
@@ -200,11 +207,18 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
       permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
       if (token === generation.current) await refreshDevices();
     } catch (failure) {
-      if (token === generation.current) setError(failure.name === 'NotAllowedError' ? 'Allow audio input access in your browser to choose your interface.' : failure.message);
+      if (token === generation.current) {
+        setError(failure.name === 'NotAllowedError' ? 'Audio access was blocked. Allow microphone access in your browser’s site settings, then try the button below.' : failure.message);
+      }
     } finally {
       permissionStream?.getTracks().forEach(track => track.stop());
+      accessRequestPending.current = false;
       if (token === generation.current) setRequestingAccess(false);
     }
+  }
+  function openWizard() {
+    setWizardOpen(true);
+    if (status === 'disconnected') void allowAudioAccess();
   }
   const running = playbackState !== 'stopped';
   function closeWizard() {
@@ -220,14 +234,15 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
       <span className="game-wizard-step">✦ STEP 2 OF 2 ✦</span>
       <h2 id="game-wizard-title">Meet your guitar ♡</h2>
       <p>Plug in your interface. Pick it below, then give us a little strum.</p>
-      {!devices.some(device => device.deviceId && device.label) && <button className="game-wizard-access" type="button" disabled={requestingAccess || running} onClick={allowAudioAccess}>{requestingAccess ? 'Finding your interfaces…' : 'Allow audio access ♫'}</button>}
+      {(!devices.some(device => device.deviceId && device.label) || (error && status !== 'connected')) && <div className="game-wizard-access-prompt"><button className="game-wizard-access" type="button" disabled={requestingAccess || running} onClick={allowAudioAccess}>{requestingAccess ? 'WAITING FOR AUDIO ACCESS…' : '♫ ALLOW AUDIO ACCESS'}</button><p>{requestingAccess ? 'Choose Allow in your browser’s permission popup.' : 'Tap here if the browser permission popup did not appear.'}</p></div>}
       <label className="game-wizard-picker">Audio interface <span><select value={deviceId} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setDeviceId(event.target.value); }}>
         <option value="" disabled>♫ Choose your audio interface</option>
         {devices.filter(device => device.deviceId).map((device, index) => <option key={device.deviceId} value={device.deviceId}>{device.label || `Audio input ${index + 1}`}</option>)}
       </select></span></label>
+      {microphoneSelected && <p className="game-microphone-warning" role="alert">🎧 Microphone selected — headphones required to avoid feedback. Put them on before connecting.</p>}
       {status === 'connected' && <div className="game-wizard-signal"><meter min="0" max="1" value={level} /><span>{level > .02 ? '♫ We hear you!' : 'Strum to check your signal'}</span></div>}
       {error && <p role="alert" className="audio-error">{error}</p>}
-      <button className="game-play-button" type="button" disabled={running || requestingAccess || status === 'connecting' || !deviceId || !targets.length} onClick={status === 'connected' ? () => { setWizardOpen(false); onStart?.(); } : connect}>{status === 'connecting' ? 'CONNECTING…' : status === 'connected' ? 'START COUNTDOWN ▶' : 'CONNECT GUITAR ♫'}</button>
+      <button className={`game-play-button ${status === 'connected' ? 'game-countdown-button' : 'game-connect-button'}`} type="button" disabled={running || requestingAccess || status === 'connecting' || !deviceId || !targets.length} onClick={status === 'connected' ? () => { setWizardOpen(false); onStart?.(); } : connect}>{status === 'connecting' ? 'CONNECTING…' : status === 'connected' ? 'START COUNTDOWN ▶' : 'CONNECT GUITAR ♫'}</button>
       <details className="game-wizard-options"><summary>Sound & input options</summary><div className="game-input-controls">
         <label>Guitar channel <select value={channel} disabled={requestingAccess || running || status === 'connecting'} onChange={event => { disconnect(); setChannel(Number(event.target.value)); }}><option value={0}>1 / Left</option><option value={1}>2 / Right</option></select></label>
         <label>Input delay <input type="number" min="0" max="500" step="10" value={latency} disabled={running} onChange={event => setLatency(Math.max(0, Math.min(500, Number(event.target.value) || 0)))} /> ms</label>
@@ -240,7 +255,7 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
     </dialog>
     <NodeJudgment result={result} />
     <section className="game-mode-status" aria-label="Game score and chord results">
-      <div className="game-history-heading"><strong>GAME MODE</strong><button className="game-history-input" type="button" disabled={running} onClick={() => setWizardOpen(true)} title={running ? 'Stop the run to change input' : 'Choose audio input'}>{status === 'connected' ? '♫ Input' : 'Connect guitar'}</button></div>
+      <div className="game-history-heading"><strong>GAME MODE</strong><button className="game-history-input" type="button" disabled={running} onClick={openWizard} title={running ? 'Stop the run to change input' : 'Choose audio input'}>{status === 'connected' ? '♫ Input' : 'Connect guitar'}</button></div>
       <span>Chord <b>{score.chord.toLocaleString()}</b> · Timing <b>{score.timing.toLocaleString()}</b></span>
       <div className="game-history-controls"><button type="button" onClick={onToggle} disabled={!running || playbackState === 'starting'}>{playbackState === 'paused' ? '▶ Resume' : 'Ⅱ Pause'}</button><button type="button" onClick={onStop} disabled={!running}>■ Stop</button></div>
       <div className="game-history-scroll" ref={historyRef} tabIndex="0" role="region" aria-label="Chord result history" onScroll={event => {
@@ -258,4 +273,4 @@ export default forwardRef(function GameMode({ timeline, songData, darkMode, play
       </div>
     </section>
   </>;
-});
+}));

@@ -21,18 +21,35 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, aut
       [...sectionsRef.current.querySelectorAll("[data-node-id]")]
         .find((node) => node.dataset.nodeId === id)
         ?.querySelector("[data-node-shape]");
-    const source = findShape(bridge.sourceId),
+    let source = findShape(bridge.sourceId),
       target = findShape(bridge.targetId);
     let frame;
+    let sourceInset, targetInset;
+    function measureInsets() {
+      const size = shape => {
+        const svg = shape?.ownerSVGElement;
+        const box = shape?.getBBox();
+        const viewport = svg?.getBoundingClientRect();
+        const viewBox = svg?.viewBox.baseVal;
+        return box && viewport && viewBox?.width && viewBox?.height
+          ? Math.max(box.width, box.height) * Math.min(viewport.width / viewBox.width, viewport.height / viewBox.height)
+          : 0;
+      };
+      sourceInset = size(source) / 2 * 1.8 + 12;
+      targetInset = size(target) / 2 * 1.12 + 12;
+    }
+    measureInsets();
     function measure() {
+      if (!source?.isConnected || !target?.isConnected) {
+        source = findShape(bridge.sourceId); target = findShape(bridge.targetId);
+        measureInsets();
+      }
       if (source?.isConnected && target?.isConnected) {
         const a = source.getBoundingClientRect(),
           b = target.getBoundingClientRect();
-        const from = { x: a.x + a.width / 2, y: a.y + a.height / 2 },
-          to = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+        const from = { x: Math.round((a.x + a.width / 2) * 10) / 10, y: Math.round((a.y + a.height / 2) * 10) / 10 },
+          to = { x: Math.round((b.x + b.width / 2) * 10) / 10, y: Math.round((b.y + b.height / 2) * 10) / 10 };
         const distance = Math.hypot(to.x - from.x, to.y - from.y);
-        const sourceInset = (Math.max(a.width, a.height) / 2) * 1.8 + 12;
-        const targetInset = Math.max(b.width, b.height) / 2 + 12;
         if (distance > sourceInset + targetInset + 15) {
           const dx = (to.x - from.x) / distance,
             dy = (to.y - from.y) / distance;
@@ -45,16 +62,18 @@ export default function SectionPipe({ bridge, sectionsRef, playbackClockRef, aut
             y: to.y - dy * targetInset,
           };
           const end = { x: tip.x - dx * 15, y: tip.y - dy * 15 };
-          setGeometry({
+          const geometry = {
             path: `M${start.x} ${start.y} L${end.x} ${end.y}`,
             route: `M${start.x} ${start.y} L${tip.x + dx * 6} ${tip.y + dy * 6}`,
-          });
+          };
+          setGeometry(previous => previous?.path === geometry.path && previous?.route === geometry.route ? previous : geometry);
         } else setGeometry(null);
       }
       frame = requestAnimationFrame(measure);
     }
     measure();
-    return () => cancelAnimationFrame(frame);
+    window.addEventListener('resize', measureInsets);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('resize', measureInsets); };
   }, [bridge, sectionsRef]);
   if (!geometry) return null;
   const fillProgress=fullHighlight ? 1 : pipeProgress(bridge.visitIndex,playbackClockRef?.current,bridge.seekVersion);

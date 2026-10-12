@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
   useMemo,
+  useCallback,
 } from "react";
 import { buildTimeline } from "./audio/songs.js";
 import { JazzPlayer } from "./audio/ensemble.js";
@@ -25,11 +26,13 @@ import { songsById } from "./data/songs.js";
 import { sectionTimeline } from "./audio/sectionTimeline.js";
 import GameMode from './GameMode.jsx';
 import { playJudgmentCue } from './audio/gameCues.js';
-import { countInBeat, countInChords, countInSchedule, countInLabel } from './audio/countIn.js';
+import { countInBeat, countInChords, countInSchedule, countInLabel, shouldLaunchCountInIndicator } from './audio/countIn.js';
 import { shellTargets } from './audio/game.js';
 import GameCountIn from './GameCountIn.jsx';
 import GameAtmosphere from './GameAtmosphere.jsx';
 import ArcadeModeToggle from './ArcadeModeToggle.jsx';
+import { PlaybackRenderGate } from './audio/playbackRenderGate.js';
+import { positionNodeShapes } from './data/chordShapes.js';
 
 const ChordPlayer = forwardRef(function ChordPlayer(
   {
@@ -42,6 +45,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onToggleGuideLines,
     onPlaybackLaunch,
     onChordChange,
+    onCountInChange,
     onPlaybackPosition,
     twoStrings,
     setTwoStrings,
@@ -59,12 +63,18 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [state, setState] = useState("stopped");
   const [hasPlayed, setHasPlayed] = useState(false);
   const [position, setPosition] = useState(0);
+  const positionRef = useRef(0);
+  positionRef.current = position;
   const [error, setError] = useState("");
   const [gameMode, setGameMode] = useState(false);
   const [gameReady, setGameReady] = useState(false);
   const gameRef = useRef(null);
   const [countInBeats, setCountInBeats] = useState(0);
   const [countInGo, setCountInGo] = useState(false);
+  const countInTargets = useRef(null);
+  const countInActive = gameMode && (state === 'starting' || countInBeats > 0);
+  useLayoutEffect(() => { onCountInChange?.(countInActive); }, [countInActive, onCountInChange]);
+  useEffect(() => () => onCountInChange?.(false), [onCountInChange]);
   useEffect(() => {
     document.body.dataset.gameMode = String(gameMode);
     return () => { delete document.body.dataset.gameMode; };
@@ -84,6 +94,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [seekVersion, setSeekVersion] = useState(0);
   const [loopIteration, setLoopIteration] = useState(0);
   const frame = useRef(null);
+  const renderGate = useRef(new PlaybackRenderGate());
   const routeColors = useMemo(() => chordDisplayColors(songData, outgoingVisitColors(songData)), [songData]);
   const timeline = useMemo(
     () => buildTimeline(songData.playback, bpm, songData.beatsPerBar || 4),
@@ -94,7 +105,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     [timeline, songData],
   );
   const gameTargets = useMemo(() => shellTargets(timeline, songData.nodes), [timeline, songData]);
-  const [firstGameChord, nextGameChord] = countInChords(gameTargets, position, timeline.duration);
+  const [firstGameChord, nextGameChord] = countInTargets.current || countInChords(gameTargets, position, timeline.duration);
+  const gameNodeShapes = useMemo(() => positionNodeShapes(songData), [songData]);
   useLayoutEffect(
     () => () => {
       cancelAnimationFrame(frame.current);
@@ -114,19 +126,33 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     setLoopIteration(0);
     setCountInBeats(0);
     setCountInGo(false);
+    countInTargets.current = null;
   }
-  function tick() {
+  function tick(time = performance.now()) {
     const current = player.current;
     if (!current || current.context.state === "closed") return;
     const { position: elapsed, wrapped } = current.loopPosition();
     const remaining = current.countInEndsAt === null || current.countInEndsAt === undefined ? -Infinity : current.countInEndsAt - current.context.currentTime;
     setCountInBeats(countInBeat(remaining, 60 / bpm));
-    setCountInGo(remaining <= 0 && remaining > -.45);
-    if (wrapped) {
-      setSeekVersion((version) => version + 1);
-      setLoopIteration((iteration) => iteration + 1);
+    setCountInGo(remaining <= 0 && remaining > -1.2);
+    if (current.launchCountIn && shouldLaunchCountInIndicator(remaining, 60 / bpm)) {
+      const launch = current.launchCountIn;
+      current.launchCountIn = null;
+      Promise.resolve().then(launch).then(() => {
+        if (player.current === current && !current.stopped) setHasPlayed(true);
+      }).catch(error => setError(error.message || 'Could not launch the indicator.'));
     }
-    setPosition(elapsed);
+    if (wrapped) {
+      current.seekVersion++;
+      current.loopIteration++;
+      setSeekVersion(current.seekVersion);
+      setLoopIteration(current.loopIteration);
+    }
+    const visit = timeline.events.findIndex(event => elapsed >= event.start && elapsed < event.start + event.duration);
+    const event = timeline.events[visit];
+    onPlaybackPosition?.({ visitIndex: visit, seekVersion: current.seekVersion, loopIteration: current.loopIteration,
+      progress: chordProgress(event, elapsed), beats: event?.beats || 0, position: elapsed, bpm });
+    if (renderGate.current.shouldRender(time, visit, wrapped)) setPosition(elapsed);
     frame.current = requestAnimationFrame(tick);
   }
   async function toggle(event) {
@@ -137,6 +163,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       if (state === "playing") {
         await player.current.pause();
         cancelAnimationFrame(frame.current);
+        setPosition(player.current.loopPosition().position);
         setState("paused");
       } else if (state === "paused") {
         await player.current.resume();
@@ -145,10 +172,14 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       } else {
         setState("starting");
         const startAt = position >= timeline.duration ? 0 : position;
+        countInTargets.current = countInChords(gameTargets, startAt, timeline.duration);
         setPosition(startAt);
         const readySchedule = countInSchedule(60 / bpm);
         const current = new JazzPlayer(gameMode ? { bass: false, pianoOnNodes: true, racingCountIn: true, countIn: readySchedule.totalBeats * 60 / bpm, countInIntroBeats: readySchedule.introBeats, beatSeconds: 60 / bpm } : {});
         player.current = current;
+        current.seekVersion = seekVersion;
+        current.loopIteration = loopIteration;
+        renderGate.current = new PlaybackRenderGate();
         current.master.gain.value = gameMode ? .03 : volume / 100;
         current.drumBus.gain.value = drumVolume / 100;
         current.bassBus.gain.value = bassVolume / 100;
@@ -156,18 +187,32 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           (event) =>
             startAt >= event.start && startAt < event.start + event.duration,
         );
-        await current.start(timeline, startAt, () =>
+        const launch = () => {
+          const flightStartsAt = current.context.currentTime;
+          const flightSeconds = current.countInEndsAt - flightStartsAt;
+          const launchSource = gameMode
+            ? document.querySelector('.game-count-in-card .count-in-chord-node') || document.querySelector('.game-count-in-card')
+            : null;
+          return (
           onPlaybackLaunch?.(
             startEvent?.nodeId,
-            (launchButton?.isConnected
+            (launchSource || (launchButton?.isConnected
               ? launchButton
               : playButton.current
-            )?.getBoundingClientRect(),
+            ))?.getBoundingClientRect(),
             startEvent,
-          ),
-        );
+            gameMode ? {
+              emergeFraction: flightSeconds > 0 ? Math.min(.2, .32 / flightSeconds) : 0,
+              progress: () => flightSeconds > 0
+                ? Math.max(0, Math.min(1, (current.context.currentTime - flightStartsAt) / flightSeconds))
+                : 1,
+            } : undefined,
+          ));
+        };
+        current.launchCountIn = gameMode ? launch : null;
+        await current.start(timeline, startAt, gameMode ? undefined : launch);
         if (player.current !== current) return;
-        setHasPlayed(true);
+        if (!gameMode) setHasPlayed(true);
         setState("playing");
         tick();
       }
@@ -215,9 +260,14 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     return () => window.removeEventListener("keydown", handleSpace);
   }, []);
   function seek(value) {
+    countInTargets.current = null;
     setCountInBeats(0);
     setCountInGo(false);
-    setSeekVersion((version) => version + 1);
+    const nextVersion = (player.current?.seekVersion ?? seekVersion) + 1;
+    setSeekVersion(nextVersion);
+    if (player.current) player.current.seekVersion = nextVersion;
+    if (player.current?.launchCountIn) { player.current.launchCountIn = null; setHasPlayed(true); }
+    renderGate.current = new PlaybackRenderGate();
     const next = Math.max(0, Math.min(timeline.duration, Number(value)));
     cancelAnimationFrame(frame.current);
     if (player.current?.timeline) {
@@ -236,21 +286,26 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   useEffect(() => {
     if (gameMode && !gameReady && state !== 'stopped') stop();
   }, [gameMode, gameReady, state]);
-  function gamePosition() {
+  const gamePosition = useCallback(() => {
     const current = player.current;
-    if (!current?.timeline || current.startedAt === undefined) return position;
+    if (!current?.timeline || current.startedAt === undefined) return positionRef.current;
     const raw = current.context.currentTime - current.startedAt;
     return raw < 0 ? raw : raw % timeline.duration;
-  }
-  function handleGameJudgment(result) {
+  }, [timeline.duration]);
+  const handleGameJudgment = useCallback(result => {
     const current = player.current;
     if (current) playJudgmentCue(current.context, result, source => current.track(source));
-  }
+  }, []);
   function requestGamePlay(event) {
     if (gameReady) return toggle(event);
     gameRef.current?.openSetup();
   }
+  const actionsRef = useRef(null);
+  actionsRef.current = { toggle, stop };
+  const gameStart = useCallback(() => actionsRef.current.toggle(), []);
+  const gameStop = useCallback(() => actionsRef.current.stop(), []);
   useLayoutEffect(() => {
+    if (state === 'playing') return;
     onPlaybackPosition?.({
       visitIndex: activeIndex,
       seekVersion,
@@ -268,6 +323,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     loopIteration,
     bpm,
     onPlaybackPosition,
+    state,
   ]);
   useEffect(() => {
     onChordChange?.(
@@ -304,9 +360,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     >
       <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
-      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} />}
+      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
       {gameMode && gamePlayControls}
-      {gameMode && <GameMode ref={gameRef} onStart={() => toggle()} onToggle={() => toggle()} onStop={stop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} position={position} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} getPosition={gamePosition} onReady={setGameReady} onJudgment={handleGameJudgment} />}
       {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
       {!gameMode && <TransportSettings className="game-accompaniment-settings">
       {gameMode && <summary>Tempo & backing sound</summary>}
@@ -474,7 +530,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         onToggleFullPath={onToggleFullPath}
         onToggleGuideLines={onToggleGuideLines}
         playbackState={state}
-        onToggle={toggle}
+        onToggle={gameMode ? requestGamePlay : toggle}
         onStop={stop}
         progressRef={progressRef}
         timeline={timeline}

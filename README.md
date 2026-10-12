@@ -2,6 +2,8 @@
 
 A React app displaying all 201 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
 
+Full path is shown by default in chord, game, and tab modes; toggle it with **X**.
+
 ## Run
 
 ```sh
@@ -11,6 +13,35 @@ npm run dev
 ```
 
 Open the local URL printed by Vite. Run `npm run build` to create a production build.
+
+## Deploy to GitHub Pages
+
+1. Push this project, including `.github/workflows/pages.yml`, to your repository's
+   `main` branch.
+2. In **Settings → Pages → Build and deployment**, select **GitHub Actions** as
+   the source.
+3. Open **Actions → Deploy to GitHub Pages** and run the workflow, or push another
+   commit to `main`. It installs dependencies, runs tests, builds, and deploys.
+
+For this repository, the site URL is `https://guitar-zero.github.io/shell-chord-app/`.
+The workflow reads the Pages base path automatically, so repository renames,
+user sites, and custom domains do not need hardcoded path changes. Page navigation
+uses `#/tabs` so direct links and refreshes work on static hosting.
+
+To check the same build locally:
+
+```sh
+VITE_GITHUB_PAGES=true npm run build -- --base /shell-chord-app/
+npm run preview
+```
+
+Open `http://127.0.0.1:4173/shell-chord-app/`. GitHub Pages serves static files;
+chord playback, game mode, audio-interface input, and pasted/demo tabs work there.
+The server-backed Ultimate Guitar link importer is hidden in the Pages build;
+it remains available locally. Enable HTTPS on the Pages site for audio capture.
+
+See [GitHub's Pages workflow guide](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+and [Vite's deployment guide](https://vite.dev/guide/static-deploy.html#github-pages).
 
 ## Song data and rendering
 
@@ -185,12 +216,16 @@ The centered **Guitar Arcade** button at the top enters game mode. Its prominent
 **Let's Play** action opens step 2 of a small interface wizard. The header shows
 only the arcade control, "Plug in and play," and the Play button. Choose and
 connect your interface in the wizard, check your signal, then start the countdown.
-Allow audio access first if device names are unavailable. Sound and input options
+Opening the wizard automatically requests audio permission when disconnected;
+a prominent Allow Audio Access button remains available if access is blocked.
+Sound and input options
 are tucked into the wizard. Connecting alone never starts playback.
 Game mode removes the practice header, full fretboard overview, and duplicate
 score/setup cards. Scores, pause, stop, and input setup stay in the bottom-left
 panel while playing. The mini menu provides the game song-run bar with seeking,
 stage navigation, and return-to-first-chord controls.
+The mini menu is shown throughout game mode, including setup and countdown;
+close it or toggle it with **M**.
 Arcade buttons, glowing cards, and small laser accents decorate game mode;
 reduced-motion preferences disable decorative motion.
 
@@ -214,6 +249,8 @@ hits during held bars or source chords omitted from the diagram; bass is muted. 
 count-in provide rhythm. Get ready lasts about two seconds and Here we go
 about one second, rounded to whole beats, before eight tempo-synchronized racing beeps: 8 through 1,
 with eight numbered balls lighting and bouncing on each beat,
+while the overlay becomes transparent and the indicator launches toward the
+first node. Short whistle cues mark Get ready and Here we go,
 then a higher GO tone exactly on the first chord. Purple, amber, red, and green
 mark the four start phases; the GO overlay clears quickly to reveal the chart. The first
 chord is prominent, with the next chord below. A persistent badge and the mini

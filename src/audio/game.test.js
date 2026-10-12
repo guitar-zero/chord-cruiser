@@ -9,9 +9,41 @@ import { estimateHeardChord, heardChordFingering, HeardChordTracker } from './he
 import { guitarTuning } from '../shellVoicing.js';
 import { judgmentCue, playJudgmentCue } from './gameCues.js';
 import { pianoHits } from './pianoVoicings.js';
-import { countInBeat, countInLabel, countInChords, countInSchedule } from './countIn.js';
+import { countInBeat, countInLabel, countInChords, countInSchedule, shouldLaunchCountInIndicator } from './countIn.js';
 import { gameBarState } from '../data/gameBar.js';
-import { racingCountInTones, scheduleRacingCountIn } from './racingCountIn.js';
+import { racingCountInTones, scheduleRacingCountIn, preparationWhistles } from './racingCountIn.js';
+
+test('Indicator launches when the eight balls start, with a fallback after a delayed frame', () => {
+  assert.equal(shouldLaunchCountInIndicator(6, .5), false);
+  assert.equal(shouldLaunchCountInIndicator(4.01, .5), false);
+  assert.equal(shouldLaunchCountInIndicator(4, .5), true);
+  assert.equal(shouldLaunchCountInIndicator(-.1, .5), true);
+  assert.equal(shouldLaunchCountInIndicator(-Infinity, .5), false);
+  assert.equal(shouldLaunchCountInIndicator(2, .25), true);
+});
+
+test('Preparation adds short rising whistles without shifting the countdown or first-chord cue', () => {
+  const whistles = preparationWhistles(1, 3);
+  assert.deepEqual(whistles.map(tone => tone.at), [1, 3, 3.17]);
+  assert.ok(whistles.every(tone => tone.endFrequency > tone.frequency && tone.volume <= .025 && tone.duration <= .22));
+  const tones = racingCountInTones(8, .5, { start: 1, hereWeGo: 3 });
+  assert.equal(tones.length, 12);
+  assert.equal(tones[3].at, 4);
+  assert.equal(tones.at(-1).at, 8);
+});
+import { PlaybackRenderGate } from './playbackRenderGate.js';
+
+test('Playback UI throttles repeat frames but publishes every chord boundary, loop, and seek', () => {
+  const gate = new PlaybackRenderGate();
+  assert.equal(gate.shouldRender(0, 0), true);
+  assert.equal(gate.shouldRender(16, 0), false);
+  assert.equal(gate.shouldRender(34, 0), true);
+  assert.equal(gate.shouldRender(40, 1), true);
+  assert.equal(gate.shouldRender(50, 1), false);
+  assert.equal(gate.shouldRender(51, 1, true), true);
+  assert.equal(gate.shouldRender(52, 0), true);
+  assert.equal(new PlaybackRenderGate().shouldRender(53, 0), true);
+});
 
 test('Racing count-in schedules eight beat beeps and a higher GO exactly on the first chord', () => {
   const tones = racingCountInTones(10, .5);
@@ -326,6 +358,31 @@ test('Count-in shifts scheduled chord onset without changing timeline or seek be
   for (const source of player.sources) source.stop = () => {};
   player.seek(3);
   assert.ok(Math.abs(player.startedAt - 7.03) < 1e-9);
+});
+
+test('Game drums cover all eight countdown beeps and continue without a duplicate downbeat', () => {
+  const hits = [];
+  const parameter = { setValueAtTime() {}, linearRampToValueAtTime() {}, exponentialRampToValueAtTime() {} };
+  const context = {
+    currentTime: 10, sampleRate: 8000, destination: {},
+    createOscillator: () => ({ frequency: { ...parameter }, connect() {}, disconnect() {}, start() {}, stop() {} }),
+    createGain: () => ({ gain: { ...parameter }, connect() {}, disconnect() {} }),
+    createBufferSource: () => ({ connect() {}, disconnect() {}, start(at) { hits.push({ kind: this.buffer.kind, at }); }, stop() {} }),
+  };
+  const player = Object.assign(Object.create(JazzPlayer.prototype), {
+    context, timeline: { duration: 8, beats: 16, beatsPerBar: 4 }, sources: new Set(), pianoHits: [],
+    beatSeconds: .5, racingCountIn: true,
+    brushes: Object.fromEntries(['ride', 'brush', 'hat'].map(kind => [kind, { kind, length: 4000 }])),
+  });
+  player.seek(3, 7);
+  const onset = player.countInEndsAt;
+  const rideBeats = hits.filter(hit => hit.kind === 'ride').map(hit => hit.at);
+  for (const beatsBefore of [8, 7, 6, 5, 4, 3, 2, 1]) assert.ok(rideBeats.some(at => Math.abs(at - (onset - beatsBefore * .5)) < 1e-9));
+  assert.ok(Math.abs(Math.min(...hits.map(hit => hit.at)) - (onset - 4)) < 1e-9);
+  assert.equal(rideBeats.filter(at => Math.abs(at - onset) < 1e-9).length, 1);
+  hits.length = 0;
+  player.seek(3);
+  assert.ok(hits.every(hit => hit.at >= context.currentTime));
 });
 
 test('Interface capture selects the channel, disables speech processing, and releases input', async () => {

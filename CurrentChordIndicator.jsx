@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { pointAlongRoute } from "./src/data/motion.js";
+import { routeSampler } from "./src/data/motion.js";
 
 const center = (box) => ({
   x: box.x + box.width / 2,
   y: box.y + box.height / 2,
 });
 
-export default function CurrentChordIndicator({
+function CurrentChordIndicator({
   svgRef,
   target,
   initial,
@@ -20,18 +20,24 @@ export default function CurrentChordIndicator({
   const previous = useRef(null);
   const displayed = useRef(initial);
   const [viewport, setViewport] = useState(null);
+  const overlayRef = useRef(null), positionRef = useRef(null), haloRef = useRef(null), outlineRef = useRef(null);
+  const paintedRadius = useRef(null);
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg || !target) return;
     const measure = () => {
       const bounds = svg.getBoundingClientRect();
-      setViewport({
+      const view = {
         left: bounds.left,
         top: bounds.top,
         width: bounds.width,
         height: bounds.height,
         viewBox: svg.getAttribute("viewBox"),
-      });
+      };
+      if (overlayRef.current) {
+        Object.assign(overlayRef.current.style, { left: `${view.left}px`, top: `${view.top}px`, width: `${view.width}px`, height: `${view.height}px` });
+        overlayRef.current.setAttribute('viewBox', view.viewBox);
+      } else setViewport(view);
     };
     measure();
     window.addEventListener("scroll", measure, true);
@@ -70,7 +76,15 @@ export default function CurrentChordIndicator({
     const start = displayed.current;
     const show = (value, progress = 1) => {
       displayed.current = value;
-      setBox(value);
+      if (value && positionRef.current) {
+        positionRef.current.setAttribute('transform', `translate(${value.x + value.width / 2} ${value.y + value.height / 2})`);
+        const radius = Math.round((Math.max(value.width, value.height) / 2 + 23) * 10) / 10;
+        if (paintedRadius.current !== radius) {
+          const path = flowerPath(radius);
+          haloRef.current?.setAttribute('d', path); outlineRef.current?.setAttribute('d', path);
+          paintedRadius.current = radius;
+        }
+      }
       onMotion?.(
         value ? center(value) : null,
         progress,
@@ -90,6 +104,7 @@ export default function CurrentChordIndicator({
       old.node === target.node ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
+      setBox(destination);
       show(destination);
       onArrival?.(destination ? target : null);
       return;
@@ -110,12 +125,13 @@ export default function CurrentChordIndicator({
       }
     }
     points.push(center(destination));
+    const sample = routeSampler(points);
     let frame, started;
     function animate(time) {
       started ??= time;
-      const progress = Math.min(1, (time - started) / 220);
+      const progress = Math.min(1, (time - started) / 280);
       const eased = progress * progress * (3 - 2 * progress);
-      const position = pointAlongRoute(points, eased);
+      const position = sample(eased);
       const width = start.width + (destination.width - start.width) * eased;
       const height = start.height + (destination.height - start.height) * eased;
       show(
@@ -128,7 +144,7 @@ export default function CurrentChordIndicator({
         eased,
       );
       if (progress < 1) frame = requestAnimationFrame(animate);
-      else onArrival?.(target);
+      else { setBox(destination); onArrival?.(target); }
     }
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
@@ -141,17 +157,13 @@ export default function CurrentChordIndicator({
     onMotion,
     onArrival,
   ]);
-  if (!box || !target || !viewport) return null;
-  const { x, y, width, height } = box;
+  const { x, y, width, height } = box || { x: 0, y: 0, width: 0, height: 0 };
   const radius = Math.max(width, height) / 2 + 23;
-  const flower =
-    Array.from({ length: 193 }, (_, i) => {
-      const angle = (i / 192) * Math.PI * 2;
-      const petal = radius + 8 * Math.cos(angle * 8);
-      return `${i ? "L" : "M"}${Math.cos(angle) * petal} ${Math.sin(angle) * petal}`;
-    }).join(" ") + " Z";
+  const flower = useMemo(() => flowerPath(radius), [radius]);
+  if (!box || !target || !viewport) return null;
   return createPortal(
     <svg
+      ref={overlayRef}
       aria-hidden="true"
       viewBox={viewport.viewBox}
       style={{
@@ -162,7 +174,7 @@ export default function CurrentChordIndicator({
         height: viewport.height,
         pointerEvents: "none",
         overflow: "visible",
-        zIndex: 1200,
+        zIndex: 1600,
       }}
     >
       <g
@@ -171,13 +183,14 @@ export default function CurrentChordIndicator({
         pointerEvents="none"
       >
         <style>{`
-      .chord-flower-spin { filter: drop-shadow(0 3px 5px #c91b9855); transform-origin: 0 0; animation: chord-flower-turn 9s linear infinite; }
+      .chord-flower-spin { transform-origin: 0 0; animation: chord-flower-turn 9s linear infinite; }
       @keyframes chord-flower-turn { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .chord-flower-spin { animation: none; } }
     `}</style>
-        <g transform={`translate(${x + width / 2} ${y + height / 2})`}>
+        <g ref={positionRef} transform={`translate(${x + width / 2} ${y + height / 2})`}>
           <g className={target ? "chord-flower-spin" : undefined}>
             <path
+              ref={haloRef}
               d={flower}
               fill="#e534ae"
               fillOpacity=".09"
@@ -186,6 +199,7 @@ export default function CurrentChordIndicator({
               strokeOpacity=".18"
             />
             <path
+              ref={outlineRef}
               d={flower}
               fill="none"
               stroke="#e534ae"
@@ -199,3 +213,13 @@ export default function CurrentChordIndicator({
     document.body,
   );
 }
+
+function flowerPath(radius) {
+  return Array.from({ length: 193 }, (_, i) => {
+    const angle = (i / 192) * Math.PI * 2;
+    const petal = radius + 8 * Math.cos(angle * 8);
+    return `${i ? 'L' : 'M'}${Math.cos(angle) * petal} ${Math.sin(angle) * petal}`;
+  }).join(' ') + ' Z';
+}
+
+export default memo(CurrentChordIndicator);

@@ -8,6 +8,10 @@ export function countInBeat(seconds, beatSeconds) {
   return Math.max(0, Math.min(countInSchedule(beatSeconds).totalBeats, Math.ceil(seconds / beatSeconds)));
 }
 
+export function shouldLaunchCountInIndicator(remaining, beatSeconds) {
+  return Number.isFinite(remaining) && remaining <= 8 * beatSeconds;
+}
+
 export function countInLabel(beat, beatSeconds = .5) {
   return beat > 8 + countInSchedule(beatSeconds).hereWeGoBeats ? 'Get ready' : beat > 8 ? 'Here we go' : beat > 0 ? String(beat) : null;
 }

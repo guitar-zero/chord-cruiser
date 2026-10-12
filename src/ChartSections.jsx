@@ -11,6 +11,7 @@ const ChartSections = forwardRef(function ChartSections(
     onIndicatorArrival,
     darkMode,
     suppressIndicator,
+    suppressBeatDots = false,
     hideGuidingLines,
     hideOtherNodes,
     columns = 2,
@@ -46,7 +47,7 @@ const ChartSections = forwardRef(function ChartSections(
           aria-label={`${index + 1} of ${song.layout.sections.length}: ${section.title || "Chord progression"}`}
         >
           <div className="section-beat-gap">
-            {(activeSection === section.id || nextSection === section.id) && <SectionBeatDots playbackClockRef={playbackClockRef} visible={Boolean(currentChord)} song={song} colors={visitColors} darkMode={darkMode} visitIndex={currentChord?.visitIndex} isPlaying={currentChord?.isPlaying} />}
+            {!suppressBeatDots && (activeSection === section.id || nextSection === section.id) && <SectionBeatDots playbackClockRef={playbackClockRef} visible={Boolean(currentChord)} song={song} colors={visitColors} darkMode={darkMode} visitIndex={currentChord?.visitIndex} isPlaying={currentChord?.isPlaying} />}
           </div>
           <p className="panel-caption">
             <span>

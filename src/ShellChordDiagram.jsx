@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { guitarStrings, shellVoicing } from './shellVoicing.js';
 import FretboardDiagram from './FretboardDiagram.jsx';
 
-export default function ShellChordDiagram({ chord, node, color = 'var(--accent)', darkMode, fullFretboard = false, showOrientationToggle = true, showChordName = true, showDetails = true }) {
+function ShellChordDiagram({ chord, node, color = 'var(--accent)', darkMode, fullFretboard = false, showOrientationToggle = true, showChordName = true, showDetails = true }) {
   const [vertical, setVertical] = useState(false);
   const voicing = shellVoicing(chord, node);
   if (!voicing) return <div className="shell-chord-empty">{chord === 'NC' ? 'No chord' : /sus/.test(chord || '') ? 'Suspended chord: no third for a shell voicing.' : 'No chart root position for this chord.'}</div>;
@@ -54,3 +54,4 @@ export default function ShellChordDiagram({ chord, node, color = 'var(--accent)'
     </div>}
   </div>;
 }
+export default memo(ShellChordDiagram);
