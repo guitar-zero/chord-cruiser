@@ -412,3 +412,90 @@ test('Experimental vertical stacking preserves fret anchors and playback across 
     assert.equal(JSON.stringify(original),snapshot);
   }
 });
+
+test('Piano maps preserve playback and align independent chord nodes with root keys in every key', async () => {
+  const { blackKeyHeightRatio } = await import('./pianoPresentation.js');
+  const { pianoLayout, pianoKeyX, isBlackKey } = await import('./pianoLayout.js');
+  const { transposeSong, keyRoots, notePitch } = await import('./transpose.js');
+  for (const source of songs) for (const key of keyRoots) {
+    const transposed = transposeSong(source, key);
+    const chart = pianoLayout(transposed);
+    assert.deepEqual(chart.playback, transposed.playback);
+    assert.deepEqual(chart.nodes.map(node => node.id), source.nodes.map(node => node.id));
+    assert.equal(chart.edges.length, source.edges.length);
+    for (const node of chart.nodes) {
+      const section = chart.layout.sections.find(section => section.id === node.section);
+      assert.equal(node.midi % 12, notePitch(node.root));
+      assert.equal(section.firstKey, 43);
+      assert.equal(section.lastKey, 64);
+      assert.ok(node.x > section.left && node.x < section.right);
+      assert.equal(node.x, section.left + pianoKeyX(node.midi, section.keyWidth) - section.keyOrigin);
+      const keyBottom = section.keyboardTop + section.keyHeight * (isBlackKey(node.midi) ? blackKeyHeightRatio : 1);
+      assert.ok(node.y - node.radius >= section.keyboardTop);
+      assert.ok(node.y + node.radius < keyBottom);
+      if (!isBlackKey(node.midi)) assert.ok(node.y - node.radius > section.keyboardTop + section.keyHeight * blackKeyHeightRatio);
+    }
+    assert.equal(new Set(chart.nodes.map(node => `${node.section}:${node.x}:${node.y}`)).size, chart.nodes.length);
+  }
+});
+
+test('Piano highlights use three shell tones once, distinguish slash-bass roots, and cue the next playback root across sections', async () => {
+  const { pianoChordKeys, pianoPlaybackKeys, blackKeyHeightRatio } = await import('./pianoPresentation.js');
+  assert.ok(blackKeyHeightRatio < .5);
+  assert.deepEqual(pianoChordKeys('Cmaj7').pitches.sort((a,b) => a-b), [0,4,11]);
+  assert.equal(pianoChordKeys('C/E').rootPitch, 0);
+  assert.ok(pianoChordKeys('C/E').pitches.includes(4));
+  assert.deepEqual(pianoChordKeys('NC').pitches, []);
+  const song = { nodes: [{ id:'c', section:'a' }, { id:'g', section:'b' }], playback: [{ nodeId:'c', chord:'Cmaj7' }, { nodeId:'g', chord:'G7' }, { nodeId:null, chord:'NC' }] };
+  assert.equal(pianoPlaybackKeys(song, 0, 'a').rootPitch, 0);
+  assert.equal(pianoPlaybackKeys(song, 0, 'a').nextRootPitch, undefined);
+  assert.deepEqual(pianoPlaybackKeys(song, 0, 'b').pitches, []);
+  assert.equal(pianoPlaybackKeys(song, 0, 'b').nextRootPitch, 7);
+  assert.deepEqual(pianoPlaybackKeys(song, 0, 'b').nextNotes, pianoChordKeys('G7').notes);
+  assert.equal(pianoPlaybackKeys(song, 0, 'b').nextRootMidi, 55);
+  assert.deepEqual(pianoPlaybackKeys(song, 0, 'a').nextNotes, []);
+  assert.equal(pianoPlaybackKeys(song, 1, 'b').nextRootPitch, undefined);
+  assert.deepEqual(pianoPlaybackKeys(song, undefined, 'a'), { notes: [], pitches: [] });
+  assert.equal(pianoPlaybackKeys(song, 2, 'a').nextRootPitch, undefined);
+});
+
+test('Piano shells highlight exactly three distinct physical keys in a compact shape within the mapper', async () => {
+  const { pianoChordKeys } = await import('./pianoPresentation.js');
+  const { transposeChord } = await import('./transpose.js');
+  for (const chord of ['Cmaj7','Cm7','C7','Cdim7','Cm7b5','CmMaj7','C13','C7b9','Csus4','C/E']) for (let shift = 0; shift < 12; shift++) {
+    const shell = pianoChordKeys(transposeChord(chord, shift));
+    assert.equal(shell.notes.length, 3);
+    assert.equal(new Set(shell.notes).size, 3);
+    assert.equal(new Set(shell.pitches).size, 3);
+    assert.ok(shell.notes.includes(shell.rootMidi));
+    assert.ok(shell.notes.every(midi => midi >= 43 && midi <= 64));
+    assert.ok(Math.max(...shell.notes) - Math.min(...shell.notes) <= 6);
+  }
+  assert.deepEqual(pianoChordKeys('Cmaj7').notes, [47,48,52]);
+  assert.deepEqual(pianoChordKeys('Cm7').notes, [46,48,51]);
+  assert.deepEqual(pianoChordKeys('C7').notes, [46,48,52]);
+});
+
+test('Next piano tips retain all three physical notes when chords share keys and colors', async () => {
+  const { pianoChordKeys, pianoPlaybackKeys } = await import('./pianoPresentation.js');
+  const song = { nodes: [{ id: 'c', section: 'a' }, { id: 'f', section: 'a' }], playback: [{ nodeId: 'c', chord: 'Cmaj7' }, { nodeId: 'c', chord: 'Cmaj7' }, { nodeId: 'f', chord: 'Fmaj7' }] };
+  const repeated = pianoPlaybackKeys(song, 0, 'a');
+  assert.deepEqual(repeated.nextNotes, repeated.notes);
+  assert.equal(repeated.nextNotes.length, 3);
+  const shared = pianoPlaybackKeys(song, 1, 'a');
+  assert.deepEqual(shared.nextNotes, pianoChordKeys('Fmaj7').notes);
+  assert.equal(shared.nextNotes.length, 3);
+  assert.ok(shared.nextNotes.some(note => shared.notes.includes(note)));
+});
+
+test('Piano root pipes follow both directions and separate badges on repeated roots', async () => {
+  const { pianoRootPipe } = await import('./pianoPresentation.js');
+  const right = pianoRootPipe(200, 680, 240, 1000);
+  assert.equal(right.currentY, right.nextY);
+  assert.equal(right.path, 'M287.2 1030 L592.8 1030');
+  const left = pianoRootPipe(680, 200, 240, 1000);
+  assert.equal(left.path, 'M592.8 1030 L287.2 1030');
+  const repeat = pianoRootPipe(200, 200, 240, 1000);
+  assert.ok(repeat.nextY > repeat.currentY + 60);
+  assert.equal(repeat.path, 'M200 1068 L200 1112');
+});

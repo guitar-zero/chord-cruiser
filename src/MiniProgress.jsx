@@ -22,6 +22,7 @@ export default function MiniProgress({
   nodeLabels,
   neverShow,
   nodeColorMode,
+  instrument,
   playbackState,
   onToggle,
   onStop,
@@ -170,9 +171,9 @@ export default function MiniProgress({
             </div>
             {nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} compact />}
             {gameMode && <strong>{gameHasStarted ? 'Next' : 'First chord'}</strong>}
-            <ShellChordDiagram chord={(gameMode ? nextEvent : currentEvent)?.chord} node={gameMode ? nextNode : currentNode} color={timelineColor(colors?.[gameMode ? nextEvent?.index : activeIndex], darkMode)} darkMode={darkMode} />
+            {instrument !== 'piano' && <ShellChordDiagram chord={(gameMode ? nextEvent : currentEvent)?.chord} node={gameMode ? nextNode : currentNode} color={timelineColor(colors?.[gameMode ? nextEvent?.index : activeIndex], darkMode)} darkMode={darkMode} />}
             <div className="mini-view-controls mini-compact-controls">
-              <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Path <kbd>X</kbd></button>
+              <button type="button" aria-label="Full path during playback" title="Full path during playback (X)" aria-pressed={showFullPath} aria-keyshortcuts="x" onClick={onToggleFullPath}>Full path <kbd>X</kbd></button>
               <button type="button" aria-label="Chord chart" aria-pressed={chartOpen} aria-keyshortcuts="h" aria-haspopup="dialog" onClick={onOpenChordChart} title="Toggle chord chart (H)">Chart <kbd>H</kbd></button>
               <button type="button" aria-label="Guiding lines" title="Guiding lines (G)" aria-pressed={showGuideLines} aria-keyshortcuts="g" onClick={onToggleGuideLines}>Guides <kbd>G</kbd></button>
               <button type="button" aria-label="Show D string" title="Show D string (S)" aria-pressed={!twoStrings} aria-keyshortcuts="s" onClick={() => setTwoStrings(value => !value)}>D string <kbd>S</kbd></button>

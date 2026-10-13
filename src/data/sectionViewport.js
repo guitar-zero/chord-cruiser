@@ -5,7 +5,7 @@ export function sectionHeaderPositions(song, sectionId) {
   const points=song.edges.filter(edge=>edge.section===sectionId && edge.path).flatMap(edge=>routeVertices(edge.path));
   const titleY=Math.min(section.top-95,...nodes.map(node=>node.y+(node.badgeOffset ?? -68)-80),...points.map(point=>point.y-95));
   const durations=(song.durationLabels || []).filter(label=>nodes.some(node=>node.id===label.nodeId)).map(label=>nodes.find(node=>node.id===label.nodeId).y+(label.offsetY || 0));
-  const fretY=Math.max(section.bottom+90,...nodes.map(node=>node.y+195),...durations.map(y=>y+70),...points.map(point=>point.y+95));
+  const fretY=Math.max(section.bottom+(section.instrument === 'piano' ? 310 : 90),...nodes.map(node=>node.y+195),...durations.map(y=>y+70),...points.map(point=>point.y+95));
   return {fretY,titleY};
 }
 

@@ -1,3 +1,4 @@
+import { pianoLayout } from './data/pianoLayout.js';
 import React, {
   useCallback,
   useEffect,
@@ -59,7 +60,15 @@ function App() {
   const [darkMode, setDarkMode] = useTheme();
   const [songId, setSongId] = useState("all-of-me");
   const [targetKey, setTargetKey] = useState("");
-  const [hideGuidingLines, setHideGuidingLines] = useState(false);
+  const [instrument, setInstrument] = useState('guitar');
+  const [hiddenGuidesByInstrument, setHiddenGuidesByInstrument] = useState({ guitar: false, piano: true });
+  const hideGuidingLines = hiddenGuidesByInstrument[instrument];
+  const setHideGuidingLines = useCallback(update => {
+    setHiddenGuidesByInstrument(previous => ({
+      ...previous,
+      [instrument]: typeof update === 'function' ? update(previous[instrument]) : update,
+    }));
+  }, [instrument]);
   const [showFullPathDuringPlayback, setShowFullPathDuringPlayback] =
     useState(true);
   useEffect(() => {
@@ -88,7 +97,7 @@ function App() {
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, []);
+  }, [setHideGuidingLines]);
   const [twoStrings, setTwoStrings] = useState(true);
   const [search, setSearch] = useState("");
   const filteredSongs = dropdownSongs.filter((item) =>
@@ -143,14 +152,14 @@ function App() {
   }, []);
   const song = useMemo(() => {
     const transposed = transposeSong(songsById[songId], targetKey);
-    const positioned = twoStrings
+    const positioned = instrument === 'piano' ? pianoLayout(transposed) : twoStrings
       ? twoStringLayout(transposed)
       : threeStringLayout(transposed);
     return { ...redStartingColor(
-      twoStrings ? positioned : stackSharedNodes(positioned),
+      instrument === 'piano' || twoStrings ? positioned : stackSharedNodes(positioned),
     ), nodeColorMode: 'quality' };
-  }, [songId, targetKey, twoStrings]);
-  const selectionKey = `${songId}:${song.key}`;
+  }, [songId, targetKey, twoStrings, instrument]);
+  const selectionKey = `${songId}:${song.key}:${instrument}`;
   useEffect(() => setChartOpen(false), [selectionKey]);
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
   const availableKeys = /minor|-$/.test(song.key) ? minorKeyRoots : keyRoots;
@@ -447,6 +456,7 @@ function App() {
               ))}
           </select>
         </label>
+        <label>Instrument <select value={instrument} onChange={event => setInstrument(event.target.value)}><option value="guitar">Guitar</option><option value="piano">Piano</option></select></label>
         <div className="chart-display-controls">
           <button className="theme-toggle" type="button" aria-keyshortcuts="x" title="Toggle full path (X)" aria-pressed={showFullPathDuringPlayback} onClick={() => setShowFullPathDuringPlayback(value => !value)}>Full path <kbd>X</kbd></button>
           <button
@@ -462,6 +472,7 @@ function App() {
           </button>
           <AutoScrollToggle enabled={autoScrollEnabled} onToggle={() => setAutoScrollEnabled(enabled => !enabled)} />
           <button
+            disabled={instrument === "piano"}
             className="string-toggle theme-toggle"
             type="button"
             aria-keyshortcuts="s"

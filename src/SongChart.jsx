@@ -1,3 +1,5 @@
+import { pianoPlaybackKeys } from './data/pianoPresentation.js';
+import { PianoKeys } from './PianoKeyboard.jsx';
 import React, {
   useId,
   useImperativeHandle,
@@ -58,11 +60,15 @@ const ordinal = (number) => {
 const fretDotCount = (fret) =>
   fret > 0 && fret % 12 === 0 ? 2 : [3, 5, 7, 9].includes(fret % 12) ? 1 : 0;
 
-function Grid({ section: originalSection, darkMode, activeFret }) {
+function Grid({ section: originalSection, darkMode, activeFret, pianoState, pianoColor, pianoNextColor, pianoPipe }) {
   const id = useId().replaceAll(":", "");
   const woodId = `wood-${id}`,
     grainId = `grain-${id}`,
     metalId = `metal-${id}`;
+  if (originalSection.instrument === 'piano') return <g>
+    <PianoKeys first={originalSection.firstKey} last={originalSection.lastKey} x={originalSection.left} y={originalSection.keyboardTop} width={originalSection.keyWidth} height={originalSection.keyHeight} color={pianoColor} notes={pianoState?.notes} rootMidi={pianoState?.rootMidi} nextRootMidi={pianoState?.nextRootMidi} nextNotes={pianoState?.nextNotes} nextColor={pianoNextColor} showNoteDots={false} showRootLabels pipeVisitIndex={pianoPipe?.visitIndex} pipeSeekVersion={pianoPipe?.seekVersion} pipeFill={pianoPipe?.fill}/>
+    <text x={originalSection.left} y={originalSection.fretY} fontSize="30" fill={darkMode ? '#eee1c4' : ink}>Piano · chord roots</text>
+  </g>;
   const firstVisible = originalSection.frets.findIndex((fret) => fret >= 1);
   if (firstVisible < 0) return null;
   // The first boundary is the edge before fret 1, never a fret-zero column.
@@ -637,6 +643,7 @@ const SongChart = forwardRef(function SongChart(
     for (const node of song.nodes) nodeColors[node.id] = timelineColor(nodeColors[node.id] || chordQualityColor(node.chord), darkMode);
   }
   const upcoming = upcomingMovement(song, playbackVisitIndex);
+  const pianoCurrentPathOnly = song.instrument === 'piano' && hideGuidingLines;
   const [arrivedTarget, setArrivedTarget] = useState(null);
   const handleArrival = useCallback(
     (target) => {
@@ -657,16 +664,16 @@ const SongChart = forwardRef(function SongChart(
     arrivedTarget &&
     currentChord.visitIndex === arrivedTarget.visitIndex + 1 &&
     currentChord.seekVersion === arrivedTarget.seekVersion;
-  const highlightedMovement = indicatorArrived
+  const highlightedMovement = pianoCurrentPathOnly ? upcoming : indicatorArrived
     ? upcoming
     : inTransit
       ? upcomingMovement(song, arrivedTarget.visitIndex)
       : null;
   const highlightedEdgeId = highlightedMovement?.edgeId;
-  const highlightedVisitIndex = indicatorArrived
+  const highlightedVisitIndex = pianoCurrentPathOnly ? playbackVisitIndex : indicatorArrived
     ? playbackVisitIndex
     : arrivedTarget?.visitIndex;
-  const highlightedSeekVersion = indicatorArrived ? currentChord?.seekVersion : arrivedTarget?.seekVersion;
+  const highlightedSeekVersion = pianoCurrentPathOnly || indicatorArrived ? currentChord?.seekVersion : arrivedTarget?.seekVersion;
   const rapid = rapidPassage(song, playbackVisitIndex);
   const fillProgress = rapid ? 1 : pipeProgress(highlightedVisitIndex, playbackClockRef?.current, highlightedSeekVersion);
   const rapidPipes = rapidPassageMovements(song, playbackVisitIndex).flatMap(movement => {
@@ -827,6 +834,10 @@ const SongChart = forwardRef(function SongChart(
           key={section.id}
           section={{ ...section, ...sectionHeaderPositions(song, section.id) }}
           darkMode={darkMode}
+          pianoPipe={{ visitIndex: playbackVisitIndex, seekVersion: currentChord?.seekVersion, fill: pipeProgress(playbackVisitIndex, playbackClockRef?.current, currentChord?.seekVersion) }}
+          pianoNextColor={nodeColors[song.playback[playbackVisitIndex + 1]?.nodeId]}
+          pianoColor={nodeColors[song.playback[playbackVisitIndex]?.nodeId]}
+          pianoState={section.instrument === "piano" ? pianoPlaybackKeys(song, playbackVisitIndex, section.id) : undefined}
           activeFret={current ? byId[current.node]?.fret : undefined}
         />
       ))}
@@ -840,9 +851,9 @@ const SongChart = forwardRef(function SongChart(
         initial={null}
       />
       <g
-        opacity={hideGuidingLines ? 0 : 1}
+        opacity={hideGuidingLines && !pianoCurrentPathOnly ? 0 : 1}
         pointerEvents={hideGuidingLines ? "none" : undefined}
-        aria-hidden={hideGuidingLines || undefined}
+        aria-hidden={(hideGuidingLines && !pianoCurrentPathOnly) || undefined}
       >
         {sections.map((section) => (
           <RouteColors
@@ -855,7 +866,7 @@ const SongChart = forwardRef(function SongChart(
             strokeLinejoin="round"
           >
             {song.edges
-              .filter((edge) => edge.section === section.id && (!nearbyNodes || (nearbyNodes.has(edge.source) && nearbyNodes.has(edge.target))))
+              .filter((edge) => (!pianoCurrentPathOnly || edge.id === upcoming?.edgeId) && edge.section === section.id && (!nearbyNodes || (nearbyNodes.has(edge.source) && nearbyNodes.has(edge.target))))
               .map((edge) => {
                 const qualityColor = song.nodeColorMode === 'quality' ? nodeColors[edge.target] : undefined;
                 const originalPath =
@@ -904,7 +915,7 @@ const SongChart = forwardRef(function SongChart(
               })}
           </RouteColors>
         ))}
-        {rapidPipes.filter(pipe => !highlightedPath || pipe.edgeId !== highlightedEdgeId).map(pipe => (
+        {!pianoCurrentPathOnly && rapidPipes.filter(pipe => !highlightedPath || pipe.edgeId !== highlightedEdgeId).map(pipe => (
           <g key={`rapid:${rapid.start}:${pipe.edgeId}`} data-highlight-target={song.edges.find(edge => edge.id === pipe.edgeId)?.target} fill="none" stroke={pipe.color} pointerEvents="none" aria-hidden="true">
             <path className="turnaround-pipe" d={pipe.path} strokeWidth="26" strokeOpacity=".65" strokeLinejoin="round" />
             <path className="turnaround-pipe" d={pipe.path} strokeWidth="6" strokeLinejoin="round" />

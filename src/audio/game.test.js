@@ -422,3 +422,13 @@ test('Countdown audio cannot claim the first chord before GO; silence becomes a 
   assert.equal(countInComplete(0, null), true);
   assert.equal(new ShellGameRound([target]).attack(0).timing, 'Perfect');
 });
+
+test('Piano game targets use the displayed voicing, including suspended chords', async () => {
+  const { pianoChordKeys } = await import('../data/pianoPresentation.js');
+  const { shellTargets } = await import('./game.js');
+  const timeline = { events: [{ chord: 'Cmaj7', nodeId: 'c' }, { chord: 'Dsus4', nodeId: 'd' }, { chord: 'NC', nodeId: 'nc' }, { chord: 'G7', nodeId: null }] };
+  const nodes = ['c', 'd', 'nc'].map(id => ({ id, instrument: 'piano' }));
+  const targets = shellTargets(timeline, nodes);
+  assert.deepEqual(targets.map(target => target.index), [0, 1]);
+  for (const target of targets) assert.deepEqual(target.pitches, pianoChordKeys(target.chord).pitches);
+});

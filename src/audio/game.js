@@ -1,3 +1,4 @@
+import { pianoChordKeys } from '../data/pianoPresentation.js';
 import { shellVoicing, guitarTuning } from '../shellVoicing.js';
 
 export const grades = ['Nope', 'Okay', 'Good', 'Great', 'Perfect'];
@@ -9,7 +10,9 @@ export function normalizeJudgment(result) {
 }
 export function shellTargets(timeline, nodes) {
   return timeline.events.flatMap((event, index) => {
-    const shell = shellVoicing(event.chord, nodes.find(node => node.id === event.nodeId));
+    const node = nodes.find(node => node.id === event.nodeId);
+    if (node?.instrument === 'piano' && event.chord !== 'NC') return [{ ...event, index, pitches: pianoChordKeys(event.chord).pitches }];
+    const shell = shellVoicing(event.chord, node);
     return shell ? [{ ...event, index, pitches: [...new Set(shell.notes.map(note => (guitarTuning[note.string] + note.fret) % 12))] }] : [];
   });
 }

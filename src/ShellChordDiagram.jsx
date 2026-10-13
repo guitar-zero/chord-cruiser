@@ -1,9 +1,11 @@
+import PianoKeyboard from './PianoKeyboard.jsx';
 import React, { memo, useState } from 'react';
 import { guitarStrings, shellVoicing } from './shellVoicing.js';
 import FretboardDiagram from './FretboardDiagram.jsx';
 
-function ShellChordDiagram({ chord, node, color = 'var(--accent)', darkMode, fullFretboard = false, showOrientationToggle = true, showChordName = true, showDetails = true }) {
+function ShellChordDiagram({ chord, node, color = 'var(--accent)', darkMode, fullFretboard = false, showOrientationToggle = true, showChordName = true, showDetails = true, instrument = node?.instrument }) {
   const [vertical, setVertical] = useState(false);
+  if (instrument === 'piano') return <PianoKeyboard chord={chord} color={color} showChordName={showChordName} showDetails={showDetails}/>;
   const voicing = shellVoicing(chord, node);
   if (!voicing) return <div className="shell-chord-empty">{chord === 'NC' ? 'No chord' : /sus/.test(chord || '') ? 'Suspended chord: no third for a shell voicing.' : 'No chart root position for this chord.'}</div>;
   const firstFret = Math.max(1, Math.min(...voicing.notes.filter(note => note.fret > 0).map(note => note.fret)));

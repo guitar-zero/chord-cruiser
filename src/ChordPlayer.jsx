@@ -507,6 +507,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       {!gameMode && <div className="main-chord-preview full-fretboard-preview">
         {songData.nodeColorMode === 'quality' && <ChordQualityLegend darkMode={darkMode} />}
         <ShellChordDiagram
+          instrument={songData.instrument}
           fullFretboard
           chord={active?.chord}
           node={currentNode}
@@ -535,6 +536,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         onSeek={seek}
       />}
       <MiniProgress
+        instrument={songData.instrument}
         key={gameMode ? 'game' : 'practice'}
         gameMode={gameMode}
         gameReady={gameReady}
