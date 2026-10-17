@@ -37,7 +37,7 @@ const ChartSections = forwardRef(function ChartSections(
       aria-label="All chord chart sections"
       style={{
         "--chart-columns": columns,
-        columnGap: columns === 2 ? "12px" : undefined,
+        columnGap: song.layout.noGutters ? "16px" : columns === 2 ? "12px" : undefined,
       }}
     >
       {song.layout.sections.map((section, index) => (
@@ -63,7 +63,7 @@ const ChartSections = forwardRef(function ChartSections(
               </span>
             )}
           </p>
-          <div className="chart">
+          <div className={`chart${section.showHeadstock ? ' has-headstock' : ''}`}>
             <SongChart
               ref={(element) => {
                 svgRefs.current[section.id] = element;

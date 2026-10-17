@@ -42,6 +42,7 @@ import { redStartingColor } from "./data/routePalette.js";
 import { stackSharedNodes } from "./data/stackSharedNodes.js";
 import { threeStringLayout } from "./data/threeStringLayout.js";
 import { twoStringLayout } from "./data/stringLayout.js";
+import { fullFretboardLayout } from "./data/fullFretboardLayout.js";
 
 const dropdownSongs = [
   ...popularSongIds.map(id => songsById[id]),
@@ -74,31 +75,37 @@ function App() {
   useEffect(() => {
     function handleShortcut(event) {
       const key = shortcutKey(event);
-      if (key === "a") {
+      if (key === "b") {
         event.preventDefault();
         setAutoScrollEnabled(enabled => !enabled);
       }
-      if (key === "x") {
+      if (key === "v") {
         event.preventDefault();
         setShowFullPathDuringPlayback((value) => !value);
       }
-      if (key === "d") {
+      if (key === "w") {
         event.preventDefault();
         setDarkMode((value) => !value);
       }
-      if (key === "g") {
+      if (key === ",") {
         event.preventDefault();
         setHideGuidingLines((value) => !value);
       }
-      if (key === "s") {
+      if (key === "m") {
         event.preventDefault();
         setTwoStrings((value) => !value);
+      }
+      if (key === "n" && instrument === 'guitar') {
+        event.preventDefault();
+        setWholeFretboard((value) => !value);
       }
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [setHideGuidingLines]);
+  }, [setHideGuidingLines, instrument]);
   const [twoStrings, setTwoStrings] = useState(true);
+  const [wholeFretboard, setWholeFretboard] = useState(false);
+  const useSmallGutters = instrument === 'guitar' && wholeFretboard;
   const [search, setSearch] = useState("");
   const filteredSongs = dropdownSongs.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase()),
@@ -155,10 +162,12 @@ function App() {
     const positioned = instrument === 'piano' ? pianoLayout(transposed) : twoStrings
       ? twoStringLayout(transposed)
       : threeStringLayout(transposed);
-    return { ...redStartingColor(
+    const chart = { ...redStartingColor(
       instrument === 'piano' || twoStrings ? positioned : stackSharedNodes(positioned),
     ), nodeColorMode: 'quality' };
-  }, [songId, targetKey, twoStrings, instrument]);
+    const displayed = instrument === 'guitar' && wholeFretboard ? fullFretboardLayout(chart) : chart;
+    return { ...displayed, layout: { ...displayed.layout, noGutters: useSmallGutters } };
+  }, [songId, targetKey, twoStrings, instrument, wholeFretboard, useSmallGutters]);
   const selectionKey = `${songId}:${song.key}:${instrument}`;
   useEffect(() => setChartOpen(false), [selectionKey]);
   const visitColors = useMemo(() => outgoingVisitColors(song), [song]);
@@ -374,7 +383,7 @@ function App() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   return (
-    <main>
+    <main className={useSmallGutters ? 'without-gutters' : undefined}>
       <div id="arcade-mode-dock" />
       <header>
         <div>
@@ -391,8 +400,8 @@ function App() {
           <button
             className="theme-toggle"
             type="button"
-            aria-keyshortcuts="d"
-            title="Toggle light/dark mode (D)"
+            aria-keyshortcuts="w"
+            title="Toggle light/dark mode (W)"
             aria-pressed={darkMode}
             onClick={() => setDarkMode((value) => !value)}
           >
@@ -424,7 +433,10 @@ function App() {
           <select
             id="song-select"
             value={songId}
-            onChange={(event) => changeSong(event.target.value)}
+            onChange={(event) => {
+              changeSong(event.target.value);
+              event.currentTarget.blur();
+            }}
           >
             {!filteredSongs.some((item) => item.id === songId) && (
               <option value={songId}>{songOptionLabel(song)}</option>
@@ -458,32 +470,37 @@ function App() {
         </label>
         <label>Instrument <select value={instrument} onChange={event => setInstrument(event.target.value)}><option value="guitar">Guitar</option><option value="piano">Piano</option></select></label>
         <div className="chart-display-controls">
-          <button className="theme-toggle" type="button" aria-keyshortcuts="x" title="Toggle full path (X)" aria-pressed={showFullPathDuringPlayback} onClick={() => setShowFullPathDuringPlayback(value => !value)}>Full path <kbd>X</kbd></button>
+          <div className="chart-toggle-group" role="group" aria-label="Default display options">
+          <button className="theme-toggle full-progression-toggle" type="button" aria-keyshortcuts="v" title="Toggle full progression (V)" aria-pressed={showFullPathDuringPlayback} onClick={() => setShowFullPathDuringPlayback(value => !value)}>Full progression <kbd>V</kbd></button>
           <button
             className="theme-toggle"
             type="button"
-            aria-keyshortcuts="g"
-            title="Toggle guide lines (G)"
+            aria-keyshortcuts=","
+            title="Toggle guidelines (,)"
             aria-pressed={!hideGuidingLines}
             onClick={() => setHideGuidingLines((value) => !value)}
           >
-            Guiding lines{" "}
-            <kbd>G</kbd>
+            Guidelines{" "}
+            <kbd>,</kbd>
           </button>
           <AutoScrollToggle enabled={autoScrollEnabled} onToggle={() => setAutoScrollEnabled(enabled => !enabled)} />
+          </div>
+          <div className="chart-toggle-group" role="group" aria-label="Additional display options">
+          <button className="theme-toggle" type="button" disabled={instrument === 'piano'} aria-keyshortcuts="n" aria-pressed={wholeFretboard} title="Toggle frets 1–12 on the current map’s strings (N)" onClick={() => setWholeFretboard(value => !value)}>12 frets <kbd>N</kbd></button>
           <button
             disabled={instrument === "piano"}
             className="string-toggle theme-toggle"
             type="button"
-            aria-keyshortcuts="s"
-            title="Toggle 2/3 strings (S)"
+            aria-keyshortcuts="m"
+            title="Toggle 2/3 strings (M)"
             aria-pressed={!twoStrings}
             onClick={() => setTwoStrings((value) => !value)}
           >
             Show D string{" "}
-            <kbd>S</kbd>
+            <kbd>M</kbd>
           </button>
-          <button className="theme-toggle" type="button" aria-keyshortcuts="h" aria-haspopup="dialog" aria-pressed={chartOpen} onClick={() => setChartOpen(open => !open)} title="Toggle chord chart (H)">Chord chart <kbd>H</kbd></button>
+          <button className="theme-toggle" type="button" aria-keyshortcuts="c" aria-haspopup="dialog" aria-pressed={chartOpen} onClick={() => setChartOpen(open => !open)} title="View full chart (C)">View Full Chart <kbd>C</kbd></button>
+          </div>
         </div>
       </nav>
       <ChordPlayer
@@ -500,9 +517,14 @@ function App() {
         }
         twoStrings={twoStrings}
         setTwoStrings={setTwoStrings}
+        wholeFretboard={wholeFretboard}
+        onToggleWholeFretboard={() => setWholeFretboard(value => !value)}
         onToggleGuideLines={() => setHideGuidingLines((value) => !value)}
         selectionControls={<div className="game-song-selection">
-          <label>Song<select value={songId} onChange={event => changeSong(event.target.value)}>{dropdownSongs.map(item => <option key={item.id} value={item.id}>{songOptionLabel(item)}</option>)}</select></label>
+          <label>Song<select value={songId} onChange={event => {
+            changeSong(event.target.value);
+            event.currentTarget.blur();
+          }}>{dropdownSongs.map(item => <option key={item.id} value={item.id}>{songOptionLabel(item)}</option>)}</select></label>
           <label>Key<select value={targetKey} onChange={event => changeKey(event.target.value)}>
             <option value="">{songsById[songId].key}</option>
             {availableKeys.filter(root => notePitch(root) !== notePitch(songsById[songId].key)).map(root => <option key={root} value={root}>{displayNote(root)}{/minor|-$/.test(song.key) ? ' minor' : ''}</option>)}

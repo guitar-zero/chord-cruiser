@@ -1,8 +1,7 @@
 import { routeVertices } from './reciprocalRoutes.js';
 
-// Expand fret spacing without enlarging chord shapes or changing string rows.
-export function threeStringLayout(source) {
-  const scale=1.65;
+// Adjust fret spacing without resizing chord shapes or changing string rows.
+export function threeStringLayout(source, scale = 1.65) {
   const bySection=new Map(source.layout.sections.map(section=>[section.id,section]));
   const xFor=(sectionId,x)=>{
     const section=bySection.get(sectionId);

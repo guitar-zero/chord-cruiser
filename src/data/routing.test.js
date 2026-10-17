@@ -2,6 +2,31 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { pointAlongRoute, routeSampler } from './motion.js';
 import { routePath } from './stringLayout.js';
+import { fullFretboardLayout } from './fullFretboardLayout.js';
+
+test('Whole fretboard extends the slice while preserving chord and route alignment', () => {
+  for (const rows of [[400, 760], [350, 620, 890]]) {
+    const section = { id: 'main', left: 200, right: 1280, frets: [8, 9, 10], boundaries: [200, 560, 920, 1280], centers: [380, 740, 1100], rows, top: rows[0] - 65, bottom: rows.at(-1) + 65 };
+    const song = { nodes: [{ id: 'chord', section: 'main', fret: 9, x: 740, y: rows.at(-1), radius: 46 }], edges: [{ section: 'main', path: 'M380 400 L740 760' }], playback: [{ nodeId: 'chord' }], layout: { sections: [section] } };
+    const expanded = fullFretboardLayout(song);
+    const board = expanded.layout.sections[0];
+    assert.equal(board.frets[0], 1);
+    assert.equal(board.frets.at(-1), 12);
+    assert.equal(board.frets.length, 12);
+    assert.equal(board.showHeadstock, true);
+    assert.deepEqual(board.rows, rows);
+    assert.equal(board.stringLabels, section.stringLabels);
+    for (const [i, fret] of section.frets.entries()) assert.ok(Math.abs(board.centers[fret - 1] - (section.left + (section.centers[i] - section.left) * .8)) < 1e-9);
+    assert.equal(expanded.nodes[0].x, board.centers[8]);
+    assert.equal(expanded.nodes[0].radius, 46);
+    assert.equal(expanded.nodes[0].y, song.nodes[0].y);
+    assert.equal(expanded.edges[0].path, 'M344 400 L632 760');
+    assert.ok(board.boundaries[1] - board.boundaries[0] < section.boundaries[1] - section.boundaries[0]);
+    assert.equal(expanded.playback, song.playback);
+    assert.equal(section.frets.length, 3);
+    assert.ok(board.top < board.rows[0]);
+  }
+});
 
 test('Dense six-string passages route around intervening notes without crashing',()=>{
   const positions=[[1,3],[2,0],[0,2],[1,1],[3,2],[4,3],[0,0],[3,0],[2,2]];

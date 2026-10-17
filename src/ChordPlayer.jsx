@@ -50,6 +50,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onPlaybackPosition,
     twoStrings,
     setTwoStrings,
+    wholeFretboard,
+    onToggleWholeFretboard,
     autoScrollEnabled,
     onToggleAutoScroll,
     chartOpen,
@@ -84,7 +86,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   }, [gameMode]);
   useEffect(() => {
     function handleChartShortcut(event) {
-      if (shortcutKey(event) !== 'h') return;
+      if (shortcutKey(event) !== 'c') return;
       event.preventDefault();
       setChartOpen(open => !open);
     }
@@ -540,8 +542,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         key={gameMode ? 'game' : 'practice'}
         gameMode={gameMode}
         gameReady={gameReady}
-        chartOpen={chartOpen}
-        onOpenChordChart={() => setChartOpen(open => !open)}
+        wholeFretboard={wholeFretboard}
+        onToggleWholeFretboard={onToggleWholeFretboard}
         nodeColorMode={songData.nodeColorMode}
         currentEvent={active}
         currentNode={currentNode}

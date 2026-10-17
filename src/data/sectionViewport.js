@@ -15,11 +15,12 @@ export function sectionViewport(song, sectionId) {
   if (!section) return song.layout.viewBox;
   const nodes = song.nodes.filter(node => node.section === sectionId);
   const routePoints = song.edges.filter(edge => edge.section === sectionId && edge.path).flatMap(edge => routeVertices(edge.path));
-  const left = Math.min(section.left - (section.sideGutterLeft ?? 190), ...nodes.map(node => node.x - 100), ...routePoints.map(point => point.x - 65));
-  const right = Math.max(section.right + (section.sideGutterRight ?? 190), ...nodes.map(node => node.x + 100), ...routePoints.map(point => point.x + 65));
+  // String labels are content; retain their width even with gutters disabled.
+  const left = Math.min(section.left - (song.layout.noGutters ? 110 : section.sideGutterLeft ?? 190), ...nodes.map(node => node.x - 100), ...routePoints.map(point => point.x - 65));
+  const right = Math.max(section.right + (song.layout.noGutters ? 4 : section.sideGutterRight ?? 190), ...nodes.map(node => node.x + 100), ...routePoints.map(point => point.x + 65));
   const header=sectionHeaderPositions(song,sectionId);
-  const top = Math.min(header.titleY - 65, header.fretY - 65, ...nodes.map(node => node.y + (node.badgeOffset || -68) - 50), ...routePoints.map(point => point.y - 65));
-  const bottom = Math.max(header.fretY + 90, section.bottom + 170, ...nodes.map(node => node.y + 180), ...routePoints.map(point => point.y + 65));
+  const top = Math.min(header.titleY - (song.layout.noGutters ? 40 : 65), header.fretY - 65, ...nodes.map(node => node.y + (node.badgeOffset || -68) - 50), ...routePoints.map(point => point.y - 65));
+  const bottom = Math.max(header.fretY + (song.layout.noGutters ? 45 : 90), section.bottom + 170, ...nodes.map(node => node.y + 180), ...routePoints.map(point => point.y + 65));
   return `${left} ${top} ${right-left} ${bottom-top}`;
 }
 import { routeVertices } from './reciprocalRoutes.js';

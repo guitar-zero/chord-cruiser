@@ -25,6 +25,7 @@ h1 { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font
 .songs button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .chart { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 35px var(--ink)08; }
 .chart svg { width: 100%; height: auto; display: block; }
+.chart.has-headstock { overflow: visible; }
 aside { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 26px; }
 h2 { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-size: 25px; margin: 0 0 24px; }
 .route + .route { border-top: 1px solid var(--border); margin-top: 22px; padding-top: 22px; }
@@ -368,8 +369,17 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .mini-progress-controls button:disabled { opacity: .45; cursor: default; }
 .mini-progress-controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .mini-view-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.mini-compact-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.mini-compact-controls button { justify-content: center; gap: 3px; padding: 6px 3px; font-size: 10px; white-space: nowrap; }
+.mini-compact-controls { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
+.mini-compact-controls button { grid-column: span 2; justify-content: center; gap: 3px; padding: 6px 3px; font-size: 10px; white-space: nowrap; }
+.mini-compact-controls button:nth-child(n + 4) { grid-column: span 2; }
+.mini-inline-chart { margin-top: 10px; border-top: 1px solid var(--border); }
+.mini-inline-chart .mini-lead-sheet { max-height: min(260px, 30dvh); }
+.mini-inline-chart .lead-sheet-measure { min-height: 48px; }
+.mini-inline-chart .lead-sheet-measure button { font-size: 11px; }
+.mini-progress-toast.has-minichart { height: calc(100dvh - 32px); display: flex; flex-direction: column; }
+.mini-progress-toast.has-minichart > * { flex-shrink: 0; }
+.has-minichart .mini-inline-chart { flex: 1 0 120px; min-height: 120px; display: flex; flex-direction: column; overflow: hidden; }
+.has-minichart .mini-inline-chart .mini-lead-sheet { flex: 1; min-height: 0; max-height: none; }
 .mini-compact-controls kbd { padding: 1px 3px; font-size: 9px; }
 .mini-view-controls button { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--muted); font: 11px system-ui, sans-serif; cursor: pointer; }
 .mini-view-controls button[aria-pressed="true"] { background: var(--active); border-color: var(--accent); color: var(--ink); }
@@ -425,7 +435,8 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .timeline-chord:disabled { cursor: wait; }
 
 .song-picker { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin-bottom: 24px; }
-.chart-display-controls { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 12px; }
+.chart-display-controls { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 20px; }
+.chart-toggle-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chart-display-controls button[aria-pressed="true"], .transport button[aria-pressed="true"], .mini-progress-controls button[aria-pressed="true"] { background: var(--active); border-color: var(--accent); color: var(--ink); }
 .chart-display-controls kbd { margin-left: 7px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; font: 11px system-ui, sans-serif; color: var(--muted); }
 .song-picker label { display: grid; gap: 6px; color: var(--muted); font-size: 13px; }
@@ -549,7 +560,6 @@ svg.fretboard-overview { display: block; width: 100%; height: auto; max-height: 
 .mobile-mini-menu-modal::backdrop { background: #0008; }
 .mobile-mini-menu-modal .mini-progress-toast { width: 100%; max-height: calc(100dvh - 32px); margin: 0; animation: none; }
 
-.mini-compact-controls .mini-auto-scroll-toggle { grid-column: 1 / -1; }
 
 .game-score-collapse { margin-left: auto; border: 0; padding: 4px; background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
 .game-score-collapse:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -604,3 +614,11 @@ svg.fretboard-overview { display: block; width: 100%; height: auto; max-height: 
 @media (max-width: 600px) { .game-song-selection { grid-template-columns: 1fr; } }
 
 .game-count-in-chords > .count-in-root-position { margin: 6px 0; color: var(--ink); font-size: clamp(16px, 3vw, 22px); }
+
+main.without-gutters { width: 100%; max-width: none; padding: 16px; margin: 0; }
+.without-gutters .chart-sections { gap: 16px; }
+.without-gutters .chart { border: 0; border-radius: 0; box-shadow: none; }
+.without-gutters .panel-caption { margin-bottom: 0; }
+.without-gutters .section-beat-gap { min-height: 0; padding: 0; }
+.chart-display-controls .full-progression-toggle { font-size: 12px; }
+.mini-view-controls .full-progression-toggle { font-size: 9px; gap: 3px; padding-inline: 3px; }

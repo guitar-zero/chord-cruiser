@@ -1,20 +1,36 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { leadSheetSections } from './data/leadSheet.js';
 import { timelineColor } from './data/timelinePresentation.js';
 
 const chordLabel = chord => chord.replaceAll('maj7', 'Δ7').replaceAll('b', '♭').replaceAll('#', '♯');
 
-export default function MiniLeadSheet({ timeline, position, colors, darkMode, disabled, onSeek }) {
+export default function MiniLeadSheet({ timeline, position, colors, darkMode, disabled, onSeek, alignCurrentSection = false }) {
   const sections = useMemo(() => leadSheetSections(timeline), [timeline]);
   const ref = useRef(null);
   const activeBar = Math.floor(position / timeline.duration * timeline.beats / timeline.beatsPerBar) + 1;
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = ref.current;
-    const current = container?.querySelector('[aria-current="step"]');
-    if (!current) return;
-    const a = container.getBoundingClientRect(), b = current.getBoundingClientRect();
-    if (b.top < a.top || b.bottom > a.bottom) container.scrollTop += b.top - a.top - container.clientHeight / 2 + b.height / 2;
-  }, [activeBar]);
+    if (!container) return;
+    function followCurrent() {
+      const current = container.querySelector('[aria-current="step"]');
+      if (!current) return;
+      const a = container.getBoundingClientRect(), b = current.getBoundingClientRect();
+      if (alignCurrentSection) {
+        const section = current.closest('.lead-sheet-section').getBoundingClientRect();
+        if (section.height <= container.clientHeight) {
+          container.scrollTop += section.bottom - a.top - container.clientHeight;
+        } else if (b.top < a.top || b.bottom > a.bottom) {
+          container.scrollTop += b.bottom - a.top - container.clientHeight;
+        }
+      } else if (b.top < a.top || b.bottom > a.bottom) {
+        container.scrollTop += b.top - a.top - container.clientHeight / 2 + b.height / 2;
+      }
+    }
+    followCurrent();
+    const observer = new ResizeObserver(followCurrent);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [activeBar, timeline, alignCurrentSection]);
   return <div className="mini-lead-sheet" ref={ref} role="region" aria-label="Full chord chart" tabIndex="0">
     {sections.map((section, sectionIndex) => <section key={sectionIndex} className="lead-sheet-section">
       <h3>{section.label || 'Chord chart'}</h3>

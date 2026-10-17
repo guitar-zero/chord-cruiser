@@ -60,7 +60,7 @@ const ordinal = (number) => {
 const fretDotCount = (fret) =>
   fret > 0 && fret % 12 === 0 ? 2 : [3, 5, 7, 9].includes(fret % 12) ? 1 : 0;
 
-function Grid({ section: originalSection, darkMode, activeFret, pianoState, pianoColor, pianoNextColor, pianoPipe }) {
+function Grid({ section: originalSection, darkMode, activeFret, activeString, activeStringColor, pianoState, pianoColor, pianoNextColor, pianoPipe }) {
   const id = useId().replaceAll(":", "");
   const woodId = `wood-${id}`,
     grainId = `grain-${id}`,
@@ -82,8 +82,11 @@ function Grid({ section: originalSection, darkMode, activeFret, pianoState, pian
           centers: originalSection.centers.slice(firstVisible),
           boundaries: originalSection.boundaries.slice(firstVisible),
         };
+  // Keep the wooden edge close to the lowest string. Chord labels and routes
+  // retain their own space outside the wood in the section viewport.
+  const boardBottom = Math.min(section.bottom, section.rows.at(-1) + 24);
   const width = section.right - section.left,
-    height = section.bottom - section.top;
+    height = boardBottom - section.top;
   return (
     <g>
       <defs>
@@ -120,6 +123,22 @@ function Grid({ section: originalSection, darkMode, activeFret, pianoState, pian
           <stop offset="1" stopColor="#686f73" />
         </linearGradient>
       </defs>
+      {section.showHeadstock && <g
+        aria-label="Guitar headstock"
+        pointerEvents="none"
+        transform={`translate(${section.left - 440} ${section.top}) scale(${440 / 180} ${height / 148}) translate(0 -56)`}
+      >
+        <path d="M180 70 L145 48 Q113 24 36 42 L18 56 L18 204 L36 218 Q113 236 145 212 L180 190 Z"
+          fill={`url(#${woodId})`} stroke={darkMode ? '#876a4e' : '#a78860'} strokeWidth="3"/>
+        {[48, 89, 130].map(x => <g key={x}>
+          <path d={`M${x} 47 V26 M${x} 212 V235`} stroke="#8b9296" strokeWidth="5"/>
+          <rect x={x - 9} y="18" width="18" height="13" rx="5" fill="#bbc0bd"/>
+          <rect x={x - 9} y="231" width="18" height="13" rx="5" fill="#bbc0bd"/>
+          <circle cx={x} cy="65" r="7" fill="#bbc0bd"/>
+          <circle cx={x} cy="194" r="7" fill="#bbc0bd"/>
+        </g>)}
+        <text x="85" y="135" textAnchor="middle" fontSize="12" fontWeight="700" fill={darkMode ? '#e9d5b5' : '#6b513b'}>CHORD MAP</text>
+      </g>}
       <rect
         x={section.left}
         y={section.top}
@@ -148,10 +167,11 @@ function Grid({ section: originalSection, darkMode, activeFret, pianoState, pian
         />
       )}
       <g aria-label="Metal frets">
+        {section.showHeadstock && <rect x={section.left - 7} y={section.top} width="14" height={height} rx="3" fill="#e8e5d8"/>}
         {section.boundaries.map((x) => (
           <g key={x}>
             <path
-              d={`M${x + 3} ${section.top + 3} V${section.bottom - 3}`}
+              d={`M${x + 3} ${section.top + 3} V${boardBottom - 3}`}
               stroke="#241f1b"
               opacity=".16"
               strokeWidth="12"
@@ -170,8 +190,17 @@ function Grid({ section: originalSection, darkMode, activeFret, pianoState, pian
       <g aria-label="Wound guitar strings" fill="none">
         {section.rows.map((y, i) => {
           const thickness = 5 + i * 1.5;
+          const highlighted = activeStringColor && section.stringLabels[i] === (activeString === 'E' ? 'Low E' : activeString);
           return (
             <g key={y}>
+              {highlighted && <path
+                data-current-root-string={activeString}
+                d={`M${section.left} ${y} H${section.right}`}
+                stroke={activeStringColor}
+                strokeWidth="28"
+                strokeOpacity={darkMode ? .18 : .12}
+                strokeLinecap="round"
+              />}
               <path
                 d={`M${section.left} ${y + 3} H${section.right}`}
                 stroke="#211b15"
@@ -195,6 +224,13 @@ function Grid({ section: originalSection, darkMode, activeFret, pianoState, pian
                 strokeDasharray="1 5"
                 opacity=".35"
               />
+              {highlighted && <path
+                d={`M${section.left} ${y} H${section.right}`}
+                stroke={activeStringColor}
+                strokeWidth={thickness + 2}
+                strokeOpacity=".45"
+                strokeLinecap="round"
+              />}
             </g>
           );
         })}
@@ -754,6 +790,7 @@ const SongChart = forwardRef(function SongChart(
       ref={svgRef}
       xmlns="http://www.w3.org/2000/svg"
       viewBox={viewBox}
+      style={sections.some(section => section.showHeadstock) ? { overflow: 'visible' } : undefined}
       role="img"
       aria-labelledby={`${id}-title ${id}-desc`}
     >
@@ -839,6 +876,8 @@ const SongChart = forwardRef(function SongChart(
           pianoColor={nodeColors[song.playback[playbackVisitIndex]?.nodeId]}
           pianoState={section.instrument === "piano" ? pianoPlaybackKeys(song, playbackVisitIndex, section.id) : undefined}
           activeFret={current ? byId[current.node]?.fret : undefined}
+          activeString={current && byId[current.node]?.section === section.id ? byId[current.node]?.string : undefined}
+          activeStringColor={current && byId[current.node]?.section === section.id ? timelineColor(displayColors[playbackVisitIndex], darkMode) : undefined}
         />
       ))}
       <CurrentChordIndicator
