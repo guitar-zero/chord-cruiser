@@ -60,7 +60,7 @@ function App() {
   const [countInActive, setCountInActive] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
-  const [songId, setSongId] = useState("autumn-leaves");
+  const [songId, setSongId] = useState("all-of-me");
   const [loadingSongId, setLoadingSongId] = useState(null);
   const songChangeFrame = useRef(null);
   useEffect(() => () => cancelAnimationFrame(songChangeFrame.current), []);
