@@ -1,6 +1,6 @@
 # Chord Cruiser
 
-A React app displaying 200 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
+A visual backing track for 200 jazz standards. Follow the bouncing ball through the chords and play along with synchronized backing music.
 
 Full path is shown by default in chord and game modes; toggle it with **X**.
 

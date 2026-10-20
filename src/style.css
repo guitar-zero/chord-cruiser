@@ -1,6 +1,6 @@
  :root { --ink: #073840; --page: #efeee7; --surface: #fbf8ed; --muted: #62736d; --border: #cbd6ca; --hover: #eaf0e3; --input: #fffdf6; --accent: #cc480e; --track: #d8dfd1; --active: #f8e4d5; color-scheme: light; }
 :root[data-theme="dark"] { --ink: #e3f1ed; --page: #101719; --surface: #192427; --muted: #a5bbb4; --border: #3b5152; --hover: #293b3d; --input: #101d20; --accent: #ffa263; --track: #3b5152; --active: #443024; color-scheme: dark; }
-.header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.header-actions { position: absolute; top: 8px; right: 12px; left: 12px; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; }
 .theme-toggle { background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 9px; padding: 12px 16px; font: inherit; font-size: 14px; cursor: pointer; }
 .theme-toggle:hover { background: var(--hover); }
 .theme-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
@@ -10,14 +10,18 @@ footer a { color: var(--accent); }
 * { box-sizing: border-box; }
 body { margin: 0; }
 main { width: 76%; max-width: 1248px; padding: 48px 36px 28px; margin: auto; }
-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 30px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-top: 24px; margin-bottom: 30px; }
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .22em; color: var(--muted); margin: 0 0 10px; }
+.brand-tagline { color: var(--muted); font-size: 14px; margin: -4px 0 16px; }
 h1 { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-size: clamp(30px, 4vw, 48px); margin: 0; letter-spacing: -.04em; }
 .subtitle { color: var(--muted); margin: 10px 0 0; }
 .download { color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--border); padding: 12px 18px; border-radius: 9px; font-size: 14px; white-space: nowrap; }
 .download:hover { background: var(--hover); }
 .download:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 .download span { margin-left: 12px; }
+.header-actions button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border-color: transparent; border-radius: 6px; background: transparent; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.header-actions button:hover { background: var(--hover); color: var(--ink); }
+.header-actions button span { margin-left: 0; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
 .songs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .songs button { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; cursor: pointer; }
@@ -398,8 +402,18 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .mini-chord-slot { flex: 0 0 calc(100% / 3); min-width: 0; padding: 0 4px; text-align: center; }
 .mini-chord-role { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; }
 .mini-chord { position: relative; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 7px 4px; border: 2px solid transparent; border-radius: 8px; background: transparent; color: var(--chord-color); font: 700 18px system-ui, sans-serif; cursor: pointer; }
-.chord-countdown { font-variant-numeric: tabular-nums; }
-.chord-time-remaining { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--chord-color); transform-origin: left center; pointer-events: none; }
+.chord-countdown { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; margin-top: 6px; }
+.chord-countdown-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.chord-countdown-dot.elapsed { opacity: .2; }
+.chord-countdown.is-current .chord-countdown-dot { animation: chord-dot-bounce 380ms ease-out var(--beat-bounce-delay) both; }
+@keyframes chord-dot-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-2px) scale(1.08); }
+  65% { transform: translateY(.5px) scale(.98); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chord-countdown.is-current .chord-countdown-dot { animation: none; }
+}
 .mini-chord.active { border-color: var(--chord-color); background: color-mix(in srgb, var(--chord-color) 12%, var(--surface)); }
 .mini-chord:hover { background: var(--hover); }
 .mini-chord:focus-visible { outline: 2px solid var(--chord-color); outline-offset: -4px; }
@@ -581,11 +595,11 @@ svg.fretboard-overview { display: block; width: 100%; height: auto; max-height: 
 .game-bar-boundaries span { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .65; transform: translateX(-1px); }
 
 .practice-play-launch { display: flex; justify-content: center; margin: 4px 0 22px; }
-.practice-play-button { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 64px; width: min(360px, 100%); padding: 16px 24px; border: 2px solid #77a98c; border-radius: 26px; background: linear-gradient(135deg, #e3f5e8, #bce4ca); color: #234d38; box-shadow: 0 6px 0 #638e73, inset 0 2px 0 #fff7, 0 10px 24px #3d805525; font: 800 20px ui-rounded, system-ui, sans-serif; cursor: pointer; transition: transform 150ms ease, box-shadow 150ms ease; }
+.practice-play-button { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 64px; width: min(360px, 100%); padding: 16px 24px; border: 2px solid #c99b39; border-radius: 26px; background: linear-gradient(135deg, #ffe9a6, #efc45d); color: #604310; box-shadow: 0 6px 0 #ad812c, inset 0 2px 0 #fff7, 0 10px 24px #a7772525; font: 800 20px ui-rounded, system-ui, sans-serif; cursor: pointer; transition: transform 150ms ease, box-shadow 150ms ease; }
 .practice-play-sparkle { font-size: 25px; }
-.practice-play-boat { display: inline-block; transform: scaleX(-1); }
-.practice-play-button:not(:disabled):hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 9px 0 #638e73, 0 14px 28px #3d805530; }
-.practice-play-button:not(:disabled):active { transform: translateY(4px); box-shadow: 0 2px 0 #638e73; }
+.practice-play-boat { display: inline-flex; align-items: center; justify-content: center; align-self: center; font-size: 34px; line-height: 1; transform: translateY(-5px) scaleX(-1); }
+.practice-play-button:not(:disabled):hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 9px 0 #ad812c, 0 14px 28px #a7772530; }
+.practice-play-button:not(:disabled):active { transform: translateY(4px); box-shadow: 0 2px 0 #ad812c; }
 .practice-play-button:disabled { opacity: .6; cursor: wait; }
 .practice-play-button:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
 @media (prefers-reduced-motion: reduce) { .practice-play-button { transition: none; } .practice-play-button:not(:disabled):hover { transform: none; } }
@@ -625,7 +639,7 @@ main.without-gutters { width: 100%; max-width: none; padding: 16px; margin: 0; }
 
 /* Give both playback surfaces the same little music-box button. */
 .mini-transport-controls { align-items: center; justify-content: center; flex-wrap: nowrap; gap: 8px; padding-bottom: 3px; }
-.mini-transport-controls .mini-play-button { flex: 0 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 5px 9px; border: 1px solid #77a98c; border-radius: 10px; background: linear-gradient(135deg, #e3f5e8, #bce4ca); color: #234d38; box-shadow: 0 2px 0 #638e73, inset 0 1px 0 #fff8; font: 750 12px ui-rounded, system-ui, sans-serif; transition: transform 150ms ease, box-shadow 150ms ease; }
+.mini-transport-controls .mini-play-button { flex: 0 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 5px 9px; border: 1px solid #77a98c; border-radius: 10px; background: linear-gradient(135deg, #e3f5e8, #bce4ca); color: #234d38; box-shadow: 0 2px 0 #ad812c, inset 0 1px 0 #fff8; font: 750 12px ui-rounded, system-ui, sans-serif; transition: transform 150ms ease, box-shadow 150ms ease; }
 .mini-play-sparkle { font-size: 12px; }
 .mini-transport-controls .mini-play-button:hover:not(:disabled) { background: linear-gradient(135deg, #effaf2, #cfeeda); transform: translateY(-1px); box-shadow: 0 3px 0 #638e73; }
 .mini-transport-controls .mini-play-button:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 0 #638e73; }

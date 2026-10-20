@@ -269,9 +269,9 @@ function Grid({ section: originalSection, darkMode, activeFret, activeString, ac
           width="210"
           height="54"
           rx="14"
-          fill="#e534ae"
+          fill="#efc45d"
           fillOpacity={darkMode ? ".24" : ".14"}
-          stroke="#e534ae"
+          stroke="#efc45d"
           strokeWidth="3"
         />
       )}
@@ -284,7 +284,7 @@ function Grid({ section: originalSection, darkMode, activeFret, activeString, ac
         {section.frets.map((fret, i) => (
           <text
             data-fret-label={fret}
-            fill={fret === activeFret ? "#e534ae" : undefined}
+            fill={fret === activeFret ? "#efc45d" : undefined}
             aria-current={fret === activeFret ? "true" : undefined}
             aria-label={`Fret ${fret}`}
             key={fret}
@@ -328,7 +328,7 @@ function Grid({ section: originalSection, darkMode, activeFret, activeString, ac
       {originalSection.frets.includes(0) && <text
         x={originalSection.centers[originalSection.frets.indexOf(0)]}
         y={section.fretY} textAnchor="middle" fontSize={section.fretFontSize || 35}
-        fill={activeFret === 0 ? '#e534ae' : ink} fontWeight="700"
+        fill={activeFret === 0 ? '#efc45d' : ink} fontWeight="700"
       >Open</text>}
     </g>
   );

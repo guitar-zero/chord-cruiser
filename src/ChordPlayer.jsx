@@ -31,7 +31,6 @@ import { countInComplete, countInBeat, countInChords, countInSchedule, countInLa
 import { nextShellTarget, shellTargets } from './audio/game.js';
 import GameCountIn from './GameCountIn.jsx';
 import GameAtmosphere from './GameAtmosphere.jsx';
-import ArcadeModeToggle from './ArcadeModeToggle.jsx';
 import { PlaybackRenderGate } from './audio/playbackRenderGate.js';
 import { positionNodeShapes } from './data/chordShapes.js';
 
@@ -58,7 +57,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     chartOpen,
     setChartOpen,
     gameMode,
-    setGameMode,
     selectionControls,
     songOptions,
     onSongChange,
@@ -395,7 +393,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       aria-label="Chord playback"
       aria-busy={state === "starting"}
     >
-      <ArcadeModeToggle enabled={gameMode} onToggle={() => { stop(); setGameReady(false); setGameMode(value => !value); setError(''); }} />
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
       {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
       {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={setBpm} />}
@@ -546,7 +543,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           nodeLabels={Object.fromEntries(
             songData.nodes.map((node) => [node.id, node.chord]),
           )}
-          onSeek={seekAndPlay}
+          onSeek={seek}
           disabled={state === "starting"}
         />
       </div>}
@@ -610,7 +607,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         darkMode={darkMode}
         timeline={timeline}
         activeIndex={running || position > 0 ? activeIndex : -1}
-        onSeek={seekAndPlay}
+        onSeek={seek}
         disabled={state === "starting"}
       />}
       {error && (

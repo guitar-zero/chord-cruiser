@@ -34,6 +34,7 @@ export default function MiniChordStrip({
           const remaining = Math.max(0, Math.min(event.duration, event.start + event.duration - position));
           const beatsRemaining = event.duration > 0 ? remaining / event.duration * event.beats : 0;
           const beatCount = Math.ceil(beatsRemaining);
+          const displayedBeats = current ? beatCount : Math.ceil(event.beats);
           return (
             <div
               key={index}
@@ -44,7 +45,6 @@ export default function MiniChordStrip({
             >
               <span className="mini-chord-role">
                 {index === centeredIndex ? "Current" : index === centeredIndex + 1 ? "Next" : "Then"}
-                {current && <span className="chord-countdown"> · {beatCount} {itemName === 'notes' ? (beatCount === 1 ? 'step' : 'steps') : (beatCount === 1 ? 'beat' : 'beats')}</span>}
               </span>
               <Note
                 type={interactive ? "button" : undefined}
@@ -57,7 +57,14 @@ export default function MiniChordStrip({
                 title={event.chord}
               >
                 {label}
-                {current && <span className="chord-time-remaining" aria-hidden="true" style={{transform:`scaleX(${event.duration > 0 ? remaining / event.duration : 0})`}} />}
+                <span key={current ? 'current-beats' : 'upcoming-beats'} className={`chord-countdown${current ? ' is-current' : ''}`} role="img" aria-label={`${displayedBeats} ${itemName === 'notes' ? 'steps' : 'beats'}${current ? ' remaining' : ''}`}>
+                  {Array.from({ length: Math.ceil(event.beats) }, (_, beat) => <span
+                    key={beat}
+                    className={`chord-countdown-dot${beat >= displayedBeats ? ' elapsed' : ''}`}
+                    style={{ '--beat-bounce-delay': `${280 + beat * 45}ms` }}
+                    aria-hidden="true"
+                  />)}
+                </span>
               </Note>
             </div>
           );

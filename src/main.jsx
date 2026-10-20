@@ -56,7 +56,7 @@ const songOptionLabel = (song) => {
 
 function App() {
   const [chartOpen, setChartOpen] = useState(false);
-  const [gameMode, setGameMode] = useState(false);
+  const gameMode = false;
   const [countInActive, setCountInActive] = useState(false);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
@@ -409,10 +409,10 @@ function App() {
         <span className="spinner" aria-hidden="true" />
         Loading {songsById[loadingSongId].title}…
       </div>}
-      <div id="arcade-mode-dock" />
       <header>
         <div>
           <p className="eyebrow">CHORD CRUISER</p>
+          <p className="brand-tagline">Visual backing track</p>
           <h1>{song.title}</h1>
           <p className="subtitle">In {song.key}</p>
           {song.playbackNote && <p className="note">{song.playbackNote}</p>}
@@ -430,16 +430,16 @@ function App() {
             aria-pressed={darkMode}
             onClick={() => setDarkMode((value) => !value)}
           >
-            {darkMode ? "☀ Light mode" : "☾ Dark mode"}
+            {darkMode ? "Light mode" : "Dark mode"} <span aria-hidden="true">{darkMode ? "☀" : "☾"}</span>
           </button>
           <button className="download" type="button" onClick={downloadSvg}>
-            Download all sections <span aria-hidden="true">↗</span>
+            Download as SVG <span aria-hidden="true">↗</span>
           </button>
           <button className="download" type="button" onClick={() => {
             if (!printChart(song, sectionsRef.current.querySelectorAll('svg[data-section-id]'))) {
               window.alert('Allow popups for this site to open the chart print preview.');
             }
-          }}>Print sections</button>
+          }}>Print sections <span aria-hidden="true">🖨</span></button>
         </div>
       </header>
       <nav className="song-picker" aria-label="Choose a song">
@@ -532,7 +532,6 @@ function App() {
         songOptions={dropdownSongs}
         onSongChange={changeSong}
         gameMode={gameMode}
-        setGameMode={setGameMode}
         chartOpen={chartOpen}
         setChartOpen={setChartOpen}
         autoScrollEnabled={autoScrollEnabled}

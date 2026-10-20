@@ -98,13 +98,13 @@ function IndicatorLaunch({ flight, onComplete }) {
     >
       <path
         d={path}
-        fill="#e534ae"
+        fill="#efc45d"
         fillOpacity=".09"
-        stroke="#e534ae"
+        stroke="#efc45d"
         strokeWidth="12"
         strokeOpacity=".18"
       />
-      <path d={path} fill="none" stroke="#e534ae" strokeWidth="4" />
+      <path d={path} fill="none" stroke="#efc45d" strokeWidth="4" />
     </svg>
     }
     </>, document.body

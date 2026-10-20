@@ -193,9 +193,9 @@ function CurrentChordIndicator({
             <path
               ref={haloRef}
               d={flower}
-              fill="#e534ae"
+              fill="#efc45d"
               fillOpacity=".09"
-              stroke="#e534ae"
+              stroke="#efc45d"
               strokeWidth="20"
               strokeOpacity=".18"
             />
@@ -203,7 +203,7 @@ function CurrentChordIndicator({
               ref={outlineRef}
               d={flower}
               fill="none"
-              stroke="#e534ae"
+              stroke="#efc45d"
               strokeWidth="6"
               strokeLinejoin="round"
             />
