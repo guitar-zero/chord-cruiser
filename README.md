@@ -1,4 +1,4 @@
-# Chord map
+# Chord Cruiser
 
 A React app displaying 200 Jazz Standard Repertoire songs, as guitar chord movement graphs with synchronized playback.
 

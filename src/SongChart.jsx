@@ -347,6 +347,7 @@ function ChordNode({
   visitIndex,
   playbackClockRef,
   hidden,
+  onClick,
 }) {
   const shineId = `next-shine-${useId().replaceAll(":", "")}`;
   const beatPulseRef = useRef(null);
@@ -413,6 +414,19 @@ function ChordNode({
   return (
     <g
       data-node-id={node.id}
+      onClick={onClick}
+      onMouseDown={onClick ? event => event.preventDefault() : undefined}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick && !hidden ? 0 : undefined}
+      aria-label={onClick ? `Jump to first ${node.chord} in this section` : undefined}
+      style={onClick ? { cursor: 'pointer' } : undefined}
+      onKeyDown={onClick ? event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          event.stopPropagation();
+          onClick();
+        }
+      } : undefined}
       data-next-node={nextColor ? 'true' : undefined}
       data-root={node.root}
       data-fret={node.fret}
@@ -618,6 +632,7 @@ const SongChart = forwardRef(function SongChart(
     song,
     currentChord,
     onIndicatorArrival,
+    onNodeClick,
     playbackClockRef,
     playbackVisitIndex = currentChord?.visitIndex,
     playbackIsPlaying = currentChord?.isPlaying,
@@ -881,6 +896,7 @@ const SongChart = forwardRef(function SongChart(
         />
       ))}
       <CurrentChordIndicator
+        fastChords={Boolean(rapid && playbackIsPlaying)}
         itemName="chord"
         onMotion={followIndicator}
         onArrival={handleArrival}
@@ -1009,6 +1025,7 @@ const SongChart = forwardRef(function SongChart(
         <ChordNode
           key={node.id}
           node={node}
+          onClick={onNodeClick && visits[node.id]?.length ? () => onNodeClick(node.id) : undefined}
           hidden={Boolean(nearbyNodes && !nearbyNodes.has(node.id))}
           visits={visits[node.id]}
           type={shapes[node.id]}

@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  startTransition,
 } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
@@ -60,6 +61,9 @@ function App() {
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
   const [songId, setSongId] = useState("all-of-me");
+  const [loadingSongId, setLoadingSongId] = useState(null);
+  const songChangeFrame = useRef(null);
+  useEffect(() => () => cancelAnimationFrame(songChangeFrame.current), []);
   const [targetKey, setTargetKey] = useState("");
   const [instrument, setInstrument] = useState('guitar');
   const [hiddenGuidesByInstrument, setHiddenGuidesByInstrument] = useState({ guitar: false, piano: true });
@@ -223,7 +227,7 @@ function App() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const sourceBounds = source?.getBoundingClientRect();
-    if (autoScrollEnabled) scrollChartSections(source?.closest(".chart-section"), panel);
+    if (autoScrollEnabled && advancing) scrollChartSections(source?.closest(".chart-section"), panel);
     if (!reducedMotion && sourceBounds && advancing) {
       const targetBounds = destination.getBoundingClientRect();
       setFlight({
@@ -350,12 +354,29 @@ function App() {
       });
     });
   }
+  function jumpToSection(sectionId) {
+    setChartOpen(false);
+    const sectionSvg = [...(sectionsRef.current?.querySelectorAll('svg[data-section-id]') || [])]
+      .find(svg => svg.dataset.sectionId === sectionId);
+    scrollChartSections(null, sectionSvg?.closest('.chart-section'));
+  }
   function changeSong(id) {
     playerRef.current?.stop();
     finishLaunch();
     setPlayback(null);
-    setTargetKey("");
-    setSongId(id);
+    if (id === songId || !songsById[id]) return;
+    setLoadingSongId(id);
+    cancelAnimationFrame(songChangeFrame.current);
+    // Allow the loading indicator to paint before constructing the next chart.
+    songChangeFrame.current = requestAnimationFrame(() => {
+      songChangeFrame.current = requestAnimationFrame(() => {
+        startTransition(() => {
+          setTargetKey("");
+          setSongId(id);
+          setLoadingSongId(null);
+        });
+      });
+    });
   }
   function changeKey(key) {
     playerRef.current?.stop();
@@ -384,10 +405,14 @@ function App() {
   }
   return (
     <main className={useSmallGutters ? 'without-gutters' : undefined}>
+      {loadingSongId && <div className="song-loading-toast" role="status" aria-live="polite">
+        <span className="spinner" aria-hidden="true" />
+        Loading {songsById[loadingSongId].title}…
+      </div>}
       <div id="arcade-mode-dock" />
       <header>
         <div>
-          <p className="eyebrow">CHORD PATHS</p>
+          <p className="eyebrow">CHORD CRUISER</p>
           <h1>{song.title}</h1>
           <p className="subtitle">In {song.key}</p>
           {song.playbackNote && <p className="note">{song.playbackNote}</p>}
@@ -504,6 +529,8 @@ function App() {
         </div>
       </nav>
       <ChordPlayer
+        songOptions={dropdownSongs}
+        onSongChange={changeSong}
         gameMode={gameMode}
         setGameMode={setGameMode}
         chartOpen={chartOpen}
@@ -538,11 +565,13 @@ function App() {
         onChordChange={handleChordChange}
         onCountInChange={setCountInActive}
         onPlaybackPosition={handlePlaybackPosition}
+        onSectionSeek={jumpToSection}
       />
       <div ref={sectionsRef}>
         <ChartSections
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
+          onNodeClick={nodeId => playerRef.current?.seekToNode(nodeId)}
           onIndicatorArrival={setIndicatorArrival}
           suppressBeatDots={countInActive}
           suppressIndicator={Boolean(flight)}

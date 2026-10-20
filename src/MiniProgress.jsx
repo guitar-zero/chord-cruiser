@@ -8,11 +8,15 @@ import ShellChordDiagram from "./ShellChordDiagram.jsx";
 import { timelineColor } from "./data/timelinePresentation.js";
 import { miniProgressState } from "./miniProgressState.js";
 import { shortcutKey } from "./keyboardShortcuts.js";
+import { popularSongIdsSet } from "./data/popularSongs.js";
 import { popupPlacement } from './data/popupPlacement.js';
 
 export default function MiniProgress({
   progressRef,
   chord,
+  songId,
+  songOptions,
+  onSongChange,
   currentEvent,
   currentNode,
   nextEvent,
@@ -147,6 +151,10 @@ export default function MiniProgress({
     if (shouldShow && !dialog.open) dialog.showModal();
     else if (!shouldShow && dialog.open) { dialog.close(); launcherRef.current?.focus(); }
   }, [isMobile, mounted, shouldShow]);
+  const seekToChord = value => {
+    progressProps.onSeek?.(value);
+    if (isMobile) closeMenu();
+  };
   const PopupContainer = isMobile ? 'dialog' : 'div';
   return (
     <>
@@ -174,7 +182,15 @@ export default function MiniProgress({
           >
             {gameMode && <div className="game-banner"><strong>GUITAR GAME MODE</strong></div>}
             <div className="mini-progress-heading">
-              <strong>{chord}</strong>
+              {onSongChange && songOptions ? <div className="mini-song-picker">
+                <select aria-label="Choose song" title="Choose song" value={songId} onChange={event => {
+                  onSongChange(event.target.value);
+                  event.currentTarget.blur();
+                }}>
+                  {songOptions.map(song => <option key={song.id} value={song.id}>{popularSongIdsSet.has(song.id) ? '★ ' : ''}{song.title}</option>)}
+                </select>
+                <span aria-hidden="true">⌄</span>
+              </div> : <strong>{chord}</strong>}
               <span>Bar {Math.min(Math.floor(progressProps.position / progressProps.timeline.duration * progressProps.timeline.beats / progressProps.timeline.beatsPerBar) + 1, Math.ceil(progressProps.timeline.beats / progressProps.timeline.beatsPerBar))}</span>
               <button type="button" className="mini-progress-close" autoFocus={isMobile} aria-label="Toggle mini menu" aria-keyshortcuts="/" title="Toggle mini menu (/)" onClick={closeMenu}>×</button>
             </div>
@@ -190,14 +206,14 @@ export default function MiniProgress({
               <button type="button" aria-label="Show D string" title="Show D string (M)" aria-pressed={!twoStrings} aria-keyshortcuts="m" onClick={() => setTwoStrings(value => !value)}>D string <kbd>M</kbd></button>
             </div>
             <div className="mini-progress-controls mini-transport-controls" aria-label="Playback controls">
-              <button type="button" onClick={onToggle} disabled={playbackState === 'starting'}>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</button>
+              <button className="mini-play-button" type="button" onClick={onToggle} disabled={playbackState === 'starting'}><span className="mini-play-sparkle" aria-hidden="true">♫</span><strong>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</strong><span className="mini-play-sparkle" aria-hidden="true">✦</span></button>
               <button type="button" onClick={onStop} disabled={playbackState === 'stopped' && progressProps.position === 0}>■ Stop</button>
             </div>
-            {gameMode ? <GameBar {...progressProps} mini /> : <ProgressBar {...progressProps} mini />}
-            <MiniChordStrip {...progressProps} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
+            {gameMode ? <GameBar {...progressProps} onSeek={seekToChord} mini /> : <ProgressBar {...progressProps} onSeek={seekToChord} mini />}
+            <MiniChordStrip {...progressProps} onSeek={seekToChord} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
             <div className="mini-shortcut-reminders"><kbd>Space</kbd> Play/pause · <kbd>/</kbd> Toggle mini menu · <kbd>C</kbd> Full chart modal</div>
             {minichartOpen && <div className="mini-inline-chart">
-              <MiniLeadSheet alignCurrentSection timeline={progressProps.timeline} position={progressProps.position} colors={colors} darkMode={darkMode} disabled={progressProps.disabled} onSeek={progressProps.onSeek} />
+              <MiniLeadSheet alignCurrentSection timeline={progressProps.timeline} position={progressProps.position} colors={colors} darkMode={darkMode} disabled={progressProps.disabled} onSeek={seekToChord} />
             </div>}
           </section>
         </PopupContainer>

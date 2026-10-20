@@ -52,7 +52,7 @@ export default function SectionBeatDots({ playbackClockRef, visible, song, color
     >{countdown.remaining > 0 && index === countdown.total - countdown.remaining ? index + 1 : null}</span>)}
     {visible && !passage && <span key={`next:${nextChordLanding ? impactKey : 'waiting'}`} className={`section-beat-dot remaining section-beat-chord${nextChordLanding ? ' chord-next-boom' : ''}`} style={{ '--chord-label-color': nextChordLanding ? currentColor : nextColor }} aria-hidden="true">{nextChordLanding ? currentLabel : nextLabel}</span>}
     {visible && passage && <span className="section-quick-chords" aria-hidden="true">
-      <span className="section-quick-caption">Quick changes</span>
+      <span className="section-quick-caption fast-rocket-vibrate"><span className="section-quick-rocket">🚀</span><span>Quick changes!</span></span>
       {quickIndices.map((index, offset) => <React.Fragment key={`${passage.start}:${offset}`}>
         {offset > 0 && <span className="section-quick-arrow">→</span>}
         <span key={index === currentIndex ? impactKey : index} className={`section-beat-dot remaining section-beat-chord${index === currentIndex ? ' is-current' : ''}${index === currentIndex && isPlaying ? ' chord-play-impact' : ''}`} style={{ '--chord-label-color': timelineColor(colors[index], darkMode) || currentColor, animationPlayState: isPlaying ? 'running' : 'paused' }}>{quickLabels[offset]}</span>

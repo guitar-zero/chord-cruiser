@@ -48,6 +48,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onChordChange,
     onCountInChange,
     onPlaybackPosition,
+    onSectionSeek,
     twoStrings,
     setTwoStrings,
     wholeFretboard,
@@ -59,6 +60,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     gameMode,
     setGameMode,
     selectionControls,
+    songOptions,
+    onSongChange,
   },
   controlRef,
 ) {
@@ -120,7 +123,13 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     },
     [],
   );
-  useImperativeHandle(controlRef, () => ({ stop }));
+  useImperativeHandle(controlRef, () => ({
+    stop,
+    seekToNode(nodeId) {
+      const event = timeline.events.find(event => event.nodeId === nodeId || event.nodeIds?.includes(nodeId));
+      if (event) return seekAndPlay(event.start);
+    },
+  }));
   function stop() {
     cancelAnimationFrame(frame.current);
     player.current?.stop();
@@ -165,7 +174,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     if (renderGate.current.shouldRender(time, visit, wrapped)) setPosition(elapsed);
     frame.current = requestAnimationFrame(tick);
   }
-  async function toggle(event) {
+  async function toggle(event, startPosition = position, startSeekVersion = seekVersion) {
     if (gameMode && !gameReady) { setError('Choose and connect your audio interface before pressing Play.'); return; }
     const launchButton = event?.currentTarget || playButton.current;
     setError("");
@@ -181,13 +190,13 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         tick();
       } else {
         setState("starting");
-        const startAt = position >= timeline.duration ? 0 : position;
+        const startAt = startPosition >= timeline.duration ? 0 : startPosition;
         countInTargets.current = countInChords(gameTargets, startAt, timeline.duration);
         setPosition(startAt);
         const readySchedule = countInSchedule(60 / bpm);
         const current = new JazzPlayer(gameMode ? { bass: false, pianoOnNodes: true, racingCountIn: true, countIn: readySchedule.totalBeats * 60 / bpm, countInIntroBeats: readySchedule.introBeats, beatSeconds: 60 / bpm } : {});
         player.current = current;
-        current.seekVersion = seekVersion;
+        current.seekVersion = startSeekVersion;
         current.loopIteration = loopIteration;
         renderGate.current = new PlaybackRenderGate();
         current.master.gain.value = gameMode ? .3 : volume / 100;
@@ -269,6 +278,12 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     window.addEventListener("keydown", handleSpace);
     return () => window.removeEventListener("keydown", handleSpace);
   }, []);
+  function seekAndPlay(value) {
+    if (state === 'starting') return;
+    const next = Math.max(0, Math.min(timeline.duration, Number(value)));
+    const nextVersion = seek(next);
+    if (state !== 'playing') return toggle(undefined, next, nextVersion);
+  }
   function seek(value) {
     countInTargets.current = null;
     setCountInBeats(0);
@@ -285,6 +300,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       if (state === "playing") tick();
     }
     setPosition(next);
+    const segment = sectionSegments.find(segment => next >= segment.start && next < segment.end)
+      || (next === timeline.duration ? sectionSegments.at(-1) : null);
+    if (segment) onSectionSeek?.(segment.id);
+    return nextVersion;
   }
   const active =
     timeline.events.find(
@@ -340,6 +359,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     loopIteration,
     bpm,
     onPlaybackPosition,
+    onSectionSeek,
     state,
   ]);
   useEffect(() => {
@@ -389,6 +409,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           ref={playButton}
           className="practice-play-button"
           type="button"
+          title="Follow the bouncing ball along the fretboard as the chords play."
           onClick={toggle}
           disabled={state === "starting" || (gameMode && !gameReady)}
         >
@@ -402,9 +423,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           ) : state === "paused" ? (
             "▶ Resume"
           ) : (
-            "▶ Play chords"
+            "▶ Cruise the chords"
           )}</strong>
-          <span className="practice-play-sparkle" aria-hidden="true">✦</span>
+          <span className="practice-play-sparkle practice-play-boat" aria-hidden="true">🚤</span>
         </button>}
       </div>
       <div className="transport">
@@ -525,7 +546,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           nodeLabels={Object.fromEntries(
             songData.nodes.map((node) => [node.id, node.chord]),
           )}
-          onSeek={seek}
+          onSeek={seekAndPlay}
           disabled={state === "starting"}
         />
       </div>}
@@ -535,9 +556,12 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         sectionSegments={sectionSegments}
         position={position}
         disabled={state === "starting"}
-        onSeek={seek}
+        onSeek={seekAndPlay}
       />}
       <MiniProgress
+        songId={song}
+        songOptions={songOptions}
+        onSongChange={onSongChange}
         instrument={songData.instrument}
         key={gameMode ? 'game' : 'practice'}
         gameMode={gameMode}
@@ -566,7 +590,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         sectionSegments={sectionSegments}
         position={position}
         disabled={state === "starting"}
-        onSeek={seek}
+        onSeek={seekAndPlay}
         chord={songData.title}
         activeIndex={activeIndex}
         colors={routeColors}
@@ -577,7 +601,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       />
       {chartOpen && <ChordChartModal title={songData.title} onClose={() => setChartOpen(false)}
         timeline={timeline} position={position} colors={routeColors} darkMode={darkMode}
-        disabled={state === "starting"} onSeek={seek} />}
+        disabled={state === "starting"} onSeek={seekAndPlay} />}
       {!gameMode && <ChordTimeline
         nodeLabels={Object.fromEntries(
           songData.nodes.map((node) => [node.id, node.chord]),
@@ -586,7 +610,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         darkMode={darkMode}
         timeline={timeline}
         activeIndex={running || position > 0 ? activeIndex : -1}
-        onSeek={seek}
+        onSeek={seekAndPlay}
         disabled={state === "starting"}
       />}
       {error && (

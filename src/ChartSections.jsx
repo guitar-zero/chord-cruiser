@@ -9,6 +9,7 @@ const ChartSections = forwardRef(function ChartSections(
     currentChord,
     playbackClockRef,
     onIndicatorArrival,
+    onNodeClick,
     darkMode,
     suppressIndicator,
     suppressBeatDots = false,
@@ -70,6 +71,7 @@ const ChartSections = forwardRef(function ChartSections(
               }}
               song={song}
               onIndicatorArrival={onIndicatorArrival}
+              onNodeClick={onNodeClick}
               playbackClockRef={playbackClockRef}
               suppressIndicator={suppressIndicator}
               hideGuidingLines={hideGuidingLines}

@@ -32,15 +32,14 @@ const ProgressBar = forwardRef(function ProgressBar(
           </SectionLabel>
         ))}
       </div>}
-      {showQuickChanges && quickChanges.length > 0 && <div className="progress-quick-markers" aria-label="Quick-change warnings">
-        {quickChanges.map(({ start, end }) => {
+      {showQuickChanges && quickChanges.length > 0 && <div className="progress-quick-markers" aria-label="Fast chord changes">
+        {quickChanges.map(({ start }) => {
           const event = timeline.events[start];
-          const label = `Quick changes · bar ${event.startBeat / timeline.beatsPerBar + 1}`;
-          return <SectionLabel key={start} type={displayOnly ? undefined : "button"} disabled={displayOnly ? undefined : disabled} className="progress-danger-marker"
+          const label = `Fast chords · bar ${event.startBeat / timeline.beatsPerBar + 1}`;
+          return <span key={start} className="progress-fast-marker"
             style={{ left: `${event.start / timeline.duration * 100}%` }}
-            onClick={displayOnly ? undefined : () => onSeek(event.start)} title={label} aria-label={`${label}, seek to quick changes`}
-            aria-current={position >= event.start && position < timeline.events[end].start + timeline.events[end].duration ? 'step' : undefined}
-          >⚠</SectionLabel>;
+            title={label} aria-label={label}
+          ><span aria-hidden="true">🚀</span></span>;
         })}
       </div>}
       <input

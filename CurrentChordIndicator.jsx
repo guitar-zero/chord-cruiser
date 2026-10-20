@@ -15,6 +15,7 @@ function CurrentChordIndicator({
   onMotion,
   onArrival,
   itemName = 'chord',
+  fastChords = false,
 }) {
   const [box, setBox] = useState(initial);
   const previous = useRef(null);
@@ -207,6 +208,15 @@ function CurrentChordIndicator({
               strokeLinejoin="round"
             />
           </g>
+          {fastChords && <g transform={`translate(${radius * .8} ${-radius * .8})`}>
+          <text className="fast-rocket-vibrate"
+            x={0}
+            y={0}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize="68"
+            aria-hidden="true"
+          >🚀</text></g>}
         </g>
       </g>
     </svg>,
