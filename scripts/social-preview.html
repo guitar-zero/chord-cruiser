@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chord Cruiser logo preview</title>
+    <style>
+      html, body, #root { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+      #root { display: grid; place-items: center; }
+      #root .cruiser-brand-ship { width: 840px; height: 560px; margin: 0; font-size: 252px; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from 'react';
+      import { createRoot } from 'react-dom/client';
+      import CruiserShip from '../src/CruiserShip.jsx';
+      import '../src/style.css';
+
+      // Repeatable animation frame for the exported social image.
+      let seed = 42;
+      Math.random = () => {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+      };
+      let elapsed = 0;
+      window.requestAnimationFrame = callback => window.setTimeout(() => {
+        elapsed += 40;
+        callback(elapsed);
+      }, 16);
+      window.cancelAnimationFrame = window.clearTimeout;
+      createRoot(document.getElementById('root')).render(React.createElement(CruiserShip));
+    </script>
+  </body>
+</html>

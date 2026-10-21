@@ -38,6 +38,17 @@ Open `http://127.0.0.1:4173/shell-chord-app/`. GitHub Pages serves static files;
 chord playback, game mode, and audio-interface input work there. No application
 server or API is required. Enable HTTPS on the Pages site for audio capture.
 
+Link previews use Open Graph and Twitter Card tags in `index.html` and the
+1200 × 630 image at `public/social-preview.png`. GitHub Pages supplies the
+absolute site URL during deployment. For other hosts, set `VITE_SITE_URL` to
+the public site URL (including its path) when building. After deploying,
+confirm that both the page and its `social-preview.png` URL load publicly.
+Slack may cache old previews; try sharing a fresh URL such as `?preview=2`.
+The preview is a capture of the app's actual emoji logo. To refresh it, run
+the dev server, open `/scripts/social-preview.html`, and capture the 1200 × 630
+page after the trails have appeared. This page reuses `CruiserShip` and the
+app styles with repeatable animation, and is excluded from the production build.
+
 See [GitHub's Pages workflow guide](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 and [Vite's deployment guide](https://vite.dev/guide/static-deploy.html#github-pages).
 

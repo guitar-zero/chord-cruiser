@@ -33,6 +33,7 @@ jobs:
         run: npm run build -- --base "$PAGES_BASE/"
         env:
           PAGES_BASE: ${{ steps.pages.outputs.base_path }}
+          VITE_SITE_URL: ${{ steps.pages.outputs.origin }}${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
