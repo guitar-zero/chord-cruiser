@@ -31,3 +31,28 @@ export function wakeOpacity(age) {
   const t = Math.max(0, Math.min(1, (age - 9600) / 400));
   return 1 - t * t * (3 - 2 * t);
 }
+
+export function restingSpot(point, occupied, ship) {
+  const clear = candidate =>
+    ((candidate.x - ship.x) / (ship.rx + 22)) ** 2 + ((candidate.y - ship.y) / (ship.ry + 22)) ** 2 >= 1
+    && occupied.every(other => ((candidate.x - other.x) / 62) ** 2 + ((candidate.y - other.y) / 52) ** 2 >= 1);
+  if (clear(point)) return point;
+  let best = null, nearest = Infinity;
+  for (let x = 24; x <= 456; x += 12) {
+    for (let y = 24; y <= 296; y += 12) {
+      const candidate = { x, y };
+      const distance = (x - point.x) ** 2 + (y - point.y) ** 2;
+      if (distance < nearest && clear(candidate)) { best = candidate; nearest = distance; }
+    }
+  }
+  return best || point;
+}
+
+
+// Reserve the whole curve so boats cannot enter one another's travel corridor.
+export function routesOverlap(first, second) {
+  const sparse = route => route.filter((_, index) => index % 4 === 0 || index === route.length - 1);
+  const firstPoints = sparse(first), secondPoints = sparse(second);
+  return firstPoints.some(a => secondPoints.some(b =>
+    ((a.x - b.x) / 78) ** 2 + ((a.y - b.y) / 66) ** 2 < 1));
+}

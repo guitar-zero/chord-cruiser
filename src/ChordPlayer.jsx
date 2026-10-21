@@ -47,6 +47,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onPlaybackLaunch,
     onChordChange,
     onCountInChange,
+    onPlaybackActivityChange,
     onPlaybackPosition,
     onSectionSeek,
     twoStrings,
@@ -69,6 +70,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [drumVolume, setDrumVolume] = useState(24);
   const [bassVolume, setBassVolume] = useState(38);
   const [state, setState] = useState("stopped");
+  useLayoutEffect(() => {
+    onPlaybackActivityChange?.(state === 'starting' || state === 'playing');
+  }, [state, onPlaybackActivityChange]);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [position, setPosition] = useState(0);
   const positionRef = useRef(0);
@@ -176,6 +180,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   async function toggle(event, startPosition = position, startSeekVersion = seekVersion) {
     if (gameMode && !gameReady) { setError('Choose and connect your audio interface before pressing Play.'); return; }
     const launchButton = event?.currentTarget || playButton.current;
+    if (state !== 'playing') onPlaybackActivityChange?.(true);
     setError("");
     try {
       if (state === "playing") {
@@ -235,6 +240,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         tick();
       }
     } catch (e) {
+      onPlaybackActivityChange?.(false);
       stop();
       setError(e.message || "Could not start audio.");
     }
@@ -386,10 +392,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     loopIteration,
     state,
   ]);
-  const [mobileLaunchDock, setMobileLaunchDock] = useState(null);
+  const [launchDock, setLaunchDock] = useState(null);
   useEffect(() => {
     const media = window.matchMedia('(max-width: 760px)');
-    const update = () => setMobileLaunchDock(media.matches ? document.getElementById('mobile-cruise-launch') : null);
+    const update = () => setLaunchDock(document.getElementById(media.matches ? 'mobile-cruise-launch' : 'desktop-cruise-launch'));
     update();
     media.addEventListener('change', update);
     return () => media.removeEventListener('change', update);
@@ -434,10 +440,10 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
       {!gameMode && <TransportSettings className="game-accompaniment-settings">
       {gameMode && <summary>Tempo & backing sound</summary>}
-      {mobileLaunchDock ? createPortal(practicePlayLaunch, mobileLaunchDock) : practicePlayLaunch}
+      {launchDock ? createPortal(practicePlayLaunch, launchDock) : practicePlayLaunch}
       <div className="transport">
         <button
-          className="mobile-transport-play play"
+          className="transport-play-toggle"
           type="button"
           onClick={toggle}
           disabled={state === 'starting'}
@@ -531,11 +537,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       </TransportSettings>}
       {!gameMode && <div className="player-status">
         {gameMode && countInBeats > 0 && <strong className="game-count-in">{countInLabel(countInBeats, 60 / bpm)}</strong>}
-        {running && active && (
-          <span className="current-chord">
-            {active.chord.replaceAll("b", "♭")}
-          </span>
-        )}
         <span>
           {running && active
             ? `${active.section ? active.section + " · " : ""}Bar ${Math.floor((position * bpm) / (60 * timeline.beatsPerBar)) + 1} of ${timeline.beats / timeline.beatsPerBar}`

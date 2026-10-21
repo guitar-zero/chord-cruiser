@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { curvePoint, sampleCurve, pointAtDistance, wakeOpacity } from './cruiserMotion.js';
+import { curvePoint, sampleCurve, pointAtDistance, wakeOpacity, restingSpot, routesOverlap } from './cruiserMotion.js';
 
 const curve = { from: { x: 10, y: 20 }, first: { x: 220, y: 20 }, second: { x: 10, y: 180 }, to: { x: 250, y: 180 } };
 
@@ -27,4 +27,27 @@ test('wake stays vivid then clears smoothly at ten seconds', () => {
   assert.equal(wakeOpacity(9800), .5);
   assert.equal(wakeOpacity(10000), 0);
   assert.equal(wakeOpacity(11000), 0);
+});
+
+
+test('resting boats separate without moving an already clear boat', () => {
+  const ship = { x: 240, y: 160, rx: 100, ry: 65 };
+  const first = { x: 40, y: 60 };
+  assert.equal(restingSpot(first, [], ship), first);
+  const second = restingSpot({ x: 45, y: 65 }, [first], ship);
+  assert.ok(((second.x - first.x) / 62) ** 2 + ((second.y - first.y) / 52) ** 2 >= 1);
+  assert.ok(((second.x - ship.x) / 122) ** 2 + ((second.y - ship.y) / 87) ** 2 >= 1);
+  const third = restingSpot({ x: 240, y: 160 }, [first, second], ship);
+  assert.ok(((third.x - ship.x) / 122) ** 2 + ((third.y - ship.y) / 87) ** 2 >= 1);
+  for (const other of [first, second]) {
+    assert.ok(((third.x - other.x) / 62) ** 2 + ((third.y - other.y) / 52) ** 2 >= 1);
+  }
+});
+
+
+test('boat routes reserve clearance while allowing distant curves', () => {
+  const route = sampleCurve(curve);
+  assert.equal(routesOverlap(route, route), true);
+  assert.equal(routesOverlap(route, route.map(point => ({ ...point, y: point.y + 20 }))), true);
+  assert.equal(routesOverlap(route, route.map(point => ({ ...point, y: point.y + 300 }))), false);
 });

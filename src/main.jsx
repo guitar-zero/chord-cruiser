@@ -59,6 +59,12 @@ function App() {
   const [chartOpen, setChartOpen] = useState(false);
   const gameMode = false;
   const [countInActive, setCountInActive] = useState(false);
+  const boatsRef = useRef(null);
+  const [playbackActive, setPlaybackActive] = useState(false);
+  const handlePlaybackActivity = useCallback(active => {
+    if (active) boatsRef.current?.pauseImmediately();
+    setPlaybackActive(active);
+  }, []);
   const [mobileViewport, setMobileViewport] = useState(() => window.matchMedia('(max-width: 760px)').matches);
   const [autoScrollPreference, setAutoScrollPreference] = useState(null);
   const autoScrollEnabled = autoScrollPreference ?? !mobileViewport;
@@ -79,7 +85,8 @@ function App() {
   const songChangeFrame = useRef(null);
   useEffect(() => () => cancelAnimationFrame(songChangeFrame.current), []);
   const [targetKey, setTargetKey] = useState("");
-  const [instrument, setInstrument] = useState('guitar');
+  // Keep the piano implementation available for future use; expose guitar only.
+  const [instrument] = useState('guitar');
   const [hiddenGuidesByInstrument, setHiddenGuidesByInstrument] = useState({ guitar: false, piano: true });
   const hideGuidingLines = hiddenGuidesByInstrument[instrument];
   const setHideGuidingLines = useCallback(update => {
@@ -124,10 +131,6 @@ function App() {
   const [twoStrings, setTwoStrings] = useState(() => !window.matchMedia('(max-width: 760px)').matches);
   const [wholeFretboard, setWholeFretboard] = useState(false);
   const useSmallGutters = instrument === 'guitar' && wholeFretboard;
-  const [search, setSearch] = useState("");
-  const filteredSongs = dropdownSongs.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase()),
-  );
   const [flight, setFlight] = useState(null);
   const launchFinished = useRef(null);
   const finishLaunch = useCallback(() => {
@@ -471,16 +474,6 @@ function App() {
         </div>
       </header>
       <nav className="song-picker" aria-label="Choose a song">
-        <label htmlFor="song-search">
-          Find a song{" "}
-          <input
-            id="song-search"
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search by title…"
-          />
-        </label>
         <label htmlFor="song-select">
           Song{" "}
           <select
@@ -491,10 +484,10 @@ function App() {
               event.currentTarget.blur();
             }}
           >
-            {!filteredSongs.some((item) => item.id === songId) && (
+            {!dropdownSongs.some((item) => item.id === songId) && (
               <option value={songId}>{songOptionLabel(song)}</option>
             )}
-            {filteredSongs.map((item) => (
+            {dropdownSongs.map((item) => (
               <option key={item.id} value={item.id}>
                 {songOptionLabel(item)}
               </option>
@@ -521,7 +514,6 @@ function App() {
               ))}
           </select>
         </label>
-        <label>Instrument <select value={instrument} onChange={event => setInstrument(event.target.value)}><option value="guitar">Guitar</option><option value="piano">Piano</option></select></label>
         <div className="chart-display-controls">
           <div className="chart-toggle-group" role="group" aria-label="Default display options">
           <button className="theme-toggle full-progression-toggle" type="button" aria-keyshortcuts="v" title="Toggle full progression (V)" aria-pressed={showFullPathDuringPlayback} onClick={() => setShowFullPathDuringPlayback(value => !value)}>Full progression <kbd>V</kbd></button>
@@ -545,9 +537,10 @@ function App() {
           </div>
         </div>
       </nav>
+      <div id="desktop-cruise-launch" />
       </div>
       <section className="cruiser-brand" aria-label="About Chord Cruiser">
-        <CruiserShip />
+        <CruiserShip ref={boatsRef} paused={playbackActive || countInActive} />
         <p className="eyebrow">YOUR VISUAL BACKING TRACK</p>
         <h2>Chord Cruiser</h2>
         <p>Cruise through chord changes.<br />Follow the chart and find your flow.</p>
@@ -588,6 +581,7 @@ function App() {
         onPlaybackLaunch={launchIndicator}
         onChordChange={handleChordChange}
         onCountInChange={setCountInActive}
+        onPlaybackActivityChange={handlePlaybackActivity}
         onPlaybackPosition={handlePlaybackPosition}
         onSectionSeek={jumpToSection}
       />
