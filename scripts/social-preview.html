@@ -31,6 +31,15 @@
       }, 16);
       window.cancelAnimationFrame = window.clearTimeout;
       createRoot(document.getElementById('root')).render(React.createElement(CruiserShip));
+      // Capture the actual smoke animation while all three puffs are rising.
+      window.setTimeout(() => {
+        document.querySelectorAll('.cruiser-smoke-puff').forEach(puff => {
+          puff.getAnimations().forEach(animation => {
+            animation.pause();
+            animation.currentTime = 1400;
+          });
+        });
+      }, 6000);
     </script>
   </body>
 </html>
