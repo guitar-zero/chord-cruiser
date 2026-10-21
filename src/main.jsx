@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 import "./style.css";
 import ChordPlayer from "./ChordPlayer.jsx";
 import AutoScrollToggle from "./AutoScrollToggle.jsx";
+import CruiserShip from "./CruiserShip.jsx";
 import useTheme from "./hooks/useTheme.js";
 import IndicatorLaunch from "./IndicatorLaunch.jsx";
 import ChartSections from "./ChartSections.jsx";
@@ -58,7 +59,20 @@ function App() {
   const [chartOpen, setChartOpen] = useState(false);
   const gameMode = false;
   const [countInActive, setCountInActive] = useState(false);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+  const [mobileViewport, setMobileViewport] = useState(() => window.matchMedia('(max-width: 760px)').matches);
+  const [autoScrollPreference, setAutoScrollPreference] = useState(null);
+  const autoScrollEnabled = autoScrollPreference ?? !mobileViewport;
+  const setAutoScrollEnabled = useCallback(update => {
+    setAutoScrollPreference(previous => typeof update === 'function'
+      ? update(previous ?? !mobileViewport)
+      : update);
+  }, [mobileViewport]);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const update = () => setMobileViewport(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
   const [darkMode, setDarkMode] = useTheme();
   const [songId, setSongId] = useState("all-of-me");
   const [loadingSongId, setLoadingSongId] = useState(null);
@@ -106,8 +120,8 @@ function App() {
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [setHideGuidingLines, instrument]);
-  const [twoStrings, setTwoStrings] = useState(true);
+  }, [setHideGuidingLines, setAutoScrollEnabled, instrument]);
+  const [twoStrings, setTwoStrings] = useState(() => !window.matchMedia('(max-width: 760px)').matches);
   const [wholeFretboard, setWholeFretboard] = useState(false);
   const useSmallGutters = instrument === 'guitar' && wholeFretboard;
   const [search, setSearch] = useState("");
@@ -331,7 +345,7 @@ function App() {
       shape?.closest(".chart-section") ||
       sectionSvg?.closest(".chart-section") ||
       sectionsRef.current.querySelector(".chart-section");
-    if (autoScrollEnabled) scrollChartSections(null, panel);
+    if (autoScrollEnabled || mobileViewport) scrollChartSections(null, panel);
     if (
       !shape ||
       !rect ||
@@ -403,16 +417,30 @@ function App() {
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
+  const dStringButton = <button
+            disabled={instrument === "piano"}
+            className="string-toggle theme-toggle"
+            type="button"
+            aria-keyshortcuts="m"
+            title="Toggle 2/3 strings (M)"
+            aria-pressed={!twoStrings}
+            onClick={() => setTwoStrings((value) => !value)}
+          >
+            Show D string{" "}
+            <kbd>M</kbd>
+          </button>;
+  const autoScrollButton = <AutoScrollToggle enabled={autoScrollEnabled} onToggle={() => setAutoScrollEnabled(enabled => !enabled)} />;
   return (
     <main className={useSmallGutters ? 'without-gutters' : undefined}>
       {loadingSongId && <div className="song-loading-toast" role="status" aria-live="polite">
         <span className="spinner" aria-hidden="true" />
         Loading {songsById[loadingSongId].title}…
       </div>}
+      <div className="intro-layout">
+      <div className="intro-controls">
       <header>
         <div>
-          <p className="eyebrow">CHORD CRUISER</p>
-          <p className="brand-tagline">Visual backing track</p>
+          <div id="mobile-cruise-launch" />
           <h1>{song.title}</h1>
           <p className="subtitle">In {song.key}</p>
           {song.playbackNote && <p className="note">{song.playbackNote}</p>}
@@ -508,26 +536,23 @@ function App() {
             Guidelines{" "}
             <kbd>,</kbd>
           </button>
-          <AutoScrollToggle enabled={autoScrollEnabled} onToggle={() => setAutoScrollEnabled(enabled => !enabled)} />
+          {mobileViewport ? dStringButton : autoScrollButton}
           </div>
           <div className="chart-toggle-group" role="group" aria-label="Additional display options">
           <button className="theme-toggle" type="button" disabled={instrument === 'piano'} aria-keyshortcuts="n" aria-pressed={wholeFretboard} title="Toggle frets 1–12 on the current map’s strings (N)" onClick={() => setWholeFretboard(value => !value)}>12 frets <kbd>N</kbd></button>
-          <button
-            disabled={instrument === "piano"}
-            className="string-toggle theme-toggle"
-            type="button"
-            aria-keyshortcuts="m"
-            title="Toggle 2/3 strings (M)"
-            aria-pressed={!twoStrings}
-            onClick={() => setTwoStrings((value) => !value)}
-          >
-            Show D string{" "}
-            <kbd>M</kbd>
-          </button>
+          {mobileViewport ? autoScrollButton : dStringButton}
           <button className="theme-toggle" type="button" aria-keyshortcuts="c" aria-haspopup="dialog" aria-pressed={chartOpen} onClick={() => setChartOpen(open => !open)} title="View full chart (C)">View Full Chart <kbd>C</kbd></button>
           </div>
         </div>
       </nav>
+      </div>
+      <section className="cruiser-brand" aria-label="About Chord Cruiser">
+        <CruiserShip />
+        <p className="eyebrow">YOUR VISUAL BACKING TRACK</p>
+        <h2>Chord Cruiser</h2>
+        <p>Cruise through chord changes.<br />Follow the chart and find your flow.</p>
+      </section>
+      </div>
       <ChordPlayer
         songOptions={dropdownSongs}
         onSongChange={changeSong}

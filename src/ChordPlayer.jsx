@@ -8,6 +8,7 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
+import { createPortal } from "react-dom";
 import { buildTimeline } from "./audio/songs.js";
 import { JazzPlayer } from "./audio/ensemble.js";
 import ChordTimeline from "./ChordTimeline.jsx";
@@ -385,23 +386,15 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     loopIteration,
     state,
   ]);
-  const TransportSettings = gameMode ? 'details' : 'div';
-  const gamePlayControls = <div className="game-start-controls game-simple-start"><p>Plug in and play <span aria-hidden="true">♫</span></p><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting'} onClick={requestGamePlay}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button></div>;
-  return (
-    <section
-      className={`player${gameMode ? ' is-game-mode' : ''}`}
-      aria-label="Chord playback"
-      aria-busy={state === "starting"}
-    >
-      {gameMode && <GameAtmosphere playing={state === 'playing'} />}
-      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
-      {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={setBpm} />}
-      {gameMode && gamePlayControls}
-      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} selectionControls={selectionControls} bpm={bpm} onTempoChange={setBpm} getPosition={gamePosition} canJudge={canJudgeGame} onReady={setGameReady} onJudgment={handleGameJudgment} />}
-      {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
-      {!gameMode && <TransportSettings className="game-accompaniment-settings">
-      {gameMode && <summary>Tempo & backing sound</summary>}
-      <div className="practice-play-launch">
+  const [mobileLaunchDock, setMobileLaunchDock] = useState(null);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const update = () => setMobileLaunchDock(media.matches ? document.getElementById('mobile-cruise-launch') : null);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  const practicePlayLaunch = <div className="practice-play-launch" data-playback-state={state}>
         {!gameMode && <button
           ref={playButton}
           className="practice-play-button"
@@ -424,8 +417,33 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           )}</strong>
           <span className="practice-play-sparkle practice-play-boat" aria-hidden="true">🚤</span>
         </button>}
-      </div>
+      </div>;
+  const TransportSettings = gameMode ? 'details' : 'div';
+  const gamePlayControls = <div className="game-start-controls game-simple-start"><p>Plug in and play <span aria-hidden="true">♫</span></p><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting'} onClick={requestGamePlay}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button></div>;
+  return (
+    <section
+      className={`player${gameMode ? ' is-game-mode' : ''}`}
+      aria-label="Chord playback"
+      aria-busy={state === "starting"}
+    >
+      {gameMode && <GameAtmosphere playing={state === 'playing'} />}
+      {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
+      {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={setBpm} />}
+      {gameMode && gamePlayControls}
+      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} selectionControls={selectionControls} bpm={bpm} onTempoChange={setBpm} getPosition={gamePosition} canJudge={canJudgeGame} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
+      {!gameMode && <TransportSettings className="game-accompaniment-settings">
+      {gameMode && <summary>Tempo & backing sound</summary>}
+      {mobileLaunchDock ? createPortal(practicePlayLaunch, mobileLaunchDock) : practicePlayLaunch}
       <div className="transport">
+        <button
+          className="mobile-transport-play play"
+          type="button"
+          onClick={toggle}
+          disabled={state === 'starting'}
+        >
+          {state === 'starting' ? 'Loading…' : state === 'playing' ? 'Ⅱ Pause' : state === 'paused' ? '▶ Resume' : '▶ Play'}
+        </button>
         <button
           type="button"
           onClick={stop}

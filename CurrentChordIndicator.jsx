@@ -224,7 +224,7 @@ function CurrentChordIndicator({
   );
 }
 
-function flowerPath(radius) {
+export function flowerPath(radius) {
   return Array.from({ length: 193 }, (_, i) => {
     const angle = (i / 192) * Math.PI * 2;
     const petal = radius + 8 * Math.cos(angle * 8);
