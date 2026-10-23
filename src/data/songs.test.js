@@ -203,15 +203,15 @@ test('Chord shape uses source quality rather than simplified display labels', as
   assert.equal(solar.cm, 'triangle');
 });
 
-test('First ten source charts preserve form lengths, meter, and playable chord qualities', async () => {
+test('Retained early source charts preserve form lengths, meter, and playable chord qualities', async () => {
   const { buildTimeline, chordNotes } = await import('../audio/songs.js');
   const expected = [
     ['a-foggy-day',34,4], ['afro-blue',16,3], ['afternoon-in-paris',32,4],
     ['airegin',36,4], ['all-blues',24,3], ['all-of-me',32,4],
     ['all-of-you',32,4], ['all-the-things-you-are',36,4],
-    ['alone-together',44,4], ['along-came-betty',34,4],
+    ['along-came-betty',34,4],
   ];
-  assert.deepEqual(songs.slice(0,10).map(song => song.id), expected.map(item => item[0]));
+  assert.deepEqual(songs.slice(0,expected.length).map(song => song.id), expected.map(item => item[0]));
   for (const [id,bars,meter] of expected) {
     const song = songsById[id];
     const timeline = buildTimeline(song.playback,120,song.beatsPerBar || 4);

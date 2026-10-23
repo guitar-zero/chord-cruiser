@@ -32,10 +32,6 @@
     "title": "All The Things You Are"
   },
   {
-    "id": "alone-together",
-    "title": "Alone Together"
-  },
-  {
     "id": "along-came-betty",
     "title": "Along Came Betty"
   },
@@ -156,10 +152,6 @@
     "title": "Ceora"
   },
   {
-    "id": "cherokee",
-    "title": "Cherokee"
-  },
-  {
     "id": "come-rain-or-come-shine",
     "title": "Come Rain Or Come Shine"
   },
@@ -182,14 +174,6 @@
   {
     "id": "days-of-wine-and-roses",
     "title": "Days Of Wine And Roses"
-  },
-  {
-    "id": "desafinado",
-    "title": "Desafinado"
-  },
-  {
-    "id": "dolphin-dance",
-    "title": "Dolphin Dance"
   },
   {
     "id": "donna-lee",
@@ -252,10 +236,6 @@
     "title": "Giant Steps"
   },
   {
-    "id": "good-bait",
-    "title": "Good Bait"
-  },
-  {
     "id": "groovin-high",
     "title": "Groovin High"
   },
@@ -300,10 +280,6 @@
     "title": "I Could Write A Book"
   },
   {
-    "id": "i-got-rhythm",
-    "title": "I Got Rhythm"
-  },
-  {
     "id": "i-hear-a-rhapsody",
     "title": "I Hear A Rhapsody"
   },
@@ -336,20 +312,12 @@
     "title": "If I Were A Bell"
   },
   {
-    "id": "ill-remember-april",
-    "title": "I'll Remember April"
-  },
-  {
     "id": "impressions",
     "title": "Impressions"
   },
   {
     "id": "in-a-mellow-tone",
     "title": "In A Mellow Tone"
-  },
-  {
-    "id": "in-your-own-sweet-way",
-    "title": "In Your Own Sweet Way"
   },
   {
     "id": "inner-urge",
@@ -370,10 +338,6 @@
   {
     "id": "it-had-to-be-you",
     "title": "It Had To Be You"
-  },
-  {
-    "id": "it-might-as-well-be-spring",
-    "title": "It Might As Well Be Spring"
   },
   {
     "id": "its-you-or-no-one",
@@ -408,14 +372,6 @@
     "title": "Like Someone In Love"
   },
   {
-    "id": "little-sunflower",
-    "title": "Little Sunflower"
-  },
-  {
-    "id": "love-for-sale",
-    "title": "Love For Sale"
-  },
-  {
     "id": "lover-man",
     "title": "Lover Man"
   },
@@ -432,16 +388,8 @@
     "title": "Maiden Voyage"
   },
   {
-    "id": "meditation",
-    "title": "Meditation"
-  },
-  {
     "id": "mercy-mercy-mercy",
     "title": "Mercy Mercy Mercy"
-  },
-  {
-    "id": "milestones",
-    "title": "Milestones"
   },
   {
     "id": "misty",
@@ -450,10 +398,6 @@
   {
     "id": "moanin",
     "title": "Moanin"
-  },
-  {
-    "id": "moments-notice",
-    "title": "Moment's Notice"
   },
   {
     "id": "mood-indigo",
@@ -470,10 +414,6 @@
   {
     "id": "mr-pc",
     "title": "Mr P.C."
-  },
-  {
-    "id": "my-favourite-things",
-    "title": "My Favourite Things"
   },
   {
     "id": "my-foolish-heart",
@@ -504,14 +444,6 @@
     "title": "Nardis"
   },
   {
-    "id": "nicas-dream",
-    "title": "Nica's Dream"
-  },
-  {
-    "id": "night-and-day",
-    "title": "Night And Day"
-  },
-  {
     "id": "night-in-tunisia",
     "title": "Night In Tunisia"
   },
@@ -530,14 +462,6 @@
   {
     "id": "on-the-sunny-side-of-the-street",
     "title": "On The Sunny Side Of The Street"
-  },
-  {
-    "id": "once-i-loved",
-    "title": "Once I Loved"
-  },
-  {
-    "id": "one-note-samba",
-    "title": "One Note Samba"
   },
   {
     "id": "ornithology",
@@ -572,10 +496,6 @@
     "title": "Recordame"
   },
   {
-    "id": "round-midnight",
-    "title": "Round Midnight"
-  },
-  {
     "id": "sandu",
     "title": "Sandu"
   },
@@ -586,10 +506,6 @@
   {
     "id": "scrapple-from-the-apple",
     "title": "Scrapple From The Apple"
-  },
-  {
-    "id": "seven-steps-to-heaven",
-    "title": "Seven Steps To Heaven"
   },
   {
     "id": "shadow-of-your-smile",
@@ -628,14 +544,6 @@
     "title": "Sophisticated Lady"
   },
   {
-    "id": "speak-low",
-    "title": "Speak Low"
-  },
-  {
-    "id": "speak-no-evil",
-    "title": "Speak No Evil"
-  },
-  {
     "id": "st-james-infirmary",
     "title": "St. James Infirmary"
   },
@@ -652,16 +560,8 @@
     "title": "Star Eyes"
   },
   {
-    "id": "stardust",
-    "title": "Stardust"
-  },
-  {
     "id": "stella-by-starlight",
     "title": "Stella By Starlight"
-  },
-  {
-    "id": "stolen-moments",
-    "title": "Stolen Moments"
   },
   {
     "id": "stompin-at-the-savoy",
@@ -696,20 +596,8 @@
     "title": "Tenor Madness"
   },
   {
-    "id": "the-girl-from-ipanema",
-    "title": "The Girl From Ipanema"
-  },
-  {
     "id": "the-nearness-of-you",
     "title": "The Nearness Of You"
-  },
-  {
-    "id": "the-night-has-a-thousand-eyes",
-    "title": "The Night Has A Thousand Eyes"
-  },
-  {
-    "id": "the-song-is-you",
-    "title": "The Song Is You"
   },
   {
     "id": "there-is-no-greater-love",
@@ -742,14 +630,6 @@
   {
     "id": "watermelon-man",
     "title": "Watermelon Man"
-  },
-  {
-    "id": "wave",
-    "title": "Wave"
-  },
-  {
-    "id": "way-you-look-tonight-the",
-    "title": "Way You Look Tonight, The"
   },
   {
     "id": "well-you-needent",
