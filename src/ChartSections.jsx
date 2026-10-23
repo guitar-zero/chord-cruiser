@@ -6,6 +6,7 @@ import { chordDisplayColors } from './data/chordQualityColors.js';
 const ChartSections = forwardRef(function ChartSections(
   {
     song,
+    transitionBridge,
     currentChord,
     playbackClockRef,
     onIndicatorArrival,
@@ -70,6 +71,7 @@ const ChartSections = forwardRef(function ChartSections(
                 svgRefs.current[section.id] = element;
               }}
               song={song}
+              alignToSectionId={activeSection === section.id && transitionBridge?.sourceId === currentChord?.node ? song.nodes.find(node => node.id === transitionBridge.targetId)?.section : null}
               onIndicatorArrival={onIndicatorArrival}
               onNodeClick={onNodeClick}
               playbackClockRef={playbackClockRef}

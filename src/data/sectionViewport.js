@@ -25,3 +25,20 @@ export function sectionViewport(song, sectionId) {
 }
 import { routeVertices } from './reciprocalRoutes.js';
 
+
+// Express the destination's framing in the current board's fret coordinates.
+export function alignedSectionViewport(song, sourceId, destinationId) {
+  const source = song.layout.sections.find(section => section.id === sourceId);
+  const destination = song.layout.sections.find(section => section.id === destinationId);
+  const fallback = sectionViewport(song, sourceId);
+  if (!source?.centers || !destination?.centers || source.centers.length < 2 || destination.centers.length < 2) return fallback;
+  const spacing = section => (section.centers.at(-1) - section.centers[0]) / (section.frets.at(-1) - section.frets[0]);
+  const sourceSpacing = spacing(source);
+  const destinationSpacing = spacing(destination);
+  const [x, , width] = sectionViewport(song, destinationId).split(' ').map(Number);
+  const [, y, , height] = fallback.split(' ').map(Number);
+  const scale = sourceSpacing / destinationSpacing;
+  const mappedX = source.centers[0] + (destination.frets[0] - source.frets[0]) * sourceSpacing + (x - destination.centers[0]) * scale;
+  return [mappedX, y, width * scale, height].every(Number.isFinite)
+    ? `${mappedX} ${y} ${width * scale} ${height}` : fallback;
+}

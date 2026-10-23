@@ -12,7 +12,6 @@ export const popularSongIds = [
   'fly-me-to-the-moon',
   'four',
   'i-got-rhythm',
-  'in-a-sentimental-mood',
   'it-could-happen-to-you',
   'maiden-voyage',
   'mr-pc',

@@ -52,3 +52,15 @@ test('Cached motion sampler preserves bends, distances, and interrupted route po
   assert.deepEqual(sample(.75), { x: 50, y: 100 });
   assert.deepEqual(routeSampler([{ x: 20, y: 30 }])(.5), { x: 20, y: 30 });
 });
+
+test('Transition framing places matching frets at the same horizontal position', async () => {
+  const { alignedSectionViewport, sectionViewport } = await import('./sectionViewport.js');
+  const board = (id, first, step) => ({ id, left: 100, right: 100 + step * 4, top: 200, bottom: 600, rows: [300, 500], frets: [first, first + 1, first + 2, first + 3], centers: [0, 1, 2, 3].map(i => 100 + step * (i + 0.5)) });
+  const source = board('a', 3, 200);
+  const destination = board('b', 5, 150);
+  const song = { nodes: [], edges: [], layout: { sections: [source, destination] } };
+  const [x, , width] = alignedSectionViewport(song, 'a', 'b').split(' ').map(Number);
+  const [nextX, , nextWidth] = sectionViewport(song, 'b').split(' ').map(Number);
+  assert.ok(Math.abs((source.centers[2] - x) / width - (destination.centers[0] - nextX) / nextWidth) < 1e-10);
+  assert.equal(alignedSectionViewport(song, 'a', 'a'), sectionViewport(song, 'a'));
+});

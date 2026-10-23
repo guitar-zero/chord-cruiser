@@ -76,7 +76,6 @@ if-i-were-a-bell|A:G7 C7 Fmaj7 % Am7b5 D7 G7 C7|B:F6,F7/A Bb6,C7 F6 Em7b5,A7 Dm7
 ill-remember-april|A:Gmaj7 G6 Gmaj7 G6 Gm7 Gm6 Gm7 Gm6 Am7b5 D7b9 Bm7b5 E7b9 Am7 D7 Gmaj7 %|B:Cm7 F7 Bbmaj7 Gm7 Cm7 F7 Bbmaj7 % Am7 D7 Gmaj7 % F#m7 B7 Emaj7 Am7,D7|@A
 impressions|A:Dm11 % % % Dm11 % % %|@A|B:Ebm11 % % % Ebm11 % % %|@A
 in-a-mellow-tone|A:Bb7 Eb7 Ab6 % Ebm7 Ab7 Dbmaj7 %|B:Db6 Gb7 Ab6 F7 Bb7 % Eb7 F7|@A|C:Db7 Ddim7 Ab6/Eb F7 Bb7 Eb7 Ab6 F7
-in-a-sentimental-mood|A1:Dm,DmMaj7 Dm7,Dm6 Gm,GmMaj7 Gm7@.5,Gm7@.25,A7@.25 Dm D9#5 Gm7,C7b9 F6@.5,Edim7@.25,A7@.25|A2:Dm,DmMaj7 Dm7,Dm6 Gm,GmMaj7 Gm7@.5,Gm7@.25,A7@.25 Dm D9#5 Gm7,C7b9 F6@.5,Ebm7@.25,Ab7@.25|B:Dbmaj7,Bbm7 Ebm7,Ab7 Db6,Bb7#5 Ebm7,Ab7 Dbmaj7,Bbm7 Ebm7,Ab7 Gm7 C7|@A1
 in-your-own-sweet-way|A:Am7b5,D7b9 Gm7,C7 Cm7,F7 Bb7,Ebmaj7 Abm7,Db7 Gbmaj7,Bmaj7 F7alt,B7 Bb7,Eb6|@A|B:Em7,A7 Dmaj7 Em7,A7 Dmaj7 Dm7,G7 Em7,A7 Dm7b5,Ab7 G7,C7|@A|C:Ab7sus4 % % % Ab7sus4 % % %
 inner-urge|Form:F#m7b5 % % % Fmaj7#11 % % % Ebmaj7#11 % % % Dbmaj7#11 % % % Emaj7#11 Dbmaj7#11 Dmaj7#11 Bmaj7#11 Cmaj7 Amaj7 Bbmaj7 Gmaj7
 invitation|A:Cm7 % % % Cm7 F7 Bb7 % Ebm7 % % % Ebm7 Ab7 Db7#11 %|B:C#m7 F#7,F#7alt Bm7 % Bm7 E7,E7alt Am7 % Am7 D7,D7alt Gm7 % Em7b5 Eb7 D7alt G7alt

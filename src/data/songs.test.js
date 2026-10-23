@@ -86,11 +86,11 @@ test('Section rendering crops both legacy side-by-side and stacked layouts witho
   assert.notEqual(first[0],second[0]);
 });
 
-test('Complete repertoire has 200 songs with playable qualities and meter-aware timing', async () => {
+test('Complete repertoire matches the catalog with playable qualities and meter-aware timing', async () => {
   const { buildTimeline, chordNotes, bassNote } = await import('../audio/songs.js');
-  assert.equal(songs.length, 200);
+  assert.equal(songs.length, catalogue.length);
   assert.deepEqual(songs.map(song => song.id), catalogue.map(song => song.id));
-  assert.equal(new Set(songs.map(song => song.id)).size, 200);
+  assert.equal(new Set(songs.map(song => song.id)).size, catalogue.length);
   for (const song of songs) {
     const meter = song.beatsPerBar || 4;
     const timeline = buildTimeline(song.playback, 120, meter);
@@ -498,4 +498,21 @@ test('Piano root pipes follow both directions and separate badges on repeated ro
   const repeat = pianoRootPipe(200, 200, 240, 1000);
   assert.ok(repeat.nextY > repeat.currentY + 60);
   assert.equal(repeat.path, 'M200 1068 L200 1112');
+});
+
+test('Autumn Leaves repeats its identical A section on the same board', async () => {
+  const { default: source } = await import('./autumn-leaves.json', { with: { type: 'json' } });
+  const { repeatIdenticalSections } = await import('./repeatSections.js');
+  const song = repeatIdenticalSections(source);
+  assert.equal(song.layout.sections.length, 3);
+  assert.deepEqual(song.playback.slice(0, 7).map(event => event.nodeId), song.playback.slice(7, 14).map(event => event.nodeId));
+  assert.deepEqual(song.playback.map(({ nodeId, ...event }) => event), source.playback.map(({ nodeId, ...event }) => event));
+  assert.deepEqual(nodeVisitsForRepeat(song), [1, 8]);
+  assert.equal(repeatIdenticalSections(song), song);
+  function nodeVisitsForRepeat(chart) {
+    return chart.playback.flatMap((event, index) => event.nodeId === chart.startNodeId ? [index + 1] : []);
+  }
+  const changed = structuredClone(source);
+  changed.playback[7].bars = 0.5;
+  assert.equal(repeatIdenticalSections(changed).layout.sections.length, 4);
 });

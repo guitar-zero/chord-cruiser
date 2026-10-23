@@ -40,6 +40,7 @@ import {
 } from "./data/timelinePresentation.js";
 import {
   sectionViewport,
+  alignedSectionViewport,
   sectionHeaderPositions,
 } from "./data/sectionViewport.js";
 
@@ -641,6 +642,7 @@ const SongChart = forwardRef(function SongChart(
     hideOtherNodes = false,
     suppressIndicator = false,
     sectionId,
+    alignToSectionId,
     showStartMarker = true,
     visiblePlaybackSteps = 3,
   },
@@ -657,7 +659,30 @@ const SongChart = forwardRef(function SongChart(
   // Keep hidden node geometry mounted for the indicator and section pipes.
   const visibleNodes = song.nodes.filter(node => !sectionId || node.section === sectionId);
   const visibleIds = new Set(visibleNodes.map((node) => node.id));
-  const viewBox = sectionId ? sectionViewport(song, sectionId) : layout.viewBox;
+  const baseViewBox = sectionId ? sectionViewport(song, sectionId) : layout.viewBox;
+  const targetViewBox = alignToSectionId && sectionId
+    ? alignedSectionViewport(song, sectionId, alignToSectionId) : baseViewBox;
+  const [viewBox, setViewBox] = useState(baseViewBox);
+  const animatedViewBox = useRef(baseViewBox);
+  useEffect(() => {
+    const from = animatedViewBox.current.split(' ').map(Number);
+    const to = targetViewBox.split(' ').map(Number);
+    let frame;
+    const update = value => { animatedViewBox.current = value; setViewBox(value); };
+    if (!alignToSectionId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      update(targetViewBox);
+      return;
+    }
+    const start = performance.now();
+    const tick = now => {
+      const progress = Math.min(1, (now - start) / 600);
+      const eased = progress * progress * (3 - 2 * progress);
+      update(to.map((value, index) => from[index] + (value - from[index]) * eased).join(' '));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [targetViewBox, alignToSectionId]);
   const [viewX, viewY, viewWidth, viewHeight] = viewBox.split(" ").map(Number);
   const showStart =
     showStartMarker && (!sectionId || visibleIds.has(song.startNodeId));

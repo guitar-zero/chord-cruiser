@@ -547,6 +547,7 @@ function App() {
       </section>
       </div>
       <ChordPlayer
+        songLoading={Boolean(loadingSongId)}
         songOptions={dropdownSongs}
         onSongChange={changeSong}
         gameMode={gameMode}
@@ -587,6 +588,7 @@ function App() {
       />
       <div ref={sectionsRef}>
         <ChartSections
+          transitionBridge={sectionBridge}
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
           onNodeClick={nodeId => playerRef.current?.seekToNode(nodeId)}

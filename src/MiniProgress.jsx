@@ -206,7 +206,7 @@ export default function MiniProgress({
               <button type="button" aria-label="Show D string" title="Show D string (M)" aria-pressed={!twoStrings} aria-keyshortcuts="m" onClick={() => setTwoStrings(value => !value)}>D string <kbd>M</kbd></button>
             </div>
             <div className="mini-progress-controls mini-transport-controls" aria-label="Playback controls">
-              <button className="mini-play-button" type="button" onClick={onToggle} disabled={playbackState === 'starting'}><span className="mini-play-sparkle" aria-hidden="true">♫</span><strong>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</strong><span className="mini-play-sparkle" aria-hidden="true">✦</span></button>
+              <button className="mini-play-button" type="button" onClick={onToggle} disabled={progressProps.disabled || playbackState === 'starting'}><span className="mini-play-sparkle" aria-hidden="true">♫</span><strong>{playbackState === 'playing' ? 'Ⅱ Pause' : playbackState === 'paused' ? '▶ Resume' : playbackState === 'starting' ? 'Loading…' : gameMode ? '▶ Play game' : '▶ Play'}</strong><span className="mini-play-sparkle" aria-hidden="true">✦</span></button>
               <button type="button" onClick={onStop} disabled={playbackState === 'stopped' && progressProps.position === 0}>■ Stop</button>
             </div>
             {gameMode ? <GameBar {...progressProps} onSeek={seekToChord} mini /> : <ProgressBar {...progressProps} onSeek={seekToChord} mini />}

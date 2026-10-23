@@ -38,6 +38,7 @@ import { positionNodeShapes } from './data/chordShapes.js';
 const ChordPlayer = forwardRef(function ChordPlayer(
   {
     song,
+    songLoading = false,
     songData = songsById[song],
     darkMode,
     showFullPath,
@@ -178,6 +179,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     frame.current = requestAnimationFrame(tick);
   }
   async function toggle(event, startPosition = position, startSeekVersion = seekVersion) {
+    if (songLoading || state === 'starting') return;
     if (gameMode && !gameReady) { setError('Choose and connect your audio interface before pressing Play.'); return; }
     const launchButton = event?.currentTarget || playButton.current;
     if (state !== 'playing') onPlaybackActivityChange?.(true);
@@ -407,7 +409,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           type="button"
           title="Follow the bouncing ball along the fretboard as the chords play."
           onClick={toggle}
-          disabled={state === "starting" || (gameMode && !gameReady)}
+          disabled={songLoading || state === "starting" || (gameMode && !gameReady)}
         >
           <span className="practice-play-sparkle" aria-hidden="true">♫</span>
           <strong>{state === "starting" ? (
@@ -425,7 +427,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         </button>}
       </div>;
   const TransportSettings = gameMode ? 'details' : 'div';
-  const gamePlayControls = <div className="game-start-controls game-simple-start"><p>Plug in and play <span aria-hidden="true">♫</span></p><button ref={playButton} className="game-play-button" type="button" disabled={state === 'starting'} onClick={requestGamePlay}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button></div>;
+  const gamePlayControls = <div className="game-start-controls game-simple-start"><p>Plug in and play <span aria-hidden="true">♫</span></p><button ref={playButton} className="game-play-button" type="button" disabled={songLoading || state === 'starting'} onClick={requestGamePlay}><span aria-hidden="true">{state === 'playing' ? 'Ⅱ' : '▶'}</span><strong>{state === 'starting' ? 'GETTING READY…' : state === 'playing' ? 'PAUSE GAME' : state === 'paused' ? 'KEEP PLAYING' : 'LET’S PLAY!'}</strong></button></div>;
   return (
     <section
       className={`player${gameMode ? ' is-game-mode' : ''}`}
@@ -446,7 +448,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           className="transport-play-toggle"
           type="button"
           onClick={toggle}
-          disabled={state === 'starting'}
+          disabled={songLoading || state === 'starting'}
         >
           {state === 'starting' ? 'Loading…' : state === 'playing' ? 'Ⅱ Pause' : state === 'paused' ? '▶ Resume' : '▶ Play'}
         </button>
@@ -563,7 +565,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
             songData.nodes.map((node) => [node.id, node.chord]),
           )}
           onSeek={seek}
-          disabled={state === "starting"}
+          disabled={songLoading || state === "starting"}
         />
       </div>}
       {!gameMode && <ProgressBar
@@ -571,7 +573,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         timeline={timeline}
         sectionSegments={sectionSegments}
         position={position}
-        disabled={state === "starting"}
+        disabled={songLoading || state === "starting"}
         onSeek={seekAndPlay}
       />}
       <MiniProgress
@@ -605,7 +607,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         timeline={timeline}
         sectionSegments={sectionSegments}
         position={position}
-        disabled={state === "starting"}
+        disabled={songLoading || state === "starting"}
         onSeek={seekAndPlay}
         chord={songData.title}
         activeIndex={activeIndex}
@@ -617,7 +619,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       />
       {chartOpen && <ChordChartModal title={songData.title} onClose={() => setChartOpen(false)}
         timeline={timeline} position={position} colors={routeColors} darkMode={darkMode}
-        disabled={state === "starting"} onSeek={seekAndPlay} />}
+        disabled={songLoading || state === "starting"} onSeek={seekAndPlay} />}
       {!gameMode && <ChordTimeline
         nodeLabels={Object.fromEntries(
           songData.nodes.map((node) => [node.id, node.chord]),
@@ -627,7 +629,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         timeline={timeline}
         activeIndex={running || position > 0 ? activeIndex : -1}
         onSeek={seek}
-        disabled={state === "starting"}
+        disabled={songLoading || state === "starting"}
       />}
       {error && (
         <p role="alert" className="audio-error">
