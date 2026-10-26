@@ -552,7 +552,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           darkMode={darkMode}
         />
         <MiniChordStrip
-          interactive={false}
+          onSeek={value => seek(value, { scroll: false })}
+          disabled={songLoading || state === "starting"}
           timeline={timeline}
           position={position}
           activeIndex={activeIndex}
@@ -598,6 +599,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         playbackState={state}
         onToggle={gameMode ? requestGamePlay : toggle}
         onStop={stop}
+        onChordSeek={value => seek(value, { scroll: false })}
         progressRef={progressRef}
         timeline={timeline}
         sectionSegments={sectionSegments}
