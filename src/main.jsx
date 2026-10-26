@@ -591,7 +591,6 @@ function App() {
           transitionBridge={sectionBridge}
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
-          onNodeClick={nodeId => playerRef.current?.seekToNode(nodeId)}
           onIndicatorArrival={setIndicatorArrival}
           suppressBeatDots={countInActive}
           suppressIndicator={Boolean(flight)}

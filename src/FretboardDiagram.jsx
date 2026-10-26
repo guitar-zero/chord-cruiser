@@ -17,7 +17,6 @@ export default function FretboardDiagram({notes=[],activeFret,color='var(--accen
       <g aria-hidden="true">
         <path d="M178 70 L145 48 Q113 24 36 42 L18 56 L18 204 L36 218 Q113 236 145 212 L178 190 Z" fill={`url(#neck-${id})`} stroke={darkMode?'#876a4e':'#a78860'} strokeWidth="3"/>
         {[48,89,130].map(x=><g key={x}><path d={`M${x} 47 V26 M${x} 212 V235`} stroke="#8b9296" strokeWidth="5"/><rect x={x-9} y="18" width="18" height="13" rx="5" fill="#bbc0bd"/><rect x={x-9} y="231" width="18" height="13" rx="5" fill="#bbc0bd"/><circle cx={x} cy="65" r="7" fill="#bbc0bd"/><circle cx={x} cy="194" r="7" fill="#bbc0bd"/></g>)}
-        <text x="85" y="135" textAnchor="middle" fontSize="12" fontWeight="700" fill={darkMode?'#e9d5b5':'#6b513b'}>CHORD MAP</text>
       </g>
       <rect x={nut} y="56" width={count*spacing} height="148" rx="4" fill={`url(#neck-${id})`} stroke={darkMode?'#876a4e':'#a78860'} strokeWidth="2"/>
       {[3,5,7,9,12].filter(fret=>fret<=count).flatMap(fret=>(fret===12?[105,155]:[130]).map(dotY=><circle key={`${fret}-${dotY}`} cx={fretX(fret)} cy={dotY} r="6" fill={darkMode?'#ead8bb':'#725e46'} opacity=".5"/>))}

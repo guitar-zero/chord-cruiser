@@ -65,6 +65,7 @@ export default function ChordTimeline({
           <button
             type="button"
             disabled={disabled}
+            onClick={() => onSeek(timeline.events[index].start)}
             className={`timeline-chord ${index === activeIndex ? "active" : ""}`}
             style={{
               color: colorAt(index),
@@ -72,9 +73,8 @@ export default function ChordTimeline({
               top: `${label.lane * 29 + 9}px`,
               width: `${label.size}px`,
             }}
-            onClick={() => onSeek(timeline.events[index].start)}
             aria-current={index === activeIndex ? "step" : undefined}
-            aria-label={`${label.label}, bar ${timeline.events[index].startBeat / (timeline.beatsPerBar || 4) + 1}, seek to ${timeline.events[index].start.toFixed(1)} seconds`}
+            aria-label={`${label.label}, bar ${timeline.events[index].startBeat / (timeline.beatsPerBar || 4) + 1}`}
             title={`${timeline.events[index].chord} · ${timeline.events[index].bars} ${timeline.events[index].bars === 1 ? "bar" : "bars"}`}
           >
             {label.label}

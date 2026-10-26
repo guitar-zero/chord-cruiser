@@ -336,3 +336,14 @@ test('Quality mode groups major and minor chords by family and retains a shared 
   const colors = ['Cmaj7','Cm7','C7','Cdim7'].map(chordQualityColor);
   assert.equal(new Set(colors).size,4);
 });
+
+
+test('A-string shells favor compact consecutive A, D, G strings', () => {
+  for (const quality of ['maj7', 'm7', '7', 'm7b5', 'dim7', 'mMaj7']) {
+    for (const [rootName, fret] of [['C', 3], ['F', 8], ['C', 15]]) {
+      const shell = shellVoicing(`${rootName}${quality}`, { string: 'A', fret });
+      assert.deepEqual(shell.notes.map(note => note.string), [1, 2, 3]);
+      assert.ok(Math.max(...shell.notes.map(note => note.fret)) - Math.min(...shell.notes.map(note => note.fret)) <= 3);
+    }
+  }
+});

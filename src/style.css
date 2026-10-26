@@ -446,7 +446,7 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .mini-chord-strip { display: flex; transition: transform 280ms ease-out; }
 .mini-chord-slot { flex: 0 0 calc(100% / 3); min-width: 0; padding: 0 4px; text-align: center; }
 .mini-chord-role { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; }
-.mini-chord { position: relative; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 7px 4px; border: 2px solid transparent; border-radius: 8px; background: transparent; color: var(--chord-color); font: 700 18px system-ui, sans-serif; cursor: pointer; }
+.mini-chord { position: relative; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 7px 4px; border: 2px solid transparent; border-radius: 8px; background: transparent; color: var(--chord-color); font: 700 18px system-ui, sans-serif; }
 .chord-countdown { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; margin-top: 6px; }
 .chord-countdown-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 .chord-countdown-dot.elapsed { opacity: .2; }
@@ -460,7 +460,8 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
   .chord-countdown.is-current .chord-countdown-dot { animation: none; }
 }
 .mini-chord.active { border-color: var(--chord-color); background: color-mix(in srgb, var(--chord-color) 12%, var(--surface)); }
-.mini-chord:hover { background: var(--hover); }
+button.mini-chord { cursor: pointer; }
+button.mini-chord:hover { background: var(--hover); }
 .mini-chord:focus-visible { outline: 2px solid var(--chord-color); outline-offset: -4px; }
 .mini-progress-toast { transform-origin: top right; }
 .mini-progress-enter { animation: mini-progress-pop 600ms both; }
@@ -484,11 +485,8 @@ body[data-game-mode="true"] .mini-chord.active { box-shadow: 0 0 16px #79c9ba30;
 .chord-timeline { position: relative; margin: -2px 6px 8px; }
 .chord-tick { position: absolute; top: 0; width: 1px; background: var(--border); pointer-events: none; }
 .chord-tick.active { background: var(--accent); }
-.timeline-chord { position: absolute; border: 0; border-radius: 5px; padding: 3px 6px; background: var(--surface); color: var(--muted); font: 600 12px system-ui, sans-serif; line-height: 18px; text-align: left; white-space: nowrap; cursor: pointer; }
-.timeline-chord:hover { background: var(--hover); color: var(--ink); }
+.timeline-chord { position: absolute; border: 0; border-radius: 5px; padding: 3px 6px; background: var(--surface); color: var(--muted); font: 600 12px system-ui, sans-serif; line-height: 18px; text-align: left; white-space: nowrap; }
 .timeline-chord.active { background: var(--active); color: var(--accent); }
-.timeline-chord:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.timeline-chord:disabled { cursor: wait; }
 
 .song-picker { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin-bottom: 24px; }
 .chart-display-controls { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 12px 20px; }
@@ -740,3 +738,7 @@ main.without-gutters { width: 100%; max-width: none; padding: 16px; margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .practice-play-launch .practice-play-button { animation: none !important; }
 }
+
+button.timeline-chord { cursor: pointer; }
+button.timeline-chord:hover { background: var(--hover); }
+button.timeline-chord:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

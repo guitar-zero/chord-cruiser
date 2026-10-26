@@ -10,7 +10,6 @@ const ChartSections = forwardRef(function ChartSections(
     currentChord,
     playbackClockRef,
     onIndicatorArrival,
-    onNodeClick,
     darkMode,
     suppressIndicator,
     suppressBeatDots = false,
@@ -73,7 +72,6 @@ const ChartSections = forwardRef(function ChartSections(
               song={song}
               alignToSectionId={activeSection === section.id && transitionBridge?.sourceId === currentChord?.node ? song.nodes.find(node => node.id === transitionBridge.targetId)?.section : null}
               onIndicatorArrival={onIndicatorArrival}
-              onNodeClick={onNodeClick}
               playbackClockRef={playbackClockRef}
               suppressIndicator={suppressIndicator}
               hideGuidingLines={hideGuidingLines}

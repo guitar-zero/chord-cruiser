@@ -129,10 +129,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   );
   useImperativeHandle(controlRef, () => ({
     stop,
-    seekToNode(nodeId) {
-      const event = timeline.events.find(event => event.nodeId === nodeId || event.nodeIds?.includes(nodeId));
-      if (event) return seekAndPlay(event.start);
-    },
   }));
   function stop() {
     cancelAnimationFrame(frame.current);
@@ -291,7 +287,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     const nextVersion = seek(next);
     if (state !== 'playing') return toggle(undefined, next, nextVersion);
   }
-  function seek(value) {
+  function seek(value, { scroll = true } = {}) {
     countInTargets.current = null;
     setCountInBeats(0);
     setCountInGo(false);
@@ -309,7 +305,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     setPosition(next);
     const segment = sectionSegments.find(segment => next >= segment.start && next < segment.end)
       || (next === timeline.duration ? sectionSegments.at(-1) : null);
-    if (segment) onSectionSeek?.(segment.id);
+    if (scroll && segment) onSectionSeek?.(segment.id);
     return nextVersion;
   }
   const active =
@@ -556,6 +552,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           darkMode={darkMode}
         />
         <MiniChordStrip
+          interactive={false}
           timeline={timeline}
           position={position}
           activeIndex={activeIndex}
@@ -564,8 +561,6 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           nodeLabels={Object.fromEntries(
             songData.nodes.map((node) => [node.id, node.chord]),
           )}
-          onSeek={seek}
-          disabled={songLoading || state === "starting"}
         />
       </div>}
       {!gameMode && <ProgressBar
@@ -628,7 +623,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         darkMode={darkMode}
         timeline={timeline}
         activeIndex={running || position > 0 ? activeIndex : -1}
-        onSeek={seek}
+        onSeek={value => seek(value, { scroll: false })}
         disabled={songLoading || state === "starting"}
       />}
       {error && (

@@ -210,7 +210,7 @@ export default function MiniProgress({
               <button type="button" onClick={onStop} disabled={playbackState === 'stopped' && progressProps.position === 0}>■ Stop</button>
             </div>
             {gameMode ? <GameBar {...progressProps} onSeek={seekToChord} mini /> : <ProgressBar {...progressProps} onSeek={seekToChord} mini />}
-            <MiniChordStrip {...progressProps} onSeek={seekToChord} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
+            <MiniChordStrip {...progressProps} interactive={false} activeIndex={activeIndex} colors={colors} darkMode={darkMode} nodeLabels={nodeLabels} />
             <div className="mini-shortcut-reminders"><kbd>Space</kbd> Play/pause · <kbd>/</kbd> Toggle mini menu · <kbd>C</kbd> Full chart modal</div>
             {minichartOpen && <div className="mini-inline-chart">
               <MiniLeadSheet alignCurrentSection timeline={progressProps.timeline} position={progressProps.position} colors={colors} darkMode={darkMode} disabled={progressProps.disabled} onSeek={seekToChord} />

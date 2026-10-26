@@ -26,14 +26,15 @@ export function shellVoicing(chord, node) {
     for (const a of options[0]) for (const b of options[1]) {
       const frets = [node.fret, a, b];
       const span = Math.max(...frets) - Math.min(...frets);
-      candidates.push({ score: span * 10 + Math.abs(a - node.fret) + Math.abs(b - node.fret), notes: [
+      const preferred = rootString === 1 && upperStrings[0] === 2 && upperStrings[1] === 3 && span <= 3;
+      candidates.push({ preferred, score: span * 10 + Math.abs(a - node.fret) + Math.abs(b - node.fret), notes: [
         { string: rootString, fret: node.fret, role: roles[0] },
         ...upperStrings.map((string, i) => ({ string, fret: [a, b][i], role: roles[intervals[i] === third ? 1 : 2] })),
       ] });
     }
   }
   }
-  candidates.sort((a, b) => a.score - b.score);
+  candidates.sort((a, b) => Number(b.preferred) - Number(a.preferred) || a.score - b.score);
   if (!candidates.length) return null;
   const hasSeventh = /7|9|11|13|dim/.test(quality);
   return { notes: candidates[0].notes, substitution: !hasSeventh, label: `${root}${seventh === 9 ? 'dim7' : `${minor ? 'm' : ''}${seventh === 11 ? 'maj7' : '7'}`}` };
