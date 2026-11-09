@@ -653,7 +653,7 @@ const SongChart = forwardRef(function SongChart(
     const to = targetViewBox.split(' ').map(Number);
     let frame;
     const update = value => { animatedViewBox.current = value; setViewBox(value); };
-    if (!alignToSectionId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (from.every((value, index) => value === to[index]) || !alignToSectionId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       update(targetViewBox);
       return;
     }

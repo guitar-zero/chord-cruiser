@@ -64,3 +64,25 @@ test('Transition framing places matching frets at the same horizontal position',
   assert.ok(Math.abs((source.centers[2] - x) / width - (destination.centers[0] - nextX) / nextWidth) < 1e-10);
   assert.equal(alignedSectionViewport(song, 'a', 'a'), sectionViewport(song, 'a'));
 });
+
+test('Matching fretboards retain their framing despite different section margins', async () => {
+  const { alignedSectionViewport, sectionViewport } = await import('./sectionViewport.js');
+  const board = { left: 100, right: 900, top: 200, bottom: 600, rows: [300, 500], frets: [3, 4, 5, 6], centers: [200, 400, 600, 800] };
+  const source = { ...board, id: 'a' };
+  const destination = { ...board, id: 'b', frets: [...board.frets], sideGutterLeft: 300, sideGutterRight: 250 };
+  const song = { nodes: [], edges: [], layout: { sections: [source, destination] } };
+  assert.notEqual(sectionViewport(song, 'a'), sectionViewport(song, 'b'));
+  assert.equal(alignedSectionViewport(song, 'a', 'b'), sectionViewport(song, 'a'));
+  assert.equal(alignedSectionViewport(song, 'b', 'a'), sectionViewport(song, 'b'));
+});
+
+test('Boards starting at the same visible fret skip resizing even with different ranges', async () => {
+  const { alignedSectionViewport, sectionViewport } = await import('./sectionViewport.js');
+  const board = { left: 100, top: 200, bottom: 600, rows: [300, 500] };
+  const source = { ...board, id: 'a', right: 900, frets: [0, 1, 2, 3], centers: [200, 400, 600, 800] };
+  const destination = { ...board, id: 'b', right: 1100, frets: [1, 2, 3, 4, 5], centers: [200, 400, 600, 800, 1000] };
+  const song = { nodes: [], edges: [], layout: { sections: [source, destination] } };
+  for (const [from, to] of [['a', 'b'], ['b', 'a']]) {
+    assert.equal(alignedSectionViewport(song, from, to), sectionViewport(song, from));
+  }
+});
