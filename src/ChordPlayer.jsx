@@ -15,7 +15,10 @@ import ChordTimeline from "./ChordTimeline.jsx";
 import ProgressBar from "./ProgressBar.jsx";
 import MiniProgress from "./MiniProgress.jsx";
 import ChordChartModal from "./ChordChartModal.jsx";
-import { shortcutKey } from "./keyboardShortcuts.js";
+import StaffNotationModal from "./StaffNotationModal.jsx";
+import SectionBeatDots from "./SectionBeatDots.jsx";
+import { shortcutKey, tempoShortcut } from "./keyboardShortcuts.js";
+import TempoControl from './TempoControl.jsx';
 import ShellChordDiagram from "./ShellChordDiagram.jsx";
 import ChordQualityLegend from "./ChordQualityLegend.jsx";
 import { timelineColor } from "./data/timelinePresentation.js";
@@ -43,6 +46,8 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     darkMode,
     showFullPath,
     showGuideLines,
+    staffMode,
+    onToggleStaffMode,
     onToggleFullPath,
     onToggleGuideLines,
     onPlaybackLaunch,
@@ -50,6 +55,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     onCountInChange,
     onPlaybackActivityChange,
     onPlaybackPosition,
+    playbackClockRef,
     onSectionSeek,
     twoStrings,
     setTwoStrings,
@@ -71,6 +77,21 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   const [drumVolume, setDrumVolume] = useState(24);
   const [bassVolume, setBassVolume] = useState(38);
   const [state, setState] = useState("stopped");
+  const tempoDisabled = songLoading || state !== 'stopped';
+  function changeTempo(value) {
+    if (tempoDisabled) return;
+    setBpm(Math.max(40, Math.min(240, Number(value) || 40)));
+  }
+  useEffect(() => {
+    function handleTempoShortcut(event) {
+      const tempo = tempoShortcut(event, state, songLoading);
+      if (tempo === null) return;
+      event.preventDefault();
+      setBpm(tempo);
+    }
+    window.addEventListener('keydown', handleTempoShortcut);
+    return () => window.removeEventListener('keydown', handleTempoShortcut);
+  }, [state, songLoading]);
   useLayoutEffect(() => {
     onPlaybackActivityChange?.(state === 'starting' || state === 'playing');
   }, [state, onPlaybackActivityChange]);
@@ -95,11 +116,14 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     function handleChartShortcut(event) {
       if (shortcutKey(event) !== 'c') return;
       event.preventDefault();
-      setChartOpen(open => !open);
+      if (staffMode) {
+        onToggleStaffMode();
+        setChartOpen(true);
+      } else setChartOpen(open => !open);
     }
     window.addEventListener('keydown', handleChartShortcut);
     return () => window.removeEventListener('keydown', handleChartShortcut);
-  }, [setChartOpen]);
+  }, [setChartOpen, staffMode, onToggleStaffMode]);
   const player = useRef(null);
   const playButton = useRef(null);
   const progressRef = useRef(null);
@@ -245,7 +269,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
   }
   const keyboardPlayback = useRef(null);
   useLayoutEffect(() => {
-    keyboardPlayback.current = { toggle: gameMode ? requestGamePlay : toggle, state };
+    keyboardPlayback.current = { toggle: gameMode ? requestGamePlay : toggle, state, staffMode };
   });
   useEffect(() => {
     let pending = false;
@@ -253,6 +277,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       if (
         event.code !== "Space" ||
         event.defaultPrevented ||
+        event.isComposing ||
         event.altKey ||
         event.ctrlKey ||
         event.metaKey ||
@@ -262,7 +287,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
       if (
         event.target instanceof Element &&
         event.target.closest(
-          'input, textarea, select, button, a, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="slider"], [role="textbox"]',
+          keyboardPlayback.current?.staffMode
+            ? 'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]'
+            : 'input, textarea, select, button, a, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="slider"], [role="textbox"]',
         )
       )
         return;
@@ -432,9 +459,9 @@ const ChordPlayer = forwardRef(function ChordPlayer(
     >
       {gameMode && <GameAtmosphere playing={state === 'playing'} />}
       {gameMode && <GameCountIn beat={countInBeats} go={countInGo} beatSeconds={60 / bpm} starting={state === 'starting'} paused={state === 'paused'} firstChord={firstGameChord?.chord} nextChord={nextGameChord?.chord} firstShape={gameNodeShapes[firstGameChord?.nodeId]} firstNode={songData.nodes.find(node => node.id === firstGameChord?.nodeId)} firstColor={timelineColor(routeColors[firstGameChord?.index], darkMode)} darkMode={darkMode} />}
-      {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={setBpm} />}
+      {gameMode && state === 'stopped' && <GameTempoOptions bpm={bpm} onChange={changeTempo} disabled={tempoDisabled} />}
       {gameMode && gamePlayControls}
-      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} selectionControls={selectionControls} bpm={bpm} onTempoChange={setBpm} getPosition={gamePosition} canJudge={canJudgeGame} onReady={setGameReady} onJudgment={handleGameJudgment} />}
+      {gameMode && <GameMode ref={gameRef} onStart={gameStart} onToggle={gameStart} onStop={gameStop} timeline={timeline} songData={songData} darkMode={darkMode} playbackState={state} seekVersion={seekVersion} loopIteration={loopIteration} selectionControls={selectionControls} bpm={bpm} onTempoChange={changeTempo} getPosition={gamePosition} canJudge={canJudgeGame} onReady={setGameReady} onJudgment={handleGameJudgment} />}
       {gameMode && <div ref={progressRef} className="game-header-anchor" aria-hidden="true" />}
       {!gameMode && <TransportSettings className="game-accompaniment-settings">
       {gameMode && <summary>Tempo & backing sound</summary>}
@@ -455,21 +482,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         >
           ■ Stop
         </button>
-        <label>
-          Tempo{" "}
-          <input
-            type="number"
-            min="40"
-            max="240"
-            step="5"
-            value={bpm}
-            disabled={running}
-            onChange={(e) =>
-              setBpm(Math.max(40, Math.min(240, Number(e.target.value) || 40)))
-            }
-          />{" "}
-          BPM
-        </label>
+        <TempoControl bpm={bpm} onChange={changeTempo} disabled={tempoDisabled} />
         <label>
           Piano{" "}
           <input
@@ -573,6 +586,7 @@ const ChordPlayer = forwardRef(function ChordPlayer(
         onSeek={seekAndPlay}
       />}
       <MiniProgress
+        staffMode={staffMode}
         songId={song}
         songOptions={songOptions}
         onSongChange={onSongChange}
@@ -614,7 +628,15 @@ const ChordPlayer = forwardRef(function ChordPlayer(
           songData.nodes.map((node) => [node.id, node.chord]),
         )}
       />
+      {staffMode && <StaffNotationModal title={songData.title} timeline={timeline} activeIndex={activeIndex}
+        bpm={bpm} onTempoChange={changeTempo} tempoDisabled={tempoDisabled} onStop={stop}
+        playbackClockRef={playbackClockRef} position={position} darkMode={darkMode} onClose={onToggleStaffMode} onSeek={seekAndPlay}
+        onTogglePlayback={gameMode ? requestGamePlay : toggle} isPlaying={state === 'playing'}
+        disabled={songLoading || state === 'starting'} />}
       {chartOpen && <ChordChartModal title={songData.title} onClose={() => setChartOpen(false)}
+        countdown={<SectionBeatDots playbackClockRef={playbackClockRef} visible={!countInActive}
+          song={songData} colors={routeColors} darkMode={darkMode} visitIndex={activeIndex}
+          isPlaying={state === 'playing'} />}
         timeline={timeline} position={position} colors={routeColors} darkMode={darkMode}
         disabled={songLoading || state === "starting"} onSeek={seekAndPlay} />}
       {!gameMode && <ChordTimeline

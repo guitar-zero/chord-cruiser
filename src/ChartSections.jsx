@@ -13,6 +13,7 @@ const ChartSections = forwardRef(function ChartSections(
     darkMode,
     suppressIndicator,
     suppressBeatDots = false,
+    animationsPaused = false,
     hideGuidingLines,
     hideOtherNodes,
     columns = 2,
@@ -78,7 +79,8 @@ const ChartSections = forwardRef(function ChartSections(
               hideOtherNodes={hideOtherNodes}
               sectionId={section.id}
               playbackVisitIndex={currentChord?.visitIndex}
-              playbackIsPlaying={currentChord?.isPlaying}
+              playbackIsPlaying={currentChord?.isPlaying && !animationsPaused}
+              animationsPaused={animationsPaused}
               darkMode={darkMode}
               currentChord={activeSection === section.id ? currentChord : null}
               showStartMarker={!currentChord && index === 0}

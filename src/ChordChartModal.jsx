@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef } from 'react';
 import MiniLeadSheet from './MiniLeadSheet.jsx';
 
-export default function ChordChartModal({ title, onClose, ...chartProps }) {
+export default function ChordChartModal({ title, onClose, countdown, ...chartProps }) {
   const ref = useRef(null);
   const titleId = useId();
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function ChordChartModal({ title, onClose, ...chartProps }) {
       <h2 id={titleId}>{title} · Chord chart</h2>
       <button type="button" autoFocus onClick={onClose} aria-label="Close chord chart">×</button>
     </div>
+    {countdown && <div className="chord-chart-modal-countdown">{countdown}</div>}
     <MiniLeadSheet {...chartProps} />
     <p className="chord-chart-modal-hint">Click a chord to seek · % repeats the previous bar · Esc to close</p>
   </dialog>;

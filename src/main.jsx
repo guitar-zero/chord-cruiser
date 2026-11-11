@@ -57,6 +57,17 @@ const songOptionLabel = (song) => {
 
 function App() {
   const [chartOpen, setChartOpen] = useState(false);
+  const [staffMode, setStaffMode] = useState(false);
+  const toggleStaffMode = useCallback(() => {
+    setChartOpen(false);
+    setStaffMode(enabled => !enabled);
+  }, []);
+  const staffModeRef = useRef(staffMode);
+  staffModeRef.current = staffMode;
+  useLayoutEffect(() => {
+    document.body.dataset.staffModalOpen = String(staffMode);
+    return () => { delete document.body.dataset.staffModalOpen; };
+  }, [staffMode]);
   const gameMode = false;
   const [countInActive, setCountInActive] = useState(false);
   const boatsRef = useRef(null);
@@ -100,6 +111,10 @@ function App() {
   useEffect(() => {
     function handleShortcut(event) {
       const key = shortcutKey(event);
+      if (key === "x") {
+        event.preventDefault();
+        toggleStaffMode();
+      }
       if (key === "b") {
         event.preventDefault();
         setAutoScrollEnabled(enabled => !enabled);
@@ -127,7 +142,7 @@ function App() {
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [setHideGuidingLines, setAutoScrollEnabled, instrument]);
+  }, [setHideGuidingLines, setAutoScrollEnabled, instrument, toggleStaffMode]);
   const [twoStrings, setTwoStrings] = useState(() => !window.matchMedia('(max-width: 760px)').matches);
   const [wholeFretboard, setWholeFretboard] = useState(false);
   const useSmallGutters = instrument === 'guitar' && wholeFretboard;
@@ -139,6 +154,11 @@ function App() {
     launchFinished.current = null;
   }, []);
   const [playback, setPlayback] = useState(null);
+  const latestPlaybackRef = useRef(null);
+  useLayoutEffect(() => {
+    if (staffMode) finishLaunch();
+    else setPlayback(latestPlaybackRef.current);
+  }, [staffMode, finishLaunch]);
   const [indicatorArrival, setIndicatorArrival] = useState(null);
   const [sectionBridge, setSectionBridge] = useState(null);
   const svgRef = useRef(null);
@@ -147,6 +167,7 @@ function App() {
   const playbackClockRef = useRef(null);
   const handlePlaybackPosition = useCallback((clock) => {
     playbackClockRef.current = clock;
+    if (staffModeRef.current) return;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -195,7 +216,8 @@ function App() {
   const availableKeys = /minor|-$/.test(song.key) ? minorKeyRoots : keyRoots;
   const handleChordChange = useCallback(
     (value) => {
-      setPlayback(value && { ...value, key: song.key });
+      latestPlaybackRef.current = value && { ...value, key: song.key };
+      if (!staffModeRef.current) setPlayback(latestPlaybackRef.current);
       if (!value) setFlight(null);
     },
     [song.key],
@@ -215,6 +237,7 @@ function App() {
   };
   const previousChord = useRef(null);
   useLayoutEffect(() => {
+    if (staffMode) return;
     const old = previousChord.current;
     const next = currentChord && {
       ...currentChord,
@@ -267,8 +290,10 @@ function App() {
     currentChord?.seekVersion,
     currentChord?.loopIteration,
     autoScrollEnabled,
+    staffMode,
   ]);
   useLayoutEffect(() => {
+    if (staffMode) return;
     // Retain the preview during the section flight, then remove it on landing.
     if (
       retainTransitionPipe(
@@ -332,10 +357,12 @@ function App() {
     indicatorArrival,
     flight,
     sectionBridge,
+    staffMode,
     visitColors,
     darkMode,
   ]);
   function launchIndicator(nodeId, rect, event, timing) {
+    if (staffModeRef.current) return;
     const shape = [...sectionsRef.current.querySelectorAll("[data-node-id]")]
       .find((node) => node.dataset.nodeId === nodeId)
       ?.querySelector("[data-node-shape]");
@@ -372,6 +399,7 @@ function App() {
     });
   }
   function jumpToSection(sectionId) {
+    if (staffModeRef.current) return;
     setChartOpen(false);
     const sectionSvg = [...(sectionsRef.current?.querySelectorAll('svg[data-section-id]') || [])]
       .find(svg => svg.dataset.sectionId === sectionId);
@@ -540,13 +568,16 @@ function App() {
       <div id="desktop-cruise-launch" />
       </div>
       <section className="cruiser-brand" aria-label="About Chord Cruiser">
-        <CruiserShip ref={boatsRef} paused={playbackActive || countInActive} />
+        <CruiserShip ref={boatsRef} paused={playbackActive || countInActive || staffMode} frozen={staffMode} />
         <p className="eyebrow">YOUR VISUAL BACKING TRACK</p>
         <h2>Chord Cruiser</h2>
         <p>Cruise through chord changes.<br />Follow the chart and find your flow.</p>
       </section>
       </div>
       <ChordPlayer
+        playbackClockRef={playbackClockRef}
+        staffMode={staffMode}
+        onToggleStaffMode={toggleStaffMode}
         songLoading={Boolean(loadingSongId)}
         songOptions={dropdownSongs}
         onSongChange={changeSong}
@@ -588,12 +619,13 @@ function App() {
       />
       <div ref={sectionsRef}>
         <ChartSections
+          animationsPaused={staffMode}
           transitionBridge={sectionBridge}
           hideOtherNodes={!showFullPathDuringPlayback && Boolean(currentChord)}
           playbackClockRef={playbackClockRef}
           onIndicatorArrival={setIndicatorArrival}
-          suppressBeatDots={countInActive}
-          suppressIndicator={Boolean(flight)}
+          suppressBeatDots={countInActive || staffMode}
+          suppressIndicator={Boolean(flight) || staffMode}
           hideGuidingLines={hideGuidingLines}
           columns={1}
           key={`${selectionKey}:${twoStrings}`}
@@ -603,7 +635,7 @@ function App() {
           currentChord={currentChord}
         />
       </div>
-      {sectionBridge && (
+      {sectionBridge && !staffMode && (
         <SectionPipe
           key={`${sectionBridge.sourceId}:${sectionBridge.visitIndex}:${sectionBridge.seekVersion}`}
           bridge={sectionBridge}
@@ -613,7 +645,7 @@ function App() {
           fullHighlight={Boolean(rapidPassage(song, currentChord?.visitIndex))}
         />
       )}
-      <IndicatorLaunch flight={flight} onComplete={finishLaunch} />
+      {!staffMode && <IndicatorLaunch flight={flight} onComplete={finishLaunch} />}
       <footer>
         A movement map based on{" "}
         <a href={song.sourceUrl} target="_blank" rel="noreferrer">

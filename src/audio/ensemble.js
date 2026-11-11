@@ -117,7 +117,8 @@ export class JazzPlayer {
     }
     this.scheduleCycle(this.startedAt, this.offset);
     this.scheduleCycle(this.startedAt + timeline.duration, 0);
-    this.scheduledThrough = this.startedAt + timeline.duration * 2;
+    this.playingCycle = 0;
+    this.scheduledCycle = 1;
   }
   scheduleCycle(startedAt, offset = 0) {
     const timeline = this.timeline;
@@ -175,15 +176,19 @@ export class JazzPlayer {
     const wrapped = elapsed >= this.timeline.duration;
     const position = wrapped ? elapsed % this.timeline.duration : elapsed;
     if (wrapped) {
-      this.startedAt += Math.floor(elapsed / this.timeline.duration) * this.timeline.duration;
+      const cycles = Math.floor(elapsed / this.timeline.duration);
+      this.playingCycle += cycles;
+      this.startedAt += cycles * this.timeline.duration;
       this.offset = 0;
       this.countInEndsAt = null;
       // The next pass is already queued on the audio clock; never seek here.
-      if (this.scheduledThrough <= this.startedAt) this.scheduleCycle(this.startedAt, position);
+      // Compare integer pass numbers: separately added audio times can differ
+      // by a fraction of a sample and incorrectly skip an entire future pass.
+      if (this.scheduledCycle < this.playingCycle) this.scheduleCycle(this.startedAt, position);
       const nextStart = this.startedAt + this.timeline.duration;
-      if (this.scheduledThrough <= nextStart) {
+      if (this.scheduledCycle < this.playingCycle + 1) {
         this.scheduleCycle(nextStart, 0);
-        this.scheduledThrough = nextStart + this.timeline.duration;
+        this.scheduledCycle = this.playingCycle + 1;
       }
     }
     return { position, wrapped };

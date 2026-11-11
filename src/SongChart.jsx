@@ -625,6 +625,7 @@ const SongChart = forwardRef(function SongChart(
     hideGuidingLines = false,
     hideOtherNodes = false,
     suppressIndicator = false,
+    animationsPaused = false,
     sectionId,
     alignToSectionId,
     showStartMarker = true,
@@ -649,6 +650,7 @@ const SongChart = forwardRef(function SongChart(
   const [viewBox, setViewBox] = useState(baseViewBox);
   const animatedViewBox = useRef(baseViewBox);
   useEffect(() => {
+    if (animationsPaused) return;
     const from = animatedViewBox.current.split(' ').map(Number);
     const to = targetViewBox.split(' ').map(Number);
     let frame;
@@ -666,7 +668,7 @@ const SongChart = forwardRef(function SongChart(
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [targetViewBox, alignToSectionId]);
+  }, [targetViewBox, alignToSectionId, animationsPaused]);
   const [viewX, viewY, viewWidth, viewHeight] = viewBox.split(" ").map(Number);
   const showStart =
     showStartMarker && (!sectionId || visibleIds.has(song.startNodeId));

@@ -24,7 +24,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildTimeline, playbackSongs, chordNotes, bassNote } from './songs.js';
 import { pianoHits, pianoVoicing } from './pianoVoicings.js';
-import { shortcutKey } from '../keyboardShortcuts.js';
+import { shortcutKey, tempoShortcut } from '../keyboardShortcuts.js';
 
 test('Letter shortcuts ignore text entry, repeated keys, composition, and browser modifiers', () => {
   assert.equal(shortcutKey({ key: 'm' }), 'm');
@@ -33,6 +33,21 @@ test('Letter shortcuts ignore text entry, repeated keys, composition, and browse
   for (const flag of ['repeat', 'isComposing', 'defaultPrevented', 'altKey', 'ctrlKey', 'metaKey', 'shiftKey']) {
     assert.equal(shortcutKey({ key: 'm', [flag]: true }), null);
   }
+});
+
+test('Digit shortcuts select tempo only while stopped and leave text entry and browser shortcuts alone', () => {
+  const expected = [100, 110, 120, 130, 40, 50, 60, 70, 80, 90];
+  for (let digit = 0; digit <= 9; digit++) {
+    const event = { key: String(digit) };
+    assert.equal(tempoShortcut(event, 'stopped'), expected[digit]);
+    for (const state of ['starting', 'playing', 'paused']) assert.equal(tempoShortcut(event, state), null);
+    assert.equal(tempoShortcut(event, 'stopped', true), null);
+    assert.equal(tempoShortcut({ ...event, target: { closest: () => ({}) } }, 'stopped'), null);
+    for (const flag of ['repeat', 'isComposing', 'defaultPrevented', 'altKey', 'ctrlKey', 'metaKey', 'shiftKey']) {
+      assert.equal(tempoShortcut({ ...event, [flag]: true }, 'stopped'), null);
+    }
+  }
+  assert.equal(tempoShortcut({ key: 'x' }, 'stopped'), null);
 });
 
 test('Repeated piano hits vary inversions without changing harmony, rhythm, or slash bass', () => {
@@ -130,6 +145,34 @@ test('Voicings preserve minor-major seventh, half-diminished, and alterations', 
   assert.deepEqual(chordNotes('Dm7b5'), [50, 60, 65, 68]);
   assert.deepEqual(chordNotes('G7b9'), [55, 65, 71, 80]);
   assert.throws(() => chordNotes('invalid'));
+});
+
+test('Audio keeps queuing every loop despite fractional tempo rounding and paused background animations', () => {
+  const player = Object.create(JazzPlayer.prototype);
+  player.context = { currentTime: 100.093, state: 'running' };
+  player.timeline = buildTimeline([{ chord: 'Cmaj7', bars: 64 }], 61);
+  player.sources = new Set();
+  const queued = [];
+  player.scheduleCycle = (start, offset) => queued.push({ start, offset });
+  player.seek(0);
+  const origin = player.startedAt;
+  const duration = player.timeline.duration;
+  assert.equal(queued.length, 2);
+  // Only the audio clock advances; no graph, indicator, or modal animation runs.
+  for (let pass = 1; pass <= 20; pass++) {
+    player.context.currentTime = origin + duration * pass + .001;
+    const loop = player.loopPosition();
+    assert.equal(loop.wrapped, true);
+    assert.equal(queued.length, pass + 2, `Missing queued pass after wrap ${pass}`);
+    assert.ok(Math.abs(queued.at(-1).start - (origin + duration * (pass + 1))) < 1e-8);
+    assert.equal(player.context.state, 'running');
+  }
+  // A delayed frame catches up the current pass and queues the next one.
+  player.context.currentTime = origin + duration * 25 + .125;
+  const beforeCatchUp = queued.length;
+  player.loopPosition();
+  assert.equal(queued.length, beforeCatchUp + 2);
+  assert.ok(Math.abs(queued.at(-2).offset - .125) < 1e-8);
 });
 
 test('Piano schedules held-bar rearticulations and half-bar notes, pauses, resumes, and stops', async () => {

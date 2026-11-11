@@ -36,6 +36,7 @@ export default function MiniProgress({
   onToggleWholeFretboard,
   showFullPath,
   showGuideLines,
+  staffMode,
   autoScrollEnabled,
   onToggleAutoScroll,
   onToggleFullPath,
@@ -98,7 +99,7 @@ export default function MiniProgress({
   const [mounted, setMounted] = useState(false);
   const popupRef = useRef(null);
   useEffect(() => {
-    if (!mounted || isMobile) return;
+    if (!mounted || isMobile || staffMode) return;
     let frame;
     let placement;
     function measure() {
@@ -121,7 +122,7 @@ export default function MiniProgress({
     }
     measure();
     return () => cancelAnimationFrame(frame);
-  }, [mounted, isMobile]);
+  }, [mounted, isMobile, staffMode]);
   useEffect(() => {
     if (shouldShow) {
       setMounted(true);

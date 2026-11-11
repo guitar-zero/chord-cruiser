@@ -6,12 +6,14 @@ const travelArea = { width: 480, height: 320 };
 const randomPoint = () => ({ x: 24 + Math.random() * 432, y: 24 + Math.random() * 272 });
 const starts = [{ x: 24, y: 24 }, { x: 456, y: 160 }, { x: 200, y: 296 }];
 
-function CruiserShip({ paused = false }, controlRef) {
+function CruiserShip({ paused = false, frozen = false }, controlRef) {
   const indicator = useRef([]);
   const canvas = useRef(null);
   const shipEmoji = useRef(null);
   const speedMultiplier = useRef(1);
   const pausedRef = useRef(paused);
+  const frozenRef = useRef(frozen);
+  frozenRef.current = frozen;
   const refreshAnimation = useRef(null);
   useImperativeHandle(controlRef, () => ({
     pauseImmediately() {
@@ -139,6 +141,7 @@ function CruiserShip({ paused = false }, controlRef) {
     function updateRunning() {
       cancelAnimationFrame(frame);
       lastFrame = null;
+      if (frozenRef.current) return;
       if (pausedRef.current) {
         const departures = [];
         const occupied = [];
@@ -196,7 +199,7 @@ function CruiserShip({ paused = false }, controlRef) {
   useEffect(() => {
     pausedRef.current = paused;
     refreshAnimation.current?.();
-  }, [paused]);
+  }, [paused, frozen]);
   return <span className="cruiser-brand-ship" aria-hidden="true">
     <canvas ref={canvas} className="cruiser-ship-paths" />
     <span ref={shipEmoji} className="cruiser-ship-emoji"
